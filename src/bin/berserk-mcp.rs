@@ -587,8 +587,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         service.waiting().await?;
         return Ok(());
     }
-    let browser = std::env::args().any(|arg| arg == "--browser");
-    let desktop = browser || std::env::args().any(|arg| arg == "--app");
+    let desktop = std::env::args().any(|arg| arg == "--app");
     let port = if desktop {
         std::env::var("BERSERK_DESKTOP_PORT")
             .unwrap_or_else(|_| "47381".into())
@@ -650,7 +649,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                             .insert("x-content-type-options", "nosniff".parse().unwrap());
                         response.headers_mut().insert(
                             "content-security-policy",
-                            "frame-ancestors 'none'".parse().unwrap(),
+                            "frame-ancestors 'none'; frame-src 'none'".parse().unwrap(),
                         );
                         response
                     }
@@ -663,39 +662,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     });
     let workbench = Workbench { cat, bridge };
-    if browser {
-        use std::io::Write;
-        let url = format!(
-            "{}/#agent={}:{}",
-            workbench.bridge.origin, workbench.bridge.port, workbench.bridge.token
-        );
-        println!("Open {url}");
-        println!("Keep this window open while using Berserk. Press Ctrl+C to quit.");
-        std::io::stdout().flush()?;
-        if !std::env::args().any(|arg| arg == "--no-open") {
-            #[cfg(target_os = "windows")]
-            let result = std::process::Command::new("rundll32.exe")
-                .args(["url.dll,FileProtocolHandler", &url])
-                .status();
-            #[cfg(target_os = "macos")]
-            let result = std::process::Command::new("open").arg(&url).status();
-            #[cfg(not(any(target_os = "windows", target_os = "macos")))]
-            let result = std::process::Command::new("xdg-open").arg(&url).status();
-            if !result.is_ok_and(|status| status.success()) {
-                eprintln!("Could not open the browser. Open the URL above manually.");
-            }
-        }
-        #[cfg(unix)]
-        {
-            let mut terminate =
-                tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
-            tokio::select! { _ = tokio::signal::ctrl_c() => {}, _ = terminate.recv() => {} }
-        }
-        #[cfg(not(unix))]
-        tokio::signal::ctrl_c().await?;
-        http.abort();
-        return Ok(());
-    }
     if desktop {
         use std::io::Write;
         println!(

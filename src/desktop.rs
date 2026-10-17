@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(
-    inline_js = "export function desktopPair() { return window.__BERSERK_DESKTOP || ''; } export function desktopAction(action, payload) { window.webkit.messageHandlers.berserk.postMessage({action, payload}); }"
+    inline_js = "export function desktopPair() { return window.__BERSERK_DESKTOP || ''; } export function desktopAction(action, payload) { if (window.__BERSERK_NATIVE_ACTION) { window.__BERSERK_NATIVE_ACTION(action, payload); } else { window.webkit.messageHandlers.berserk.postMessage({action, payload}); } }"
 )]
 extern "C" {
     #[wasm_bindgen(js_name = desktopPair)]

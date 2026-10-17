@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke-test a packaged service and its real assets on every release OS."""
+"""Smoke-test the packaged service and offline assets on every release OS."""
 import argparse
 import http.client
 import json
@@ -40,49 +40,37 @@ def main():
     assert len(images) > 1000, 'Card images missing from package'
     env = dict(os.environ, BERSERK_WEB_ROOT=str(web), BERSERK_DESKTOP_PORT='0')
     with tempfile.TemporaryDirectory(prefix='berserk-release-test-') as cwd:
-        for mode in ('--app', '--browser'):
-            process = subprocess.Popen([binary, mode, '--no-open'], cwd=cwd, env=env,
-                                       stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
-            try:
-                line = first_line(process)
-                if mode == '--app':
-                    info = json.loads(line)
-                    port, token = info['port'], info['token']
-                else:
-                    port, token = line.strip().split('#agent=')[1].split(':')
-                    port = int(port)
-                connection = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
-                connection.request('GET', '/')
-                response = connection.getresponse()
-                body = response.read()
-                assert response.status == 200 and b'<html' in body
-                assert token.encode() not in body, 'Pairing secret leaked in static response'
-                connection.request('GET', '/', headers={'Host': 'attacker.example'})
-                response = connection.getresponse()
-                assert response.status == 403
-                response.read()
-                wasm = next(web.glob('*.wasm')).relative_to(web).as_posix()
-                connection.request('GET', '/' + wasm)
-                response = connection.getresponse()
-                assert response.status == 200 and response.getheader('Content-Type') == 'application/wasm'
-                assert response.read(4) == b'\x00asm'
-                connection.close()
-                if mode == '--app':
-                    process.stdin.close()
-                    assert process.wait(timeout=15) == 0
-            finally:
-                if process.poll() is None:
-                    process.terminate()
-                process.wait(timeout=15)
-                process.stdout.close()
-                if not process.stdin.closed:
-                    process.stdin.close()
-        catalog = subprocess.run([binary, '--catalog-only'], input='', text=True,
-                                 capture_output=True, cwd=cwd, timeout=15)
-        # EOF before an MCP handshake is expected to produce a protocol error,
-        # but the binary must load successfully (not a missing shared library).
-        assert 'initialize' in catalog.stderr.lower() or catalog.returncode == 0, catalog.stderr
-    print('PASS: packaged native service, offline assets, browser startup, Host isolation and parent shutdown')
+        process = subprocess.Popen([binary, '--app'], cwd=cwd, env=env,
+                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+        try:
+            info = json.loads(first_line(process))
+            port, token = info['port'], info['token']
+            connection = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
+            connection.request('GET', '/')
+            response = connection.getresponse()
+            body = response.read()
+            assert response.status == 200 and b'<html' in body
+            assert token.encode() not in body, 'Pairing secret leaked in static response'
+            connection.request('GET', '/', headers={'Host': 'attacker.example'})
+            response = connection.getresponse()
+            assert response.status == 403
+            response.read()
+            wasm = next(web.glob('*.wasm')).relative_to(web).as_posix()
+            connection.request('GET', '/' + wasm)
+            response = connection.getresponse()
+            assert response.status == 200 and response.getheader('Content-Type') == 'application/wasm'
+            assert response.read(4) == b'\x00asm'
+            connection.close()
+            process.stdin.close()
+            assert process.wait(timeout=15) == 0
+        finally:
+            if process.poll() is None:
+                process.terminate()
+            process.wait(timeout=15)
+            process.stdout.close()
+            if not process.stdin.closed:
+                process.stdin.close()
+    print('PASS: packaged service, offline assets, Host isolation and parent shutdown')
 
 
 if __name__ == '__main__':

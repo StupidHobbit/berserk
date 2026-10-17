@@ -25,6 +25,7 @@ panic = "abort"
 
 [features]
 mcp = ["dep:rmcp", "dep:tokio", "dep:axum", "dep:uuid", "dep:tower-http"]
+desktop = ["mcp", "dep:wry", "dep:tao", "dep:rfd"]
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 rmcp = { version = "3.5.1", features = ["transport-io", "schemars"], optional = true }
@@ -32,6 +33,9 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync",
 axum = { version = "0.8", features = ["ws"], optional = true }
 uuid = { version = "1", features = ["v4"], optional = true }
 tower-http = { version = "0.6", features = ["fs"], optional = true }
+wry = { version = "0.57", optional = true }
+tao = { version = "0.37", optional = true }
+rfd = { version = "0.17", default-features = false, features = ["gtk3"], optional = true }
 
 [[bin]]
 name = "berserk-mcp"
@@ -41,4 +45,4 @@ required-features = ["mcp"]
 [[bin]]
 name = "berserk"
 path = "src/bin/berserk.rs"
-required-features = ["mcp"]
+required-features = ["desktop"]

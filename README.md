@@ -15,13 +15,19 @@ card images; Rust, Python and Node are not needed to browse your collection.
 | --- | --- | --- |
 | macOS 13+, Apple Silicon | `macos-arm64.zip` | Open `Berserk.app` |
 | macOS 13+, Intel | `macos-x86_64.zip` | Open `Berserk.app` |
-| Ubuntu 22.04+, x64 desktop | `ubuntu-x86_64.tar.gz` | Run `./berserk` |
+| Ubuntu 22.04+, x64 desktop | `ubuntu-x86_64.deb` or `.tar.gz` | Install the `.deb`, or run `./berserk` |
 | Windows 10/11, x64 | `windows-x86_64.zip` | Open `berserk.exe` |
 
-Ubuntu and Windows open the app in your default browser. Keep the launcher window
-open; press Ctrl+C to stop the service. Collections are stored in that browser at
-`http://127.0.0.1:47381`, so use the same browser on subsequent launches. AI features
-require an installed Codex CLI on PATH and an existing login (`codex login`).
+All platforms open a standalone desktop window and manage their local service
+and persistent app storage automatically. No browser or terminal window is needed.
+On Ubuntu, install the `.deb` with `sudo apt install ./Berserk-*-ubuntu-x86_64.deb`
+and launch **Berserk** from Applications. For the portable archive, install
+`libwebkit2gtk-4.1-0` and run `./berserk`. Windows uses Microsoft Edge WebView2
+Runtime, included with Windows 11 and most Windows 10 installations; install it
+from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) if missing.
+
+AI features require your own Codex CLI installation. **Войти в Codex** opens the
+sign-in page; browsing cards and editing collections work offline without Codex.
 `BERSERK_CODEX_BIN` selects a custom executable; on Windows use native `codex.exe`.
 
 The macOS app is ad-hoc signed and not Apple-notarized. If macOS blocks it, verify
