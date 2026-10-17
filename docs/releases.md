@@ -12,6 +12,14 @@ runs inside the app, with native save dialogs and a dedicated persistent profile
 The app owns the bundled service and stops it on exit. Ubuntu also gets a `.deb`
 with an Applications-menu entry and automatic WebKitGTK dependency installation.
 
+Linux defaults to WebKitGTK's compatibility rendering path because the DMA-BUF
+path caused heavily pixelated animated cards on an AMD/Bazzite machine. This
+keeps the card animations enabled, but may cost some rendering performance.
+An explicit `WEBKIT_DISABLE_DMABUF_RENDERER` environment value is preserved;
+set it to `0` to compare with the DMA-BUF path on unaffected systems. The Linux
+GUI smoke test uses the launcher's default rather than setting the workaround
+externally. CI verifies startup and pairing, not visual quality on physical GPUs.
+
 Each package is smoke-tested for startup, web/Wasm assets, Host validation and
 service lifetime. Ubuntu (under Xvfb) and Windows additionally launch the actual
 native window, load the bundled Wasm, exercise localStorage, verify automatic

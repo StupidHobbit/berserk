@@ -1,5 +1,16 @@
 Berserk card encyclopedia, collection manager and deck builder. All downloads include the interface and card images for offline use. AI deck creation requires your own installed and signed-in Codex CLI.
 
+### Changes in v0.1.1
+
+Linux now applies a WebKitGTK rendering workaround automatically. Disabling the
+DMA-BUF path substantially improved heavily pixelated animated cards reported on
+AMD/Bazzite, including the detail view. Animations stay enabled. An explicitly
+set `WEBKIT_DISABLE_DMABUF_RENDERER` value is respected. This may reduce rendering
+performance on some systems; it is not a claim that every GPU artifact is fixed.
+
+The Linux GUI smoke test now exercises this launcher default without supplying
+the workaround through CI. Existing collection and deck storage is retained.
+
 | Download | Platform | Launch |
 | --- | --- | --- |
 | `macos-arm64.zip` | macOS 13+, Apple Silicon | Extract and open Berserk.app |

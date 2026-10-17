@@ -316,6 +316,14 @@ fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::error::E
 }
 
 fn main() {
+    // WebKitGTK's DMA-BUF path corrupts animated card canvases on affected Linux
+    // drivers (confirmed on AMD/Bazzite). Keep an explicit user override intact.
+    #[cfg(target_os = "linux")]
+    if std::env::var_os("WEBKIT_DISABLE_DMABUF_RENDERER").is_none() {
+        // SAFETY: this is the first startup operation, before GTK/WebKit or any
+        // application threads are started.
+        unsafe { std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1") };
+    }
     let arguments: Vec<_> = std::env::args_os().collect();
     let smoke = arguments.iter().any(|a| a == "--smoke-test");
     let report = if smoke {

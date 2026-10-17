@@ -133,7 +133,6 @@ jobs:
         if: matrix.platform == 'ubuntu'
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
-          WEBKIT_DISABLE_DMABUF_RENDERER: '1'
         run: |
           sudo apt-get install -y ./release/*.deb
           xvfb-run -a dbus-run-session -- python scripts/test_native.py /opt/berserk/berserk
