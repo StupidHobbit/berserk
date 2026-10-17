@@ -1,0 +1,63 @@
+name: Publish tested release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to publish
+        type: string
+        required: true
+      run_id:
+        description: CI run containing successful builds for this exact tag
+        type: string
+        required: true
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: publish-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      SOURCE_RUN: ${{ inputs.run_id }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify tested commit and build results
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          tag, run_id, repo = os.environ['RELEASE_TAG'], os.environ['SOURCE_RUN'], os.environ['GITHUB_REPOSITORY']
+          assert re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?', tag), 'Invalid version tag'
+          assert run_id.isdigit(), 'Invalid CI run ID'
+          def gh(*args):
+              return json.loads(subprocess.check_output(['gh', *args], text=True))
+          commit = gh('api', f'repos/{repo}/commits/{tag}')['sha']
+          run = gh('run', 'view', run_id, '--repo', repo, '--json', 'headSha,headBranch,jobs')
+          assert run['headSha'] == commit and run['headBranch'] == tag, 'Run must build this exact tag'
+          required = {'check', 'web',
+              'binaries (macos-14, macos, arm64)', 'binaries (macos-15-intel, macos, x86_64)',
+              'binaries (ubuntu-22.04, ubuntu, x86_64)', 'binaries (windows-2022, windows, x86_64)'}
+          passed = {job['name'] for job in run['jobs'] if job['conclusion'] == 'success'}
+          assert required <= passed, f'Required checks did not pass: {required - passed}'
+          PY
+      - uses: actions/download-artifact@v8
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id }}
+          pattern: release-*
+          merge-multiple: true
+          path: release
+      - name: Verify checksums and publish
+        run: |
+          cd release
+          cat *.sha256 | tr -d '\r' > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          gh release create "$RELEASE_TAG" ./*.zip ./*.tar.gz ./*.deb SHA256SUMS \
+            --verify-tag --title "Berserk ${RELEASE_TAG}" --notes-file ../docs/release-notes.md

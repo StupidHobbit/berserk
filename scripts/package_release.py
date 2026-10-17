@@ -81,7 +81,7 @@ def main():
     for artifact in archives:
         with artifact.open('rb') as file:
             digest = hashlib.file_digest(file, 'sha256').hexdigest()
-        artifact.with_name(artifact.name + '.sha256').write_text(f'{digest}  {artifact.name}\n')
+        artifact.with_name(artifact.name + '.sha256').write_text(f'{digest}  {artifact.name}\n', newline='\n')
     print(f'Package: {package}\nArchive: {archive}')
 
 

@@ -1,15 +1,13 @@
-# Berserk · Rust + Leptos
+# Berserk collection and decks manager
 
-A desktop and browser rewrite of [SkAZi/berserk-nxt](https://github.com/SkAZi/berserk-nxt).
-The interface and application logic are Rust, compiled to WebAssembly with
-Leptos 0.8 and Trunk. The macOS app bundles the interface and local service, and uses your installed Codex.
-The encyclopedia and collection work offline; AI deck creation uses your Codex account and an internet connection.
+Heavily inspired by [SkAZi/berserk-nxt](https://github.com/SkAZi/berserk-nxt).
+Allows you to manage your collection and create new decks.
+MCP for your agents and tooling for creating decks with AI.
 
 ## Download and run
 
 Download the latest build from **[GitHub Releases](https://github.com/StupidHobbit/berserk/releases/latest)**.
-Extract the entire archive before launching. All builds include the interface and
-card images; Rust, Python and Node are not needed to browse your collection.
+Extract the entire archive before launching.
 
 | System | Download suffix | Launch |
 | --- | --- | --- |
@@ -19,7 +17,7 @@ card images; Rust, Python and Node are not needed to browse your collection.
 | Windows 10/11, x64 | `windows-x86_64.zip` | Open `berserk.exe` |
 
 All platforms open a standalone desktop window and manage their local service
-and persistent app storage automatically. No browser or terminal window is needed.
+and persistent app storage automatically.
 On Ubuntu, install the `.deb` with `sudo apt install ./Berserk-*-ubuntu-x86_64.deb`
 and launch **Berserk** from Applications. For the portable archive, install
 `libwebkit2gtk-4.1-0` and run `./berserk`. Windows uses Microsoft Edge WebView2

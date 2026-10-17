@@ -36,6 +36,12 @@ The tag must equal `v` followed by the Cargo package version. Tags are immutable
 release identifiers: fix a published version by issuing a new version and tag.
 Failed runs can be rerun before a release is published.
 
+If all builds passed but the publishing step failed, run **Publish tested release**
+from Actions on `main`, supplying the version tag and the original run ID. This
+verifies that the tag points to the tested commit and all six build/check jobs
+passed, downloads those exact artifacts, checks their hashes, and publishes them
+without rebuilding or moving the tag.
+
 ## Local packaging
 
 Run on the target operating system, with Python 3.11+, Rust and Trunk installed.
