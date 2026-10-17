@@ -1,0 +1,156 @@
+name: CI and releases
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  CARGO_TERM_COLOR: always
+  NO_COLOR: 'true'
+  MACOSX_DEPLOYMENT_TARGET: '13.0'
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --features mcp --all-targets -- -D warnings
+      - run: cargo test --locked --features mcp
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r scripts/requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_*.py'
+      - run: cargo build --locked --features mcp --bin berserk-mcp
+      - run: python scripts/test_mcp.py
+      - run: python scripts/test_catalog_mcp.py
+      - run: python scripts/test_codex.py
+      - run: python scripts/test_desktop.py
+
+  web:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import os, tomllib
+          version = tomllib.load(open('Cargo.toml', 'rb'))['package']['version']
+          assert os.environ['RELEASE_TAG'] == 'v' + version, 'Tag must match Cargo.toml version'
+          PY
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: web
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/trunk
+          key: trunk-0.21.14-ubuntu-22.04
+      - run: command -v trunk || cargo install trunk --locked --version 0.21.14
+      - run: trunk build --release --locked --dist dist-release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-assets
+          path: dist-release/
+          if-no-files-found: error
+          retention-days: 7
+
+  binaries:
+    needs: web
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            platform: macos
+            arch: arm64
+          - os: macos-15-intel
+            platform: macos
+            arch: x86_64
+          - os: ubuntu-22.04
+            platform: ubuntu
+            arch: x86_64
+          - os: windows-2022
+            platform: windows
+            arch: x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.95.0
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: native-${{ matrix.platform }}-${{ matrix.arch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-assets
+          path: dist-release
+      - run: cargo test --locked --features mcp
+      - run: cargo build --release --locked --features mcp --bin berserk-mcp --bin berserk
+      - run: python scripts/package_release.py --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
+      - name: Test packaged service and offline assets
+        shell: bash
+        run: |
+          if [[ '${{ matrix.platform }}' == 'macos' ]]; then
+            python scripts/test_release.py desktop/build/Berserk.app
+          else
+            python scripts/test_release.py release/Berserk-*/
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            release/*.zip
+            release/*.tar.gz
+            release/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [check, binaries]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: release
+      - name: Publish all platforms together
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cd release
+          cat *.sha256 > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          gh release create "$RELEASE_TAG" ./*.zip ./*.tar.gz SHA256SUMS \
+            --verify-tag --title "Berserk ${RELEASE_TAG}" --notes-file ../docs/release-notes.md

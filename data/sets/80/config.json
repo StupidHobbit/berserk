@@ -1,0 +1,21 @@
+{
+  "set_id": 80,
+  "name": "Сердце роя",
+  "expected_cards": 220,
+  "expected_editions": 354,
+  "listing_url": "https://pro.berserk-nxt.ru/edition/ab008",
+  "checklist_url": "https://www.laststicker.ru/cards/berserk_serdce_roya/",
+  "publisher_url": "https://berserk.ru/?route=card%2Fset&set_id=94150",
+  "name_reviews": {
+    "80078": "Алирра",
+    "80120": "Менгир Каррефура"
+  },
+  "edition_labels": {
+    "f": "Фойловая",
+    "pf": "Полноформатная",
+    "n": "Нуарная / фойл",
+    "altn": "Альтернативная с надпечаткой",
+    "alt": "Альтернативная",
+    "fpf": "Полноформатная/фойл"
+  }
+}

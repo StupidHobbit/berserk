@@ -1,0 +1,26 @@
+Berserk Leptos — browser rewrite of berserk-nxt
+
+Original project: https://github.com/SkAZi/berserk-nxt
+Original author: Игорь «SkAZi» Потапов
+Source revision: bf754902127c84baf1a403b0b0bc02e1b1bf417d
+
+The original project's LGPL-3.0 license is retained in LICENSE.
+The Rust implementation adapts the upstream card schema, collection/deck formats,
+compact deck encoding, squad rules, and Tabletop Simulator atlas
+format. Bundled card data, constants, ratings and card images come from that source
+revision. Card text and artwork retain their original credits and rights; the
+software license does not imply ownership of the Berserk game or its artwork.
+
+All application views, state management, storage integration and domain logic in
+src/ are implemented in Rust using Leptos. No Electron, Svelte or Node.js runtime
+is required. Python is used by the data collection, validation and synchronization utilities.
+
+Additional set 80: Сердце роя
+220 cards and base scans: https://pro.berserk-nxt.ru/edition/ab008
+134 additional edition identities: https://www.laststicker.ru/cards/berserk_serdce_roya/
+Checklist credit: TaRs WoLk (LastSticker); card scans and database: ProBerserk.
+Per-card artists remain credited in the card data and detail view.
+Source snapshots, retrieval times and SHA-256 checksums: data/sets/80/manifest.json.
+No ownership of card text, scans or illustrations is claimed. The LGPL software
+license does not relicense these assets. Editions with unavailable scans use an
+explicitly labeled base-artwork placeholder, not a fabricated alternate scan.

@@ -1,0 +1,3196 @@
+{
+  "schema_version": 1,
+  "set_id": 80,
+  "name": "Сердце роя",
+  "base_cards": 220,
+  "editions": 354,
+  "cards_sha256": "e827c64f5f1a73040b8a863012149de19aa1a659f362caea0b2ed335e4027dbd",
+  "config_sha256": "09dd055ee21c908bd92e5976174314ecaf3eef09e677cec462bf0d202a53b58f",
+  "sources": [
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0019dc1e12b94fc984d0436ff71d2aba",
+      "sha256": "89fb521d1cf440c75f22497222e111df9ee4e4097de58b7a325f954e10252b0b",
+      "bytes": 14359,
+      "retrieved_at": "2026-10-15T03:14:27.741212+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/022e29e89e2542e59278a4261b3242eb",
+      "sha256": "8821305a810ceb84feb503327eef7af57167b8a2209f41ed1ffae406f086289b",
+      "bytes": 15143,
+      "retrieved_at": "2026-10-15T03:14:23.572290+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/03029c7eed4947cf9a9566ecdf44a38e",
+      "sha256": "705a3a1ec840d8e9c905abb8c9c9b5e7a7828ac67c37b7277413b3904b2e7aef",
+      "bytes": 14420,
+      "retrieved_at": "2026-10-15T03:14:20.296670+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/03656808997048e7bd689dac5852623e",
+      "sha256": "9327b43d7cb99c9f5126723eec88e7f7bec0595ef7fe1190074f20ad132e8078",
+      "bytes": 14612,
+      "retrieved_at": "2026-10-15T03:13:43.676536+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/03f6d23ff7d3495d89956b2cd81e99f3",
+      "sha256": "3419ff7b608e7122b6591a2a6c6b2c79838ca00afe79bc633672c355143deca6",
+      "bytes": 14433,
+      "retrieved_at": "2026-10-15T03:14:27.245072+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/04d0e94fd6ae4ab4bce7b572b9373fa1",
+      "sha256": "49718d932859bbb3707ffbacab3d712bf867087651b00c971cfc89b33826eb75",
+      "bytes": 14415,
+      "retrieved_at": "2026-10-15T03:14:29.193987+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/04fa48df78e6487b848b80b5ceceb51b",
+      "sha256": "82469fc468184e2733aa49cfa1a1efa077c013503ab795561141365ee97c9a95",
+      "bytes": 14527,
+      "retrieved_at": "2026-10-15T03:13:42.288014+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0505475560f343e9878f1204c58d5082",
+      "sha256": "2bcf342a0a502eb56bdd5631a8f554b10981871ae205162eeaa62ced9ceefdb8",
+      "bytes": 14494,
+      "retrieved_at": "2026-10-15T03:13:58.706310+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/09be79d5a4954f9b999fa1ef26d7fe48",
+      "sha256": "00fac159ce5c6622d37bacba92fa143ba6e44f91bd0dd723b4f806613a05bf0a",
+      "bytes": 14522,
+      "retrieved_at": "2026-10-15T03:14:17.983688+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0a2bcd914dd944bebe50cfb3a7775c30",
+      "sha256": "fd25c6a924e8f604d20a7dd9a0bc2d42900309d6ba42737bad6eeb6ddcc1b95d",
+      "bytes": 14519,
+      "retrieved_at": "2026-10-15T03:13:45.236460+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0b7766f893a24c5382199ae7a70c84d7",
+      "sha256": "368ff1414e116213df1670ab79f60f48711ec0088ce31f76091524e214b78676",
+      "bytes": 14396,
+      "retrieved_at": "2026-10-15T03:14:24.611137+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0dc373f0f3f045d4a1e2d83fd478ed7e",
+      "sha256": "04a77f43932ac7b5937c2c8a1256b781e4516f494a8fe7e58d4ba129d6c8a5f4",
+      "bytes": 14387,
+      "retrieved_at": "2026-10-15T03:13:50.784891+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0dd27d46f0b443cead63cf8ce6d6fc4d",
+      "sha256": "8465eda5782a8cbf08034988082ccb2bca8aa09c716b4c49115e9fbc4e535ec7",
+      "bytes": 14499,
+      "retrieved_at": "2026-10-15T03:13:57.958585+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0df88f59c904450f859d4175f1462ced",
+      "sha256": "ea161ea84d45709cc9bacc84110423a9cac1213f43ca8de3719cfd89edb6ea07",
+      "bytes": 14581,
+      "retrieved_at": "2026-10-15T03:13:44.212420+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0e96439c5537456b96da8d65324073e9",
+      "sha256": "543561d76dda8c99efc1a86118e307a2b9cb2c998750f26a8015ed2685afa94c",
+      "bytes": 14528,
+      "retrieved_at": "2026-10-15T03:14:25.231570+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/0f8d52b717c843558aff4626e1f92d10",
+      "sha256": "2a0f2e2a26f4410dcd7579f08878d0f8f664af935c6931348c32fee52279671e",
+      "bytes": 14526,
+      "retrieved_at": "2026-10-15T03:13:56.260662+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/11f4e169cde04471a938f99d97fe0abf",
+      "sha256": "3207d5a0923975c191a3d981088f432810f0ef4dd49211d1da80ad1764d37520",
+      "bytes": 14289,
+      "retrieved_at": "2026-10-15T03:13:54.686846+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/12e55fec3db34a1ab4b42adcbd18b5a9",
+      "sha256": "9f85e37795d634935437e8735f89b57ade17c6e30fc747a58853e4b95b76d774",
+      "bytes": 14394,
+      "retrieved_at": "2026-10-15T03:14:07.108812+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/13ed75f3bdc542358a1e481bb2fea314",
+      "sha256": "66b8725cb20d6e3ee693945a6e17a5fe23d7a73564ab2a3af24b324f5b236cc9",
+      "bytes": 14592,
+      "retrieved_at": "2026-10-15T03:13:43.008644+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/154363a6060942beb8d6ca781e3e990f",
+      "sha256": "6b95a8d3d4982efe78047c83eff8665a3ad4d5af50d5e4ed3ce7c46dbf9d2b7d",
+      "bytes": 14550,
+      "retrieved_at": "2026-10-15T03:13:52.733793+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/16eaaf37316748c38f591e3cb9bd9d47",
+      "sha256": "160a17c2ffdb0f0f7731f1d81961af8d063b9aecd108b899cd3fb45be031b9a4",
+      "bytes": 14562,
+      "retrieved_at": "2026-10-15T03:13:42.388884+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/18523740adef44c98fe19a5c42fa8893",
+      "sha256": "ac8c01f03373b2a803a85b94fcb1b490863ac8ce990a55b22c82b36b95f5c9f8",
+      "bytes": 14396,
+      "retrieved_at": "2026-10-15T03:14:28.365968+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1899a7cfb80c4200a894fc935bf2365a",
+      "sha256": "520cabf1ae8ebc199c2e3d0de43a451a7782e443cfca23dcd00cbcc3a8ec232d",
+      "bytes": 14336,
+      "retrieved_at": "2026-10-15T03:13:55.348791+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1af80829d3f8486592984c88d0ffba8a",
+      "sha256": "fd4be1c846d6627ef8e8705722607ccedfc41391a6cb70bb3071e5e7039d922c",
+      "bytes": 14651,
+      "retrieved_at": "2026-10-15T03:14:13.791574+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1ba829f094f04d119c6c666e4b206958",
+      "sha256": "f5543bc963a805e4505366e3ec3b14bc1435dee57a11f820df0db1ef0307a0fc",
+      "bytes": 14295,
+      "retrieved_at": "2026-10-15T03:13:52.497432+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1c3f2b4eb677403ab5913556b9f2c4e2",
+      "sha256": "f3e7f4838c4eaec0a21cdbb2545fd965f77aa2e410cb4b7297d69d8d189ac6af",
+      "bytes": 14486,
+      "retrieved_at": "2026-10-15T03:13:41.514716+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1ca9c790d15a41348b695a7f93df3908",
+      "sha256": "651d545602526fb4cbd3901408d2173474ddcb850b2d4101e39f744e8ac5c29f",
+      "bytes": 14384,
+      "retrieved_at": "2026-10-15T03:13:41.530695+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1ea06e8df2c04def84c4d4b7400da146",
+      "sha256": "71aec8305116840095180157855b22a20e34db46a7fd0939b5fb41aa327cd86d",
+      "bytes": 14716,
+      "retrieved_at": "2026-10-15T03:14:04.339874+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1eeaa707a044445a8aa492038138d307",
+      "sha256": "187438cc71d7a7896bffc3351648caf0b97753f3855d92869546a5242af58aea",
+      "bytes": 14626,
+      "retrieved_at": "2026-10-15T03:14:22.623670+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1f1b5645b43949d090439a5ab112ae0b",
+      "sha256": "386c1fae892c1f8753e6921c86284c7f8a9778bb0dd7013bb6d23fa85ece8754",
+      "bytes": 14552,
+      "retrieved_at": "2026-10-15T03:14:10.946755+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/1f2ab45ff31141d39efbfd49534b2a01",
+      "sha256": "b8446d2f574e9091c365280dfc815fc2c9064cb7368b425613c5a41fac8ed8a1",
+      "bytes": 14261,
+      "retrieved_at": "2026-10-15T03:14:18.892176+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/21017c2a01c74e72a45ca969cbb31ca3",
+      "sha256": "3171219c8d654af442f6e77041d4f8e81d7b328366c2938df73ba3daafc89232",
+      "bytes": 14631,
+      "retrieved_at": "2026-10-15T03:14:29.059079+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/263223a8859c4646819ef760631657b1",
+      "sha256": "0ebffcdd79f31812632043ea6cac2f3b4187cf718e204affc5e0b5b0036b4023",
+      "bytes": 14526,
+      "retrieved_at": "2026-10-15T03:14:10.189184+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/28c1cabb207c4fc899de85d427d36117",
+      "sha256": "d68eeb06aea0bdea74664bdb98be094fb7778ff3b82515fd7cf29169d01d8d43",
+      "bytes": 14447,
+      "retrieved_at": "2026-10-15T03:13:55.737185+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/28cc8fc90ec240d4b5e204c0f79ab4d9",
+      "sha256": "954c09fa35af76e0dd3837c2db5052b7bfb27893627d475763a791a013f96d4c",
+      "bytes": 14253,
+      "retrieved_at": "2026-10-15T03:13:55.904785+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2945251d7fc345eaa62bf05c09b8d645",
+      "sha256": "2b11f31b23c3961b8f67c469b9b2355eff42586055b76bb6c1bf72b306ee4f46",
+      "bytes": 14588,
+      "retrieved_at": "2026-10-15T03:14:10.673164+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/29b87237a4734f4e9fb633c42f2157f0",
+      "sha256": "4ab0fa126e61c937a28866b2ddda699c748de11aa1b6f60b1a192707cd6dd440",
+      "bytes": 14328,
+      "retrieved_at": "2026-10-15T03:14:12.939826+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2a736648aeee43e9ac31ed2840da0f20",
+      "sha256": "f18d09e0aaf5e0ef6b14c8882adba8f226540218782253bbd29d97e7ee35960e",
+      "bytes": 14377,
+      "retrieved_at": "2026-10-15T03:14:06.815917+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2a9087988b93482c804e666b6fc41dbc",
+      "sha256": "bb5df7b6d181ae3d34c00a9f317b025379b8ae65241bd6af4b4fc932844ad13d",
+      "bytes": 14478,
+      "retrieved_at": "2026-10-15T03:14:04.912641+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2ac23a394868477a95d8234ee0f242e0",
+      "sha256": "936ea740b532a5abb81d5752a318204931306673ee4c6232cd4cfff1ed903b10",
+      "bytes": 14405,
+      "retrieved_at": "2026-10-15T03:13:53.180757+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2bbd752c33eb4d81bb92a253ddedf92b",
+      "sha256": "df0eff8aacc1875e36126f83c2c2167d6443f0b09d3b392c18f3b4c5505e0bb9",
+      "bytes": 14561,
+      "retrieved_at": "2026-10-15T03:14:05.716448+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/2cbdbffd39dd4fe6ae4b600de54b11f0",
+      "sha256": "b494455c2a29a25e76653e8408173f3363a2b7a257369a18b052833de994c045",
+      "bytes": 14549,
+      "retrieved_at": "2026-10-15T03:14:02.793397+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3027629bdf424921848e3b284d22698e",
+      "sha256": "6b0e46dd2398f342b0bf218212744749b0abedab91e80c350849ae51bcf6658e",
+      "bytes": 14378,
+      "retrieved_at": "2026-10-15T03:14:25.811416+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/31364f2186424cdc999fa65f13ba2a0e",
+      "sha256": "1bf2253a1af6bd1560ac647250754cf28d45ad638f231ddcd21c7f6666688e81",
+      "bytes": 14519,
+      "retrieved_at": "2026-10-15T03:14:06.473151+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/332a2dda3a7b43a39e69d20626396505",
+      "sha256": "c989ca80a57e9f65847ad00ca611ae1b5bfb94216b4e7ce66f1964c416072675",
+      "bytes": 14689,
+      "retrieved_at": "2026-10-15T03:13:47.255676+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/334b9a3a627a47c29680dd0e89ec5a4e",
+      "sha256": "0a1b5ac9fc4a123f2e6818668b0f756cf27de7e812b0acd1d56efc591f6fddcd",
+      "bytes": 14395,
+      "retrieved_at": "2026-10-15T03:13:52.126034+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/35083d7230d64d8e9072c914a78c6367",
+      "sha256": "2cf45f1bc63d10876d1a75a0035ac58093b62f413e0fd621350c6ba3a6d81986",
+      "bytes": 14535,
+      "retrieved_at": "2026-10-15T03:14:01.302207+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/37a0b0f71df243b699f1a754a7f38a04",
+      "sha256": "5172d1f5fa87391cac6eac425056bb84fb26096dc0b0ced2a5d495c81337cff9",
+      "bytes": 14281,
+      "retrieved_at": "2026-10-15T03:14:20.588298+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3a3b8eae863e4bf98e16a7b646de9317",
+      "sha256": "250174857bab773d87a5e8805dcfc93149a9bb9ab306482339b9a3e1fd072967",
+      "bytes": 14632,
+      "retrieved_at": "2026-10-15T03:14:23.898705+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3b7ddd411b504888b1649f114bc9e4a1",
+      "sha256": "9f194a2579c5ba5e4c19fc18c893dcecdd05e09582bd66e61d5bc0c05d7a0b06",
+      "bytes": 14583,
+      "retrieved_at": "2026-10-15T03:14:28.026199+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3bf80d04cde94588972adb2dcd5fc28c",
+      "sha256": "e0a434882f542f74dc67298861066734666c05a82c89a7e4c254f1f8f15858f5",
+      "bytes": 14458,
+      "retrieved_at": "2026-10-15T03:14:10.790788+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3c2dfbf568cc47e68ef291cdb5fa52af",
+      "sha256": "d413551faf45d3d0153f2bdb6ef371acde575c02f3a93b1bc9b663d5936ac7cc",
+      "bytes": 14645,
+      "retrieved_at": "2026-10-15T03:14:20.858849+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3e229f8197b84ea38db9cd4147c0b1c7",
+      "sha256": "318c35e6ff6a810704dfb34db9fb08334e126317efc1475b1c7a5d9e8f4363ab",
+      "bytes": 14675,
+      "retrieved_at": "2026-10-15T03:13:49.880398+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3e5ce63dde6a48dab2b787f5cb948011",
+      "sha256": "056cf1916ae3812251cd873bbd1cecace77b825474627ccb4feccb7eb1f1eeb1",
+      "bytes": 14511,
+      "retrieved_at": "2026-10-15T03:14:13.909065+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3ea1fe5cf33c4241a65d91aa471062b1",
+      "sha256": "0f4cadaf5c3bdebf3bc60a212fc48e19f9af659bf485182e1b1d19bb3bc69bcb",
+      "bytes": 14439,
+      "retrieved_at": "2026-10-15T03:13:52.087922+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/3f644245fba3401a9c69fb605489224b",
+      "sha256": "978b27a860a780604a09aac656630b6c5a3ca549f412fdd1914f61eab5f594c1",
+      "bytes": 14395,
+      "retrieved_at": "2026-10-15T03:14:02.740021+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4066a4c1de8c407d82aec63522656b8e",
+      "sha256": "f2dc745dbf88b54063be81ea09b36647a58ea8b4248af90acf3b01093bccff9c",
+      "bytes": 14595,
+      "retrieved_at": "2026-10-15T03:13:53.504051+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/422a213bb0de42a0a9e7cfbfffd3f8ef",
+      "sha256": "50f62028af92e665025a180d50eb9d8ffdb3d7e6ca27ddc1d52f0372b5d064df",
+      "bytes": 14441,
+      "retrieved_at": "2026-10-15T03:13:59.385357+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4306bfb665d04a8e90eefb2ded79e588",
+      "sha256": "c03ca0b8070529ad8e9fdb896471d0da83c289459650eed7d89a8fef4970487f",
+      "bytes": 14411,
+      "retrieved_at": "2026-10-15T03:14:11.954199+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4458fa838ca146448a40c14088329523",
+      "sha256": "97cd945ea227c03ff6f2abb848e876c6ee78fb7cf2c3e80280cb41146eb0957e",
+      "bytes": 14415,
+      "retrieved_at": "2026-10-15T03:13:59.435028+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/449c4c1a4b9f4ea0b7375c1856b3c96e",
+      "sha256": "3f526c3794c5b3b0839148dd0d6f48bb41de07dc80b583e23aa22ee9d50da71a",
+      "bytes": 14363,
+      "retrieved_at": "2026-10-15T03:13:43.129622+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4508043c1f1642b5bf849186cae6d51f",
+      "sha256": "9bb0915a09b5cbf4a8370f350a0d0885b880db89091c25d27fd7c3cf383659aa",
+      "bytes": 14374,
+      "retrieved_at": "2026-10-15T03:13:46.351255+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/45b03520f4dd44038a95e65f02a5b3ad",
+      "sha256": "9abdd1f341f510f36b1f2bc46f48ebcf0f3ae4a107d06e16dce5f7bd07ee3f7f",
+      "bytes": 14694,
+      "retrieved_at": "2026-10-15T03:13:45.775945+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/468c87ceed29450fb1a2b5ec7e904a4b",
+      "sha256": "9516978c0e4f738fd24a556c86e1415f85cf722eb36890df177bfb5119a067e2",
+      "bytes": 14453,
+      "retrieved_at": "2026-10-15T03:14:21.042791+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4a4b566a26c0420192bb77183b81dcb9",
+      "sha256": "72973944548e3d561b338a24d9dc82c9b2bf1f2dddf9fba0aedeacaf743f2bb6",
+      "bytes": 14291,
+      "retrieved_at": "2026-10-15T03:14:16.641541+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4aa9c30b94dd4eb3a685d1a0fc429798",
+      "sha256": "e48352a68e894f51caa937efe35940b5fa275e8d03e6bf1c0be8397829f51eaa",
+      "bytes": 14550,
+      "retrieved_at": "2026-10-15T03:14:17.722682+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4c5b7e51fb7b4ba6956efde40bd46144",
+      "sha256": "d7d7252be0aef0ab799121bbc5a5945fc0e76c9ea419c41199ebd354414556f8",
+      "bytes": 14405,
+      "retrieved_at": "2026-10-15T03:14:07.078591+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4cd16b54e8734ee7af67556e722ea2eb",
+      "sha256": "6073d8eea1896be583fd97bd211639420d73f188617646745e1deba5638c4c1e",
+      "bytes": 14268,
+      "retrieved_at": "2026-10-15T03:13:53.690944+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4dfa3050a0ae4f8d8f5f55fd59a6b827",
+      "sha256": "a1d78d2586f6574bce81f41b03368c7e3452b8db072d37863a54b3ed3209b8e2",
+      "bytes": 14289,
+      "retrieved_at": "2026-10-15T03:14:09.507445+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4e706f6a956540c5a8af295b566a3844",
+      "sha256": "ebc8ca74501c6977dd43aa649dc3c5cd8cbdb02fd0ce3e94323db40793381690",
+      "bytes": 14626,
+      "retrieved_at": "2026-10-15T03:14:21.753860+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/4f491612cb7c44f4ace040e3df6ee621",
+      "sha256": "432a08973a9e434459ec4f07a1efc1a9a026f0c945da741b06b7b1699556235c",
+      "bytes": 14459,
+      "retrieved_at": "2026-10-15T03:14:16.188636+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/51b979e420dc47569be4ffcd9af7ce16",
+      "sha256": "30011ced9c4292784ae5102c396ebb978c1a2926610a5048ec2f8b0ca043c93b",
+      "bytes": 14350,
+      "retrieved_at": "2026-10-15T03:13:48.883012+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/51cf279fa31445ce893df8e659cf6f60",
+      "sha256": "2e9f3fd4ca99407f7c30c31577950311e572e625734ddbc7ae07040c1ca951a2",
+      "bytes": 14332,
+      "retrieved_at": "2026-10-15T03:14:00.051013+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5309a5e8765a48ef804d99cfdf002e39",
+      "sha256": "c31ef90d3c3f7f8400689cdd91c6eafc501e31ddb34b0319416fe6fd9564e18f",
+      "bytes": 14378,
+      "retrieved_at": "2026-10-15T03:13:58.056519+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/53fe25cc2e9b49f78a699d50cc076bec",
+      "sha256": "eb4d65b047c488d008fd604654649bf88d31c261fbfc4d78ad447bca8b2caa00",
+      "bytes": 14314,
+      "retrieved_at": "2026-10-15T03:13:47.689272+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/545cd749d7c94b449176f1e0164db5e7",
+      "sha256": "c8f544663a04f51cfa04d40da45b04bc4dc38d26cadbd3f77a72217281736025",
+      "bytes": 14806,
+      "retrieved_at": "2026-10-15T03:14:22.097088+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/56eca953f81c471f94f0841121724f1b",
+      "sha256": "5b160d84603d390165ac0490c51d07f9da3013b05a0e8433a43b6f735396c3af",
+      "bytes": 14407,
+      "retrieved_at": "2026-10-15T03:14:29.518760+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/57138b93297e46ba8aa03c31197c0db4",
+      "sha256": "de071657bc9ceb89af1f68575f9384119475abcced362d20200c0422ee856cb0",
+      "bytes": 14399,
+      "retrieved_at": "2026-10-15T03:13:50.188394+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/579b98407acf43d2bb721d73fbaf52bc",
+      "sha256": "fe161dce0c838c9e2b38c0d6e2c0885907a5656f854dc3403b3480816920d239",
+      "bytes": 14681,
+      "retrieved_at": "2026-10-15T03:13:56.758048+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/57eb9c8aafcd4138b156d0ccec7e63f9",
+      "sha256": "07ad81c56959d062b180652a72e6418632703a62a1bf8eeeb1b25f1906109880",
+      "bytes": 14532,
+      "retrieved_at": "2026-10-15T03:14:09.847090+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5b99449b7f48474ebb2a6db6a10eceea",
+      "sha256": "9b3ecb48c696511c1a79f7417eec264199cb7a60b40f9f2b348cc4e6e9258658",
+      "bytes": 14413,
+      "retrieved_at": "2026-10-15T03:13:57.304838+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5cd86329a6ae4a1d918e2210c394a84e",
+      "sha256": "8e6166b66cc707e492e98c88c1a7750a53374933f09f7c215af112451f8243c0",
+      "bytes": 14310,
+      "retrieved_at": "2026-10-15T03:13:48.926602+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5de6133f07324159b20b52bdff00f242",
+      "sha256": "2426872b7618be3d8f315e6a6dfa21dbe69f900ec9a6520b4c51f7a55202b133",
+      "bytes": 14639,
+      "retrieved_at": "2026-10-15T03:13:52.018993+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5eaf4246cad645f5b8604186c67499c4",
+      "sha256": "cddbfe01795adf99fab0f812c0135db2ca0b78478fc52f1cb8f7796859fdf353",
+      "bytes": 14624,
+      "retrieved_at": "2026-10-15T03:13:56.555318+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5ed39dc3d0d948baa432987a10d8b058",
+      "sha256": "e45832233711a9bc51c817ae11d87fc547bfc7276d77048af70a2fdb35905a49",
+      "bytes": 14376,
+      "retrieved_at": "2026-10-15T03:13:47.045302+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5efc8c8fc41d424a8baa04fd9a7aaf47",
+      "sha256": "42ead77c2f93d22e64bd3bb58cc2b7c658a7360f1f8afe4357f040c6c9fc676d",
+      "bytes": 14258,
+      "retrieved_at": "2026-10-15T03:14:15.638658+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/5f7f1ee24276418187e12214a0627866",
+      "sha256": "b18c254af550cb5b9f95d2dd57dddc3df2efecb711a0c3925afbaebcbe81d4f4",
+      "bytes": 14335,
+      "retrieved_at": "2026-10-15T03:14:25.440890+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/60be105c08104d48b57bc9a40a1ef01e",
+      "sha256": "30c5ea19921ee036bb7db46b414c50dadc39beeee62c33d71b6da24fca33a7fd",
+      "bytes": 14470,
+      "retrieved_at": "2026-10-15T03:14:28.577153+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/61e40fb3b8614fe58862266646000025",
+      "sha256": "ee61d2054fa378af8daa491565889083a4f0c468b5215f5fc191ff150d855e82",
+      "bytes": 14519,
+      "retrieved_at": "2026-10-15T03:13:44.240310+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6217b49e450a4cf6b0d2025274540037",
+      "sha256": "b8bdab08523151cd63b72e2092da8c6622db58312be49c1a72d4a53892aa2911",
+      "bytes": 14370,
+      "retrieved_at": "2026-10-15T03:14:03.466880+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6360cdad6fcc40ee8044ce1e05f12b2e",
+      "sha256": "b5561abeb1bf9660fde47f30c71d407ff29c3986f75e9cf50249f328c084fe2e",
+      "bytes": 14563,
+      "retrieved_at": "2026-10-15T03:14:16.902269+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/639f1157fbf94e9789d37f48ebfcf44d",
+      "sha256": "62309a18772638a7e44a72c40f64348a601048367195e055375f51539ec2742d",
+      "bytes": 14277,
+      "retrieved_at": "2026-10-15T03:14:22.906082+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6491c3d1a820408eaa759f4e5774e198",
+      "sha256": "ea0e3c97e202550453c39ea0e28e8d638850ab1cb4f9a3451fb4d954dc18c1e8",
+      "bytes": 14454,
+      "retrieved_at": "2026-10-15T03:14:04.643587+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/64b454f07d1c4c4dbc6520dd6a3275f1",
+      "sha256": "0f5a428c6495c4d73b366d7233a328f207c25808682a110b460d13b273bbc78a",
+      "bytes": 14376,
+      "retrieved_at": "2026-10-15T03:14:25.825344+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/667314ec7f664c50a8d3577de7af56ca",
+      "sha256": "dc433362e171d9d527e1a93e7c4bf9444efab20c04d35562cdd820f8640d6b68",
+      "bytes": 14521,
+      "retrieved_at": "2026-10-15T03:14:18.357141+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/67e257fb6cfb4795bd6e0067ccf7726c",
+      "sha256": "00bea6a3021f92dde2eb517d66e3a798676544915e55a995bcfb64e309effde9",
+      "bytes": 14516,
+      "retrieved_at": "2026-10-15T03:14:06.473255+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/685076ed55a74035ad3d60054c12fecd",
+      "sha256": "5ee735826fa961862b31945752ca914363964ac8b63e49d2fc7fd1b6ef6629aa",
+      "bytes": 14190,
+      "retrieved_at": "2026-10-15T03:14:19.157933+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6a634370c54a45fa832c9e4ea6a29f76",
+      "sha256": "f39795a0f382090725dec9b70df59373b3aff5e4f7224d2b616880f1598ac9d9",
+      "bytes": 14304,
+      "retrieved_at": "2026-10-15T03:14:27.185039+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6d8d1a72756a42ada66fba115c315052",
+      "sha256": "1eba583882b192d26a116654569b66bc0e42bad65cb5bad5293891b5b5ac604f",
+      "bytes": 14414,
+      "retrieved_at": "2026-10-15T03:14:24.862460+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6f1296cfb1844ec098a28fe8108b366d",
+      "sha256": "893be5f781cd2646e64da51eaf1a534e6a779b7c27d56a36c49f475b3c0d77bc",
+      "bytes": 14509,
+      "retrieved_at": "2026-10-15T03:13:46.485797+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/6f3416d8d5d54bd8bef93aab74e6ab70",
+      "sha256": "c90ffdaa005a1400329ec849045c1e2131d28a966c84cc17568fd97e221dc355",
+      "bytes": 14393,
+      "retrieved_at": "2026-10-15T03:13:49.225462+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/70c5b9ec25704fe189a2dff1d9e045d0",
+      "sha256": "036003e387f98d5c50909a7b686e3b70c00164e5650c6ed831100ab542707cff",
+      "bytes": 14738,
+      "retrieved_at": "2026-10-15T03:14:18.314665+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/714db5b8392246068b05893c3e853bf5",
+      "sha256": "2719cb6aba73e74c06a99f016647b8c19092c6cdc926e1882e8fbb17e1064bf5",
+      "bytes": 14346,
+      "retrieved_at": "2026-10-15T03:14:15.098515+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/722443f98e124361bc7994e405c49372",
+      "sha256": "f49fd39ca2aab7baa681b3bf0207739584e09bb5d174cf0959a7715d6b3286d3",
+      "bytes": 14635,
+      "retrieved_at": "2026-10-15T03:13:41.531149+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/72c385f8dd0a49878d077cccca5542b9",
+      "sha256": "96cb8c206c30b6b74eb83b083a65ff8509bfef406d6b2710a26b32c417c84c4d",
+      "bytes": 14440,
+      "retrieved_at": "2026-10-15T03:13:48.305223+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/75e2ae4c830c4bf6af041ad65c1b822d",
+      "sha256": "c75634113db3d615ffa4f16e8c100830f62b8c99dbcfb2e8b32306b13c0e965b",
+      "bytes": 14440,
+      "retrieved_at": "2026-10-15T03:13:55.372071+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7950e743596640b5be54bbc426f53179",
+      "sha256": "c809a8d154e033a7c47319d899112f23cb170894c4e6a6f93aa463dffdacf2bc",
+      "bytes": 14345,
+      "retrieved_at": "2026-10-15T03:14:04.110276+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/79642c17eef24e42b90e4d54f784db4e",
+      "sha256": "218bddc5d8addceaca57221cb235d721fddf828d3a485a834652b711a2ba0610",
+      "bytes": 14481,
+      "retrieved_at": "2026-10-15T03:14:08.502405+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7ca29f2afd8941d987d9bf523e97df70",
+      "sha256": "4c7af0a06aa715017214cd492d5d5f22c6bfc32aaab3dab2590b04f611158ddd",
+      "bytes": 14263,
+      "retrieved_at": "2026-10-15T03:13:43.595130+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7e38f02e75514ae4987ff96e658fd3d7",
+      "sha256": "eeaa0f197fe8f15a61634b350a5b222f3b35d21526981abde13bcf670cffc058",
+      "bytes": 14512,
+      "retrieved_at": "2026-10-15T03:14:27.482469+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7e41dc5996e9435e83d657d49c39e110",
+      "sha256": "8779ee769ed3fb95947360b90b7a8dd328bfd521ab3d386f6efdfd1ee38f010a",
+      "bytes": 14244,
+      "retrieved_at": "2026-10-15T03:13:48.169387+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7fbd598c29724be69de424ea64323a1d",
+      "sha256": "a2338a4d0121e7ae45c8c8c09064415643b907180a31b790c56f856675f7fa5d",
+      "bytes": 14330,
+      "retrieved_at": "2026-10-15T03:13:54.778639+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/7fc146395af04508815ba70a737736b3",
+      "sha256": "dc93cf55255213acf6cb6c762c3e724f7c03aae0db11f8e00f8be0c2d937cf64",
+      "bytes": 14347,
+      "retrieved_at": "2026-10-15T03:14:12.409901+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/813c504aff8349e9bb73d983902a5ff2",
+      "sha256": "f35df2e221d0ddf5c008292eb9af42542f1fc5d5e06287c3eff9f1acab5cad9d",
+      "bytes": 14323,
+      "retrieved_at": "2026-10-15T03:13:52.705697+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/83bd7b53afbc49af819b6cf589e13aaa",
+      "sha256": "8e5334d60116ed52dfa1b7a3a6c464fcac317dcedb06b4a999d3e14273b78b11",
+      "bytes": 14400,
+      "retrieved_at": "2026-10-15T03:14:22.195028+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/88b0e57218fd48b0a462323ac33106ea",
+      "sha256": "90a60a4a6ee9cc6440e369a8911a383d48cdded589ab958659a71481cd3d729e",
+      "bytes": 14341,
+      "retrieved_at": "2026-10-15T03:14:24.611664+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/88eae0ba453c443f9a7478985d13e16f",
+      "sha256": "04e3dba37494c0ac0bb7b216d291abad0be7980ac015549657997e501c0a16f1",
+      "bytes": 14578,
+      "retrieved_at": "2026-10-15T03:14:03.714478+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/88ec620e25ce49ab9fb4a225d2cd53ec",
+      "sha256": "c0457fc093eabb60e2cb4ef24440a5696ddc1d1e51f9a3d12354103056aa22eb",
+      "bytes": 14513,
+      "retrieved_at": "2026-10-15T03:13:50.784995+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/899065b370a74cb69ca1c74b89ddcbe7",
+      "sha256": "0c5014cc5ed76d81aea6cfd56651ed5067859c0ff9152a4cd69c7c9a94e1d4fc",
+      "bytes": 14471,
+      "retrieved_at": "2026-10-15T03:14:00.107956+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/89e3e3c003b2428681ec816e88fc92a0",
+      "sha256": "08a3dddf4f4f833b40f6a2ab39ef99eed3235fc98e352c3327079ebf52e28e5f",
+      "bytes": 14266,
+      "retrieved_at": "2026-10-15T03:14:00.551373+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8aa0994153d74d71af7e89a66b196274",
+      "sha256": "3fdf8fff8283ee4aaf0dc4c2dc5b1428915c4fbd265b25a227ee498ea124dffc",
+      "bytes": 14472,
+      "retrieved_at": "2026-10-15T03:14:04.986363+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8c6478f3968a46c29e24fe8b0fe5efd4",
+      "sha256": "b27963a02dd81084b139658512ce6aebcd718d328db03ef653eed2bc3a947d07",
+      "bytes": 14761,
+      "retrieved_at": "2026-10-15T03:13:54.072878+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8cbcbf68286a4337b420135f410c1c5f",
+      "sha256": "e09749cb539ae586eb75b2c7e5079ec09a1113d14aea6f226e15133531f6181f",
+      "bytes": 14604,
+      "retrieved_at": "2026-10-15T03:13:48.708342+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8db0d02273224e07b4ec5380ee4a30b4",
+      "sha256": "9a062012b84c536bd4329c167e27fd8f2aa85c3aa19262372d1cd7eb9f858803",
+      "bytes": 14509,
+      "retrieved_at": "2026-10-15T03:14:16.436224+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8de91bfb90ae42cda1feadb9bcbad2e4",
+      "sha256": "f582db96424ae3ba5ccfb45e07d15b9f09d0500ede12dba6f83522096c587705",
+      "bytes": 14637,
+      "retrieved_at": "2026-10-15T03:14:19.439064+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/8e9ccd1c6613451fb9eeb89e70446a3e",
+      "sha256": "58ab603ccfe3dbbb4e7e660238009f2e9012ab24c32659a4d4cfce26cc4ee9ec",
+      "bytes": 14373,
+      "retrieved_at": "2026-10-15T03:14:22.290315+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/91313a70b4cc413ab876e9f6d1db3e24",
+      "sha256": "88403f8c11f80d297e1709f49f92b307fbec6b7ddfbddfe01dfa49164f769c38",
+      "bytes": 14445,
+      "retrieved_at": "2026-10-15T03:14:13.194308+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/928f4a16cc064c3aba187fda21525cf5",
+      "sha256": "25aee4b3c2ed608cba71542eb647d15234b98b9af3819ba601c285107f718f7a",
+      "bytes": 14729,
+      "retrieved_at": "2026-10-15T03:14:26.478366+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/93427c0bb3544aafaec8e687dd91f6ef",
+      "sha256": "156de6594a2df1702918e854c205fa3f10ad9989e820b720aa91690ec70988fa",
+      "bytes": 14567,
+      "retrieved_at": "2026-10-15T03:14:09.112933+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/9446c8d6c7e0420ba5ac095af7c5f138",
+      "sha256": "795e83fb2f1b5bb9d9a36bb69fb55593f8e7a2bda8084afb01d31d218436fbc9",
+      "bytes": 14408,
+      "retrieved_at": "2026-10-15T03:14:28.263298+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/986f5d9cdc904ca88f5a3743ebe0b828",
+      "sha256": "1d4a79c7b43b38fac58c03d4885a77b2bdfc2133ab630528a558478e0f87e7d0",
+      "bytes": 14543,
+      "retrieved_at": "2026-10-15T03:14:03.714993+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/9a5a306660874634be411cfd6a3ec48a",
+      "sha256": "d0ba3326a7bc6f5fb814e4c9035c51fe4c30e21e717d8c30cd7968111c3ff38b",
+      "bytes": 14320,
+      "retrieved_at": "2026-10-15T03:14:01.788219+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/9af03c61ace645358e07e2ee42fef236",
+      "sha256": "9ee8ca57563ca9ff53e8bee92c407091a6fb414e47084842df947d9e7ea4e0e7",
+      "bytes": 14510,
+      "retrieved_at": "2026-10-15T03:14:12.296305+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/9fe57c83cd3a416d9e9c4e196c2f0854",
+      "sha256": "cc6a94ef67eef1e7719bdb52e84ef1c8a7b3c61f23909f759a91cccc46a54ba0",
+      "bytes": 14360,
+      "retrieved_at": "2026-10-15T03:14:06.317122+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a2681b7751554a8bb300d171ce4ff080",
+      "sha256": "ba6079e8a0fc659f5788d72c6401be06b8b9aaf50841e174693e48e70eaebe07",
+      "bytes": 14490,
+      "retrieved_at": "2026-10-15T03:14:15.420418+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a69f1656deb6466cb6df4e362fc8245b",
+      "sha256": "755e3c4856f204eddb037dcc98de37fe982907d6001bae5f0777afaef23c9954",
+      "bytes": 14478,
+      "retrieved_at": "2026-10-15T03:14:25.231745+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a7f747b8f6b74bb2b14694b7aa745347",
+      "sha256": "16e9d16c70797980faf820e75a2af59ac58938da2c0926ee00468529c1b8e4e4",
+      "bytes": 14323,
+      "retrieved_at": "2026-10-15T03:13:47.660138+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a84c8acf9fe84aa7b155253fb709c74e",
+      "sha256": "402272df59a520fe5b37ea170ec3f2263c56588ec8e9edef044feb4290c1e1c2",
+      "bytes": 14558,
+      "retrieved_at": "2026-10-15T03:14:20.037965+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a8b80a0542634736aa823636d12dffb7",
+      "sha256": "1ab37235b51e58f66f1e4488f04e55cecdf83ef08eed9e2fe852918661379528",
+      "bytes": 14456,
+      "retrieved_at": "2026-10-15T03:14:00.649976+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/a91930d9f5974769a1327dd92834c03f",
+      "sha256": "4f78abbede242d90751cf930e9fc2c3a90a54d21557dcb951c1c18938f29ec7f",
+      "bytes": 14493,
+      "retrieved_at": "2026-10-15T03:14:05.745555+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/aa0719a2c7e0435ebe74dc064b77bea9",
+      "sha256": "b6b48b8d7457bc08cc73a74d96418f815cc689dacb83e449f2127155acf6acb9",
+      "bytes": 14500,
+      "retrieved_at": "2026-10-15T03:13:54.831425+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/aa0a6e2b5fd6460c8d141708407585de",
+      "sha256": "4c6d6d429919ee09fe7473db5c77a136ba35eb2c111947d734716ef456025308",
+      "bytes": 14445,
+      "retrieved_at": "2026-10-15T03:14:19.381574+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/aa0f6ae535a34da8ace5b293de49b631",
+      "sha256": "2a1d4a2c7df627af1d80c22978c2993b50850e71866aeb30b0d3073abb4d714d",
+      "bytes": 14543,
+      "retrieved_at": "2026-10-15T03:13:51.479827+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/aa29872b83dd4b2ca686ee33c28600c5",
+      "sha256": "55f2b1685c450ea136eee7524dff848e9e35bba32fc9e8ac69db0d071524b4c5",
+      "bytes": 14562,
+      "retrieved_at": "2026-10-15T03:13:46.330368+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/abc183e4db81475e9278f48ebe45269d",
+      "sha256": "9b58c1ef72bb81e25cc9f0e0bdd5a6725ddb9a360eb2f19c89bf50fcc5ed7ab0",
+      "bytes": 14386,
+      "retrieved_at": "2026-10-15T03:13:59.994769+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/abc4c7e49ce74c658aba6f98c2bcdaa9",
+      "sha256": "1b5b13e094ce52532c5553f56a0bcaa095bb0dc4d351cca0d83f719f3147b5ba",
+      "bytes": 14326,
+      "retrieved_at": "2026-10-15T03:13:49.493437+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ac00ec5ea748483bac45f3db634ff1e5",
+      "sha256": "58e7622a945cd5de23a30cccd3475cece29e29218a9823168bcbf0f4663ead3c",
+      "bytes": 14332,
+      "retrieved_at": "2026-10-15T03:13:50.911839+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ac266a1cea554468b81afacfa3bea809",
+      "sha256": "89efac972b9012ac8f5e70b09f479c28e1f5766720ab34dd4e89e495b087eb4e",
+      "bytes": 14355,
+      "retrieved_at": "2026-10-15T03:14:05.652077+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ad75f803360c46f797a352ef89098687",
+      "sha256": "b163daddd6dc4e34b4d2c596482491a8b78f0ce292d94eb8444c164be2aaf1de",
+      "bytes": 14453,
+      "retrieved_at": "2026-10-15T03:14:07.732802+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/adf2ce7e69ab43c39e7e5581dc34383e",
+      "sha256": "d54b9d110ba352d75e9cc2c34e4a4d47efd04c33107dbb93375b37fc2cdab90f",
+      "bytes": 14418,
+      "retrieved_at": "2026-10-15T03:14:15.144700+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ae5f123633db4d638163af14adff2d45",
+      "sha256": "bd659358a3a56f238ee71b150015c5e4cffa701420ddf16cd4fee3296aa110a1",
+      "bytes": 14449,
+      "retrieved_at": "2026-10-15T03:13:57.474655+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b00f9a22c2454372b941cc7a9363d1c3",
+      "sha256": "571d75b5a1c3219e2f69465c48f072cf0ecd1d3397582a1ca8aac49568720ede",
+      "bytes": 14470,
+      "retrieved_at": "2026-10-15T03:14:18.656821+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b010b17e1c9d447b82fe758812cedc8e",
+      "sha256": "7aef8b7f00ac681d9e2495d00d06b4d8e06ad77f9645f876172aa6e0e6fa5733",
+      "bytes": 14666,
+      "retrieved_at": "2026-10-15T03:14:05.134090+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b12c06a85e854893a276dd0994687d94",
+      "sha256": "30416d178eff6b738d2215c6462f65e1af9961106143bc2bc42dc9c2044303f7",
+      "bytes": 14436,
+      "retrieved_at": "2026-10-15T03:14:26.367710+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b2f30d270a784870a3f9c118cf3ec5a0",
+      "sha256": "bbc14479f2b0d2282104550f2618ebc300b09a027dad54c9f9a8a33cec1ff476",
+      "bytes": 14416,
+      "retrieved_at": "2026-10-15T03:14:26.953256+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b30eb0681bc24799a555f3b842fe5bf1",
+      "sha256": "8dae3b2e989690d035c88ff294683df691eb085a4c047e371404719b2af16c41",
+      "bytes": 14392,
+      "retrieved_at": "2026-10-15T03:14:10.391229+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b72ac0cacf164a8aabea75e81fcdc5d9",
+      "sha256": "f69f358d091025d3d5a03a7279df2a964497b80e28273af00fb6e21868e6639e",
+      "bytes": 14410,
+      "retrieved_at": "2026-10-15T03:13:57.971512+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b8d41c79c9b846848d972272ff3cb837",
+      "sha256": "9899411e9677651b91f086ddc04805b599c994fd893bfaeed5fc4dab7ae27616",
+      "bytes": 14558,
+      "retrieved_at": "2026-10-15T03:13:54.220693+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b8e29349528b4f6aa118d83db70a9b4e",
+      "sha256": "190b3caa7d64ce75437eff6238d8ba85aa15eb12d40ae9c8d2d366e298dd9d68",
+      "bytes": 14592,
+      "retrieved_at": "2026-10-15T03:14:24.132829+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/b9df6c7e048d476485df2f382cae6c51",
+      "sha256": "6a7ab11087bc21c6c7e1b97b3c63cb5c0358501d54983be39bd1126c2122637a",
+      "bytes": 14229,
+      "retrieved_at": "2026-10-15T03:13:42.283510+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/bbf249b4b90c461e94105325004d09d3",
+      "sha256": "ade5262f4e3718d44931ce14029e125a51750bee0a9f80f250df4dc01c07dbfe",
+      "bytes": 14442,
+      "retrieved_at": "2026-10-15T03:13:58.850812+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/bf98036c78ea49a5bef5378e087eb9f6",
+      "sha256": "b6269a368c41d96584e5fa6783ec968f890c88ac71acaefb0addc4c263a32ade",
+      "bytes": 14371,
+      "retrieved_at": "2026-10-15T03:13:57.305400+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c00024d1d742472e81fa467b71dfff33",
+      "sha256": "7229a7e2b6b72d5ff6de95f501401a50259e2db0625a949259d5c000aa5fb431",
+      "bytes": 14384,
+      "retrieved_at": "2026-10-15T03:14:09.542870+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c00a0ec8ba8043ebaf083a70cdbad13f",
+      "sha256": "97fd22bade76527d1af67fd6b746cf53ee36409b27b5487a5af194e73724123d",
+      "bytes": 14829,
+      "retrieved_at": "2026-10-15T03:14:14.804870+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c1b0dc494b724cf093a2a9044057901a",
+      "sha256": "c52fc42382ff9cf9168a2898256f660003bdfb886b865695d3b33917c9ff9eae",
+      "bytes": 14422,
+      "retrieved_at": "2026-10-15T03:13:58.707062+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c4eea9abe5194984817241a62111388a",
+      "sha256": "926a9810c560c47133e3b97fc297f1746342f3116d10110f404662da56d5eacc",
+      "bytes": 14319,
+      "retrieved_at": "2026-10-15T03:14:04.419375+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c571ebb850af4ddea2d31b67fb94fa27",
+      "sha256": "89761990ffb5c6320cf34c50dec042e587c8b96e25c88c64a3430dbf0cbb05dd",
+      "bytes": 14230,
+      "retrieved_at": "2026-10-15T03:14:08.131191+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c5ae2d85bf3f4a06a7df8e913ad33784",
+      "sha256": "890cc67015b8edfbaa853d535f18417979e923c74cfc7b7ed4413e420a62acf8",
+      "bytes": 14416,
+      "retrieved_at": "2026-10-15T03:14:12.495661+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c6a6a47ae3d7452cae24e29edb51afb1",
+      "sha256": "73b4634eeab41cf23faa8e86fb0111404102c4ae938221f396af99e0757f21d6",
+      "bytes": 14527,
+      "retrieved_at": "2026-10-15T03:14:26.464853+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c70c1be10c3e43eaa3baf7494b7928e0",
+      "sha256": "28275436d0b796cedc0ee7bf7c24435317cf86358a79c649628e98dca9de29f3",
+      "bytes": 14375,
+      "retrieved_at": "2026-10-15T03:14:23.199389+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c914ae0a69c74b6294a552e13e5bd857",
+      "sha256": "4067f66dabf8b6176176089131e375967c68a92dc87c979697804217d644ba70",
+      "bytes": 14332,
+      "retrieved_at": "2026-10-15T03:14:02.532263+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/c9cc456ce8a641db8cab624aa29af4e4",
+      "sha256": "6395723c19f0a17d9e29b33d6c2556d8ec5edaaa429cc2a42eb8916b0547033e",
+      "bytes": 14318,
+      "retrieved_at": "2026-10-15T03:14:07.679762+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ca55d88e230d4f7f9792e77d769b59fe",
+      "sha256": "0a9680db76dceb68d9e743cd7bfaec0206a34215fe20966e437a4b54b705b3c3",
+      "bytes": 14326,
+      "retrieved_at": "2026-10-15T03:14:20.519977+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ce33be93ec02442fad685df216b05a78",
+      "sha256": "8e7e4ec37e4d4bc9ed7e2c3b4f2a21013b7ad021ce7aa3bd6832d395b7d4f753",
+      "bytes": 14418,
+      "retrieved_at": "2026-10-15T03:14:17.414085+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/cfa05d9aba044dd588d1af173045f3d9",
+      "sha256": "f71b0d60713a37615255acc3383e96e7d8ccc79c599c23ccad7a3dfc76d3d082",
+      "bytes": 14605,
+      "retrieved_at": "2026-10-15T03:13:51.351847+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d0381f392014482e98e10f1eb1d516be",
+      "sha256": "391abe61fcfd699812c932c82ce5fce400635b32c50366b9b0b6559432424c54",
+      "bytes": 14408,
+      "retrieved_at": "2026-10-15T03:13:49.437747+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d03c8a688e8145de90c74e4658ce125d",
+      "sha256": "9eca1f2b625c234b156f69942d8aadd4c7deb93b93d153663f8654ca473aa85d",
+      "bytes": 14366,
+      "retrieved_at": "2026-10-15T03:14:14.496484+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d1cee3aa44bf4cf4a324ac631c7e4359",
+      "sha256": "ae098dbc4e8b01c2ca90ac10d1460349bf05a8d6b3b8aa3c54c9a33d5ac65c77",
+      "bytes": 14610,
+      "retrieved_at": "2026-10-15T03:13:50.146473+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d2f64187556b4d23ba68b2b681ff5c5a",
+      "sha256": "a90a0adfcd4bf912bf9f4569ca42355c36c834e2cf03e63a251483703c674a24",
+      "bytes": 14563,
+      "retrieved_at": "2026-10-15T03:14:11.333680+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d33028fdd42d475f9be8f902aa6eaa63",
+      "sha256": "429ae4a6b1c9138767961180fd4e63bf522e0596b9b6d65bb243fbaaf946321f",
+      "bytes": 14414,
+      "retrieved_at": "2026-10-15T03:14:23.860694+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d345906093724b0c93c602ddf38b205c",
+      "sha256": "71e9f0b1a28575a7dc740618ec6f9bec4a457a622f244256f4f80702b0563fb4",
+      "bytes": 14504,
+      "retrieved_at": "2026-10-15T03:14:15.910402+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d3b0457fa67a4ab08d684172e5939728",
+      "sha256": "fb24f0b5cdc093cfbab60e18bbbfcccd575ec6b28fc425898f029f114c41fcc9",
+      "bytes": 14339,
+      "retrieved_at": "2026-10-15T03:14:11.829039+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d4b4793f42b5459fa5c29c9b4615afdb",
+      "sha256": "31c25a889a057ea56f483901286b61eb4f8207b53970bdedb59aaea755e4c8eb",
+      "bytes": 14477,
+      "retrieved_at": "2026-10-15T03:14:15.677701+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d7299cec371a4946b487eada0cc4c4a1",
+      "sha256": "61896ec421769c13d1f89568ce6da4c6b0466416d86df08ecd465a50fa13409e",
+      "bytes": 14480,
+      "retrieved_at": "2026-10-15T03:14:17.187460+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d89198dd17be473bb614b7feb89ba81c",
+      "sha256": "298444b4a736c303656fd89e2244326ccde2fd465af21575dc85b8a905c7f4e7",
+      "bytes": 14425,
+      "retrieved_at": "2026-10-15T03:14:12.882773+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d8c4a6004e4d4fa9a30092d3cbed28fa",
+      "sha256": "13a890714ab79096c4f27161713eded71cb6a50c6a501499a3ab85186a7d4702",
+      "bytes": 14367,
+      "retrieved_at": "2026-10-15T03:13:55.975879+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d904430705f8496b92278fdd5704540c",
+      "sha256": "94721a5bb3a41786033225f0fd0c3276f9bd7e8a139e1ca9f25fc4a560db27b7",
+      "bytes": 14448,
+      "retrieved_at": "2026-10-15T03:14:01.892635+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/d9367655f70248d6a17ec28a0233c08b",
+      "sha256": "2811f5795423383894db604bc35da679068a3c86d36d2c2fe24905e9d9023fd2",
+      "bytes": 14586,
+      "retrieved_at": "2026-10-15T03:14:11.439455+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/db401085a0474480a69a96c924170e5c",
+      "sha256": "79d1f29e7500c3a10ec2af32a69ba35a7100bbfc6b96ebd7921de7decdfd69f5",
+      "bytes": 14260,
+      "retrieved_at": "2026-10-15T03:14:28.978797+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/dbe1fa6613d34c518d4060023e2b246d",
+      "sha256": "661be2e45fd89691d0a940e01bcd9ec099a2910a4dbeba3e298f9031bc667b07",
+      "bytes": 14209,
+      "retrieved_at": "2026-10-15T03:13:55.191011+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/dbf803540ec34ccab06bcbaf5f755641",
+      "sha256": "f0d9665268a67f190236245e8ecd37d5f90986965b884dd2f002408fb61ea863",
+      "bytes": 14398,
+      "retrieved_at": "2026-10-15T03:14:11.246654+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/deed749f453748709ab51f8d051e5a4b",
+      "sha256": "fa9c9138f8b4d7e17c91784a6d4dd5f22515ac30495f4f7adf6b0479a01584f4",
+      "bytes": 14809,
+      "retrieved_at": "2026-10-15T03:14:18.847495+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/df44fd6ba86c49c58060b6e4169b5759",
+      "sha256": "02f3bd8a05fd6d92bddc5d084ca0ef615975eecbb3f9e1a3c1a290093b1aa6af",
+      "bytes": 14257,
+      "retrieved_at": "2026-10-15T03:14:11.742030+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e029fc004efa4965a87d7af7620e306f",
+      "sha256": "4c9f46bee3b79fdb532fdd2caac51288693dd3b7b3661ccaa988024e576027bf",
+      "bytes": 14264,
+      "retrieved_at": "2026-10-15T03:14:07.490725+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e298f85b7eb449baa0a2bca7df57839e",
+      "sha256": "e6436ea8b503ef051c1241ac9ffeae5f99068ac39f0eebe7f1da140b6fbcf09f",
+      "bytes": 14590,
+      "retrieved_at": "2026-10-15T03:14:25.914632+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e433128a0cd949aeafcdfd2d5c46956f",
+      "sha256": "79630cb8706a641763497229f956158469ef725425c9024fc4b2d82ee77ffff9",
+      "bytes": 14285,
+      "retrieved_at": "2026-10-15T03:14:13.441310+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e7666cc9cebc4363bb72941d8f33863d",
+      "sha256": "4a4a54982daa4325ec19f8d06e505d73e6c18cb3166fff479a4ce1b54d3ffc36",
+      "bytes": 14566,
+      "retrieved_at": "2026-10-15T03:14:17.477648+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e7ad54bd4ee943dcb81ee3aa1ce0669c",
+      "sha256": "3897800250707c816111e6d12753829f3bf95517673433123d9072e8eb285194",
+      "bytes": 14731,
+      "retrieved_at": "2026-10-15T03:13:54.028605+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e7ecb1af761345c48a591d32c0a1a25d",
+      "sha256": "68e76d1b0195997491d4099ca3f918ba9d60712989b7bdefc2d5af010d99def9",
+      "bytes": 14640,
+      "retrieved_at": "2026-10-15T03:13:50.423098+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/e8087ad58da14172bf517d97227b4a99",
+      "sha256": "22a7f8c69cc1f93c554ff50ae306d2c750377bae5f975783c3db362a222cb999",
+      "bytes": 14303,
+      "retrieved_at": "2026-10-15T03:14:08.448233+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ea01eab37432494d9da5111ed3da9e8a",
+      "sha256": "2ceca7d46790f3469868424a08c744679d19473e08f1d398d94fa0ec30cedef2",
+      "bytes": 14861,
+      "retrieved_at": "2026-10-15T03:13:56.601572+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ebaa2b05c4154b41b15426cb176797bd",
+      "sha256": "65406a62e4603703512dd0c40d7739e2f1a166a5b82c524d5c196635119c2e9a",
+      "bytes": 14892,
+      "retrieved_at": "2026-10-15T03:13:59.396084+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ed29536f7b104566969d6058caa223f1",
+      "sha256": "8dba3d66ceaa89e6a44dc5110a7f3993f00ef748072755d068d27e8c39ffc5f4",
+      "bytes": 14630,
+      "retrieved_at": "2026-10-15T03:14:08.826446+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/eec799d3adb942e69d480d4c83df2273",
+      "sha256": "68c7c925409f5d923e853164df296993d86cd3a3f8341a4981e8ac2ab0706894",
+      "bytes": 14414,
+      "retrieved_at": "2026-10-15T03:13:48.205515+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/eee5156ac31044f4bab42b29b1e71a16",
+      "sha256": "048944645ae24787d3690a4aed4244a6b0ee87e8a94b95e7eea2dc9cc64f192d",
+      "bytes": 14293,
+      "retrieved_at": "2026-10-15T03:13:43.017272+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ef1e4509db704879ba237323d207c013",
+      "sha256": "7ce486460049be24afba732481d50c45f8610cc15d213575d37c7d8d2f7db028",
+      "bytes": 14428,
+      "retrieved_at": "2026-10-15T03:14:16.120626+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f08d5a2f01e949eb96992e4835293b80",
+      "sha256": "e2a7f4048f2d893fcdea2155d85137ff81d411b8766b6463a1c9a0467488c57b",
+      "bytes": 14528,
+      "retrieved_at": "2026-10-15T03:13:53.446230+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f0d87f161d294e2dac8089b4182a3762",
+      "sha256": "127c565eb4025d78c5b7182a6c0c4d1017b10cb2a6511f3e467be913d713e52d",
+      "bytes": 14196,
+      "retrieved_at": "2026-10-15T03:13:51.388063+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f1e981ba9ca74837a8b57d961d11623e",
+      "sha256": "969f3d28cb324f151ad80b9aa27b58ccfff1125cd5f38f4fbed943b163a1c180",
+      "bytes": 14384,
+      "retrieved_at": "2026-10-15T03:14:16.813269+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f22201459ade4588a8ce085d74932cb7",
+      "sha256": "3201937109cfb17f66037f61f54a748c0a5c4963912e69e0c696209aba6fc160",
+      "bytes": 14819,
+      "retrieved_at": "2026-10-15T03:14:10.209886+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f7d3cdb7ef454df1b485d97a01b0c10c",
+      "sha256": "0edc2d46d60626e8fbd781b2899071117e4f169f5fde84e1735b6145e5bd2841",
+      "bytes": 14504,
+      "retrieved_at": "2026-10-15T03:13:43.586374+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f83cd8b311d24d6db3f401cd6752fdee",
+      "sha256": "faaa041661b1e1670a41dd7f3d6bae07d455ab755f0716309d0a14547481204c",
+      "bytes": 14443,
+      "retrieved_at": "2026-10-15T03:14:19.738690+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f84ec0faa22443cc807738c18e3d0465",
+      "sha256": "e268fdb9d264ec475510bfc398930ba50123a10ecf178fa67001f6a29a4f22d4",
+      "bytes": 14418,
+      "retrieved_at": "2026-10-15T03:14:00.665433+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/f94000c18e0946a0a0aaac240a72452f",
+      "sha256": "7b8babac9e3a0300b3b957183740dd6b118f2ea19be3a9801b77353b213442c5",
+      "bytes": 14557,
+      "retrieved_at": "2026-10-15T03:14:21.634904+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/fbe9941341464159a63ad4c5b185f205",
+      "sha256": "8f4d26587a71e414a1c9a2d91bd54392866a9018d98524b11387ad8565026f2a",
+      "bytes": 14496,
+      "retrieved_at": "2026-10-15T03:13:47.018522+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/fd6ca6956f4340d0b0cbe0bf63793e27",
+      "sha256": "7b6e89358f6c40d16fa59291c83fb0a5ce0070c0199004305ff53c776122b048",
+      "bytes": 14534,
+      "retrieved_at": "2026-10-15T03:14:14.549898+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/fdf7923cbcf3473b9a943e6699eb46ee",
+      "sha256": "848a0f38d20a99703a3d658e24faa6cc02c556c1d8ae95245b9a1e396c262436",
+      "bytes": 14318,
+      "retrieved_at": "2026-10-15T03:14:27.685577+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/fe751024d4e1429a85e15a0401140539",
+      "sha256": "b402c654ff9d635cdd2d5ea1d0af997c5bfc59efd776fce35844ef9c0fc00977",
+      "bytes": 14459,
+      "retrieved_at": "2026-10-15T03:14:21.132593+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/fe826652746d49e1acee068146d692c7",
+      "sha256": "84d30fc7bf6f48ffa4bdea38ac73b6eebc0169eb6af2d00d64ea891ff47bcdb1",
+      "bytes": 14513,
+      "retrieved_at": "2026-10-15T03:14:19.972776+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/card/ffbb603cd287499cacb1fb396e6ad121",
+      "sha256": "6d0294157d5c5de6a6848822664b6721784b8fffd1618daafc8367a474a2d304",
+      "bytes": 14219,
+      "retrieved_at": "2026-10-15T03:13:47.863680+00:00"
+    },
+    {
+      "url": "https://pro.berserk-nxt.ru/edition/ab008",
+      "sha256": "d42c57e56032541c1bd60e07219986c9a42cfe851badc8e33f0b69689ab7badd",
+      "bytes": 549965,
+      "retrieved_at": "2026-10-15T03:13:39.341271+00:00"
+    },
+    {
+      "url": "https://www.laststicker.ru/cards/berserk_serdce_roya/",
+      "sha256": "fe5f5af3a027e5ffdf61b94bdd9fcd4a382d7af9da0e8a7841115eca1e907e68",
+      "bytes": 94316,
+      "retrieved_at": "2026-10-15T03:13:40.970225+00:00"
+    }
+  ],
+  "artwork": {
+    "80001": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/1.jpg",
+      "sha256": "43df71038dab10823dee9fffd9b82d74e23e46fb39d55a9d93e710d9f7fcd12a",
+      "bytes": 135287,
+      "retrieved_at": "2026-10-15T03:13:41.903990+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80002": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/2.jpg",
+      "sha256": "57caa53a8d218aed3d05005524844870f37d9f2a3c355339681f55d3e5373eba",
+      "bytes": 169157,
+      "retrieved_at": "2026-10-15T03:13:41.934873+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80003": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/3.jpg",
+      "sha256": "2b78762abb4a27c790d28b07bc64bd0b83cfdad65677e3bdb032d020d2e7a6ce",
+      "bytes": 162460,
+      "retrieved_at": "2026-10-15T03:13:42.059807+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80004": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/4.jpg",
+      "sha256": "9cf2df6abd3b02bfbfa04f87c9be3f66769d48d35b5f0b2dac72f9c9e46c34eb",
+      "bytes": 143691,
+      "retrieved_at": "2026-10-15T03:13:42.683763+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80005": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/5.jpg",
+      "sha256": "1e8d17ed49913b713104351a6c35327a19fcec543b29d30752b65396bc8e6de9",
+      "bytes": 174925,
+      "retrieved_at": "2026-10-15T03:13:42.685389+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80006": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/6.jpg",
+      "sha256": "58a299598a0035aaca760dcd8b102b6778c315c304883eb93b307f8f770c762b",
+      "bytes": 168012,
+      "retrieved_at": "2026-10-15T03:13:42.772727+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80007": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/7.jpg",
+      "sha256": "058ad66bbab059e8955bebe483f2679bf47a12fd79665cf2b6088c021c424a5a",
+      "bytes": 148599,
+      "retrieved_at": "2026-10-15T03:13:43.277507+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80008": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/8.jpg",
+      "sha256": "35c66f4d25a2ebb99e261a540736b89a015a2225dbeef91866c6624f55b78e64",
+      "bytes": 152410,
+      "retrieved_at": "2026-10-15T03:13:43.280606+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80009": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/9.jpg",
+      "sha256": "787716b89eba0502becf541fbb27c3349d4a9b45d44f46f704441fd512867388",
+      "bytes": 157133,
+      "retrieved_at": "2026-10-15T03:13:43.404950+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80010": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/10.jpg",
+      "sha256": "23e228911e5fc8bae406228a7d5b35f8cce57717c3f01beeecaa3be074f8eeed",
+      "bytes": 159129,
+      "retrieved_at": "2026-10-15T03:13:43.877194+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80011": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/11.jpg",
+      "sha256": "f9f5ec0195c2755c09d80eb9b235a681a2368e51950fa6181e3b7cd5fb48d551",
+      "bytes": 168680,
+      "retrieved_at": "2026-10-15T03:13:43.894610+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80012": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/12.jpg",
+      "sha256": "c6afbfe595ed8f705df23fceb22612df1240839de392edb4c9d49445095e5131",
+      "bytes": 185623,
+      "retrieved_at": "2026-10-15T03:13:44.075782+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80013": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/13.jpg",
+      "sha256": "0fe35039c96c30a2dc17fe4b1bb655545f57f7265ccab9f2fc8fb46e0a667728",
+      "bytes": 174192,
+      "retrieved_at": "2026-10-15T03:13:44.538614+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80014": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/14.jpg",
+      "sha256": "a4fe9a113d1bea377812c1b6430d854ed5dac853861e835fe6b58f35df5d9514",
+      "bytes": 148730,
+      "retrieved_at": "2026-10-15T03:13:44.564763+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80015": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/15.jpg",
+      "sha256": "b93ddfc795c1857b1dc3d1db1112f983643eeb0e0cbe50add65ff65c70b75639",
+      "bytes": 160667,
+      "retrieved_at": "2026-10-15T03:13:46.661956+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80016": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/16.jpg",
+      "sha256": "ad59e2d4fbb32b7fd57845c561fa3b18dca659163d79fed59d6cb42d7c852d3c",
+      "bytes": 159674,
+      "retrieved_at": "2026-10-15T03:13:46.232306+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80017": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/17.jpg",
+      "sha256": "8984f082ef2ec44a2dcb5fcf15f9dac00fc95a6917c93b28fb4977cbbf12b2fa",
+      "bytes": 159569,
+      "retrieved_at": "2026-10-15T03:13:46.089894+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80018": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/18.jpg",
+      "sha256": "b6dc371414fb3e0d17dd5048ba9924005b5eb4839abb52c81f2e5d9af66ef5e0",
+      "bytes": 155073,
+      "retrieved_at": "2026-10-15T03:13:46.662108+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80019": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/19.jpg",
+      "sha256": "4d032036a81e789bdd82e1303b7cebf1076c45718b88b280a374201edbb429dc",
+      "bytes": 167238,
+      "retrieved_at": "2026-10-15T03:13:46.924188+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80020": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/20.jpg",
+      "sha256": "56b25dc9e24bbbecc5118e6cb036a5d560c3e3d3ef478eb37a8488f2e932ae66",
+      "bytes": 156569,
+      "retrieved_at": "2026-10-15T03:13:47.282253+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80021": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/21.jpg",
+      "sha256": "54e0f5dec9167c8373398c101e9b7c7de3cd1962331bc6c3a31850a3f604cd05",
+      "bytes": 162924,
+      "retrieved_at": "2026-10-15T03:13:47.332705+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80022": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/22.jpg",
+      "sha256": "991599d19bf080d893252f14e6a0f272a30bfd73090b49d1a64874f17d86fd38",
+      "bytes": 161441,
+      "retrieved_at": "2026-10-15T03:13:47.619548+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80023": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/23.jpg",
+      "sha256": "bb40618464a743b3bfd6029ec95829bf869da74a9effce665f7936032544b0c1",
+      "bytes": 157769,
+      "retrieved_at": "2026-10-15T03:13:47.901562+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80024": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/24.jpg",
+      "sha256": "aeaa7b800cfe1c670c967e7a7745a3a534550e2518d496fd6541510b713efced",
+      "bytes": 152415,
+      "retrieved_at": "2026-10-15T03:13:47.943587+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80025": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/25.jpg",
+      "sha256": "45935c2072ae7c0be6bead1c8aec1e9e57cef20de1ada98fba853a6121b0af2c",
+      "bytes": 157331,
+      "retrieved_at": "2026-10-15T03:13:48.098554+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80026": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/26.jpg",
+      "sha256": "8c70faf70a9103f1c1c6c910c9234f8a53378a1f6dc78f004a68a9cd51970936",
+      "bytes": 149459,
+      "retrieved_at": "2026-10-15T03:13:48.454430+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80027": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/27.jpg",
+      "sha256": "78438a071711333ec2aa5af93f3c7c17f4125c2ee35f51130afb7e6488a4fe2b",
+      "bytes": 153582,
+      "retrieved_at": "2026-10-15T03:13:48.493970+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80028": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/28.jpg",
+      "sha256": "3e35f11c1f71cee3419cfd808ed1f1aee8f0454a58728c094497173a6762614e",
+      "bytes": 167102,
+      "retrieved_at": "2026-10-15T03:13:48.591627+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80029": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/29.jpg",
+      "sha256": "014ef7c905ad5240c133c49926904b8fa7ea3cd5cbb608bb4d831423101bae87",
+      "bytes": 158576,
+      "retrieved_at": "2026-10-15T03:13:48.979245+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80030": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/30.jpg",
+      "sha256": "15bae0bd9c9098f0de9b14711cdca67dc2887141ec059ded53cb1ec6bc0f7e88",
+      "bytes": 153412,
+      "retrieved_at": "2026-10-15T03:13:49.137774+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80031": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/31.jpg",
+      "sha256": "2e06fcfbfafa7d53a3cedfa8a348f635928b125691f55096ab7209989424bf0c",
+      "bytes": 168814,
+      "retrieved_at": "2026-10-15T03:13:49.231779+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80032": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/32.jpg",
+      "sha256": "ece58c447e533986ea4f50f732ea778088ba33bc6898eed1319c7c1ee0294ffd",
+      "bytes": 151986,
+      "retrieved_at": "2026-10-15T03:13:49.493505+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80033": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/33.jpg",
+      "sha256": "82042f8755d099f3b08829dd2bebb2e2dd386a0597fa1a0bab52d3d4f70d501b",
+      "bytes": 159848,
+      "retrieved_at": "2026-10-15T03:13:49.853481+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80034": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/34.jpg",
+      "sha256": "199fddb338163ad57e9e122573253441d3cfe262af84014c1cb6223664f04dd4",
+      "bytes": 152663,
+      "retrieved_at": "2026-10-15T03:13:49.885778+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80035": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/35.jpg",
+      "sha256": "f0ba936c5f75c81830f29d1e6b808a49f74fcd6ade174de9044afbbc24e2d46d",
+      "bytes": 190352,
+      "retrieved_at": "2026-10-15T03:13:50.146729+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80036": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/36.jpg",
+      "sha256": "e1369fede400401bd51de17de89dda59b7cb543345603e27047210da9f687cbf",
+      "bytes": 159743,
+      "retrieved_at": "2026-10-15T03:13:50.484180+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80037": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/37.jpg",
+      "sha256": "b3ba7c9e4a28fc23b597d37240cfdc8161c82b239c34700c7717629e516f1325",
+      "bytes": 171216,
+      "retrieved_at": "2026-10-15T03:13:50.491537+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80038": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/38.jpg",
+      "sha256": "9a064e87ce3940eb74c2a138b4f0203783efd21c0ae1e286417f6efdba8c175f",
+      "bytes": 168319,
+      "retrieved_at": "2026-10-15T03:13:50.691322+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80039": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/39.jpg",
+      "sha256": "2504c78a5b7d3d50bf0f7cbe0278bc6f067d50870eea1256e5e605daf736d011",
+      "bytes": 160982,
+      "retrieved_at": "2026-10-15T03:13:51.092972+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80040": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/40.jpg",
+      "sha256": "96ecb1b6f423fb4ff018d71a8c00fb68a004a15f0b1534b618fa1d592bb243a8",
+      "bytes": 147670,
+      "retrieved_at": "2026-10-15T03:13:51.045136+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80041": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/41.jpg",
+      "sha256": "e968019a943c790526aa6d24cd2c06f0fa72240b1e844b572cd71f70fd182b4f",
+      "bytes": 158823,
+      "retrieved_at": "2026-10-15T03:13:51.206267+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80042": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/42.jpg",
+      "sha256": "266f825a0900a84bb817454164ed91d9a8711227bcf13c9b80e65a189265df5b",
+      "bytes": 152758,
+      "retrieved_at": "2026-10-15T03:13:51.745678+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80043": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/43.jpg",
+      "sha256": "a3cf6bdfd03a113dd14057a9d7366593ffa62ad113900ca935b9349495cb8c05",
+      "bytes": 166902,
+      "retrieved_at": "2026-10-15T03:13:51.790497+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80044": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/44.jpg",
+      "sha256": "118a99eed4ef7cf90ed693ae80f1edecfe31716b83716ca43c0c62262d8663ff",
+      "bytes": 166754,
+      "retrieved_at": "2026-10-15T03:13:51.889725+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80045": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/45.jpg",
+      "sha256": "d215e845d4fa2cff3dd14e126fe8bbb0e1b8a241566e70b00ab60fb37dad0aea",
+      "bytes": 170359,
+      "retrieved_at": "2026-10-15T03:13:52.261569+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80046": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/46.jpg",
+      "sha256": "fdb86b8008cfbf5afcb8f2f2fd868538f6ed8e169bbada8acecb6627aa5d0519",
+      "bytes": 162495,
+      "retrieved_at": "2026-10-15T03:13:52.400246+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80047": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/47.jpg",
+      "sha256": "0fa10873bf7dfb7e0cc01b8a1fddbd14491276a2c9a06765142518326bae8c40",
+      "bytes": 157794,
+      "retrieved_at": "2026-10-15T03:13:52.422277+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80048": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/48.jpg",
+      "sha256": "27847349f27a932c5818409bf2d3f6095f1348e565725c098e486773416738c9",
+      "bytes": 159205,
+      "retrieved_at": "2026-10-15T03:13:52.742444+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80049": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/49.jpg",
+      "sha256": "87f16191896a6ff497e9dec57ec199f9be14c4f1a628dad1ef07439e6a1d4067",
+      "bytes": 172766,
+      "retrieved_at": "2026-10-15T03:13:53.253402+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80050": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/50.jpg",
+      "sha256": "38099d6f1e741940ab5c339efba812ebfe33f0ed4b79f84e684b1d489a1f6e13",
+      "bytes": 150786,
+      "retrieved_at": "2026-10-15T03:13:53.215302+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80051": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/51.jpg",
+      "sha256": "bd9dd0e2d5366c4d3f7b1a05a871bfaee905bb8e141c178b7a30573c73aad360",
+      "bytes": 177220,
+      "retrieved_at": "2026-10-15T03:13:53.461794+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80052": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/52.jpg",
+      "sha256": "757b26a154e398badc729bb2c15db510b63df9af88b11bd7b696f25acf9267eb",
+      "bytes": 152687,
+      "retrieved_at": "2026-10-15T03:13:53.730723+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80053": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/53.jpg",
+      "sha256": "5c2741d5ce90f57028c7347c1d563437f1a569b75ea152b0edeb7cc5785f8229",
+      "bytes": 170151,
+      "retrieved_at": "2026-10-15T03:13:53.765626+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80054": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/54.jpg",
+      "sha256": "8fb1aeb3250a0393035df40f8fa2a63b16e7a6043e18a9eaea940e1ac53305ca",
+      "bytes": 155559,
+      "retrieved_at": "2026-10-15T03:13:53.936797+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80055": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/55.jpg",
+      "sha256": "a526ae6085dee5718d76e0766531e4d9a9921e29d602d1b949c8b841f3539c0e",
+      "bytes": 184139,
+      "retrieved_at": "2026-10-15T03:13:54.363267+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80056": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/56.jpg",
+      "sha256": "121d544a06d344c76879857c589084ff8c848586d6dd57bdf87cc53b7fb4d0e1",
+      "bytes": 176928,
+      "retrieved_at": "2026-10-15T03:13:54.444754+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80057": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/57.jpg",
+      "sha256": "87eaad8f88098bf3b3fd87d38ad545081914c44738bc69f491ae620ede0169c1",
+      "bytes": 172702,
+      "retrieved_at": "2026-10-15T03:13:54.520804+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80058": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/58.jpg",
+      "sha256": "303c75e6f3358cfa62a528fa78ff9c60dd3a312d8bc0a00d522b52da7c75b298",
+      "bytes": 149944,
+      "retrieved_at": "2026-10-15T03:13:54.965845+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80059": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/59.jpg",
+      "sha256": "55e42fa8356bbad07bf4991578446155966b4ed394d5c4157dc7a27ce9e98370",
+      "bytes": 166490,
+      "retrieved_at": "2026-10-15T03:13:55.055639+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80060": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/60.jpg",
+      "sha256": "38665934b42a3d4c74cc7eaedfcbbe165a5aee6727e45f2a95d117fa767931af",
+      "bytes": 165383,
+      "retrieved_at": "2026-10-15T03:13:55.089188+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80061": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/61.jpg",
+      "sha256": "ff600908863e91d8198f05a0d82df9410f991dba87e54b702e4bdabb39e00e9d",
+      "bytes": 157173,
+      "retrieved_at": "2026-10-15T03:13:55.433853+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80062": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/62.jpg",
+      "sha256": "98d10a465c5007acc0cbc1858633e0a2c0f00d0b0eeaf9b55044ce39d76d1592",
+      "bytes": 150805,
+      "retrieved_at": "2026-10-15T03:13:55.650884+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80063": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/63.jpg",
+      "sha256": "47db4c374d1036bdb86bdde2b153f928ef87ec4a9735effac3bb0f33c53e19ba",
+      "bytes": 151848,
+      "retrieved_at": "2026-10-15T03:13:55.683649+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80064": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/64.jpg",
+      "sha256": "1fe37f9019e315ec6b813ce5a32858bad9779ea0c69eb2bae89c5b36ebd90656",
+      "bytes": 154141,
+      "retrieved_at": "2026-10-15T03:13:56.019156+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80065": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/65.jpg",
+      "sha256": "3f01b5cabebf60758e007098a9f029000aee120f469e753a85d9d9d2f9ffd963",
+      "bytes": 163320,
+      "retrieved_at": "2026-10-15T03:13:56.195317+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80066": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/66.jpg",
+      "sha256": "c69a48ee0588fbe29a58139b767f818db6b24e8d1033977c6bdd90392c206811",
+      "bytes": 167406,
+      "retrieved_at": "2026-10-15T03:13:56.295295+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80067": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/67.jpg",
+      "sha256": "bf5f64d251111ca3fcb7dad97655a378dc308b1ad0623d746acfe8b5e2440a6c",
+      "bytes": 154853,
+      "retrieved_at": "2026-10-15T03:13:56.522231+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80068": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/68.jpg",
+      "sha256": "b0bc5b8d60346054b419baf05d3b5380ac92768594b371ca1b0107f60653ee7e",
+      "bytes": 165004,
+      "retrieved_at": "2026-10-15T03:13:56.945816+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80069": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/69.jpg",
+      "sha256": "e76dfb2bbec4d03df071d0edf2a466f17f8fdfdedb892481a58421763b986c44",
+      "bytes": 164175,
+      "retrieved_at": "2026-10-15T03:13:56.883850+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80070": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/70.jpg",
+      "sha256": "0a96619e7fdd3108f30ba3d1a855a002edfc1c539153170ca413effcd5b2f68c",
+      "bytes": 165340,
+      "retrieved_at": "2026-10-15T03:13:57.212881+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80071": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/71.jpg",
+      "sha256": "73f44885e7cbd3c7372d5331ecc667bea679189e374f7c8dd38436c727e12554",
+      "bytes": 166212,
+      "retrieved_at": "2026-10-15T03:13:57.661860+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80072": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/72.jpg",
+      "sha256": "c2a3a6ba04f6d4ee289c031ddb4ec75d81a9259cb9e33bc86ea2a241694c94c8",
+      "bytes": 171556,
+      "retrieved_at": "2026-10-15T03:13:57.661776+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80073": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/73.jpg",
+      "sha256": "98183437919201f491ddb6cc743d87e2c1668150cfd45642dea1568a2885d143",
+      "bytes": 166784,
+      "retrieved_at": "2026-10-15T03:13:57.793658+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80074": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/74.jpg",
+      "sha256": "2134a67c10b4260d0a89101ad5a3cefb288142328697e55a429837f33dd129a2",
+      "bytes": 178030,
+      "retrieved_at": "2026-10-15T03:13:58.288451+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80075": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/75.jpg",
+      "sha256": "3e53fd075eae420f25b4125cf5900308f26624ca775d3c700b1ec8d04eaa76e0",
+      "bytes": 182328,
+      "retrieved_at": "2026-10-15T03:13:58.288612+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80076": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/76.jpg",
+      "sha256": "916be20f63ae42a5628c30d8ed40f2bf865c05fbcf0adcd1ef703ed046a4c326",
+      "bytes": 133497,
+      "retrieved_at": "2026-10-15T03:13:58.341121+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80077": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/77.jpg",
+      "sha256": "97833c6dcc54e9d3935ccec86b478b5a354fb09462fac43178a57888337b81e5",
+      "bytes": 166371,
+      "retrieved_at": "2026-10-15T03:13:58.967851+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80078": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/78.jpg",
+      "sha256": "32c98bc59ecf932d992c045c0c9d644fb189d0d35c5ccab5ab5ea0985bf549bc",
+      "bytes": 171706,
+      "retrieved_at": "2026-10-15T03:13:58.981098+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80079": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/79.jpg",
+      "sha256": "68c77ba9c7cf9295c648bb8d2e52d69f43d6c7b49827bbc428d8cd585243da47",
+      "bytes": 173373,
+      "retrieved_at": "2026-10-15T03:13:59.136996+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80080": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/80.jpg",
+      "sha256": "f7d40557b2a7a017a2414bf3d594fb424d02d28ce4bc7a25eca6984bad3b871c",
+      "bytes": 155832,
+      "retrieved_at": "2026-10-15T03:13:59.724683+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80081": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/81.jpg",
+      "sha256": "afa3c7d3a259665c678e867a109f98adeb925b84e1319d5e62971f23df2d8dfd",
+      "bytes": 187520,
+      "retrieved_at": "2026-10-15T03:13:59.620295+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80082": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/82.jpg",
+      "sha256": "fb59a8f8c04ab25042971d616f91acae3edde8cd9891c2825bdc217dea8a01f8",
+      "bytes": 150876,
+      "retrieved_at": "2026-10-15T03:13:59.764307+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80083": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/83.jpg",
+      "sha256": "4b7ed8743b3256a8d51bbc2b41421dea4ba8302702f20cd60c72da954762bc67",
+      "bytes": 167393,
+      "retrieved_at": "2026-10-15T03:14:00.286515+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80084": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/84.jpg",
+      "sha256": "03963878e6d804055b8d723b928f0def087990ff84ddce1d70fb874acaf1594c",
+      "bytes": 162943,
+      "retrieved_at": "2026-10-15T03:14:00.344968+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80085": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/85.jpg",
+      "sha256": "23b0b812806f218d35d9380bd10888a95a12ed7a3ed7993922b9be3585a820a8",
+      "bytes": 164529,
+      "retrieved_at": "2026-10-15T03:14:00.397090+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80086": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/86.jpg",
+      "sha256": "a26eaf95dba65be53f0be0dbf40221d1e3d6d24453ac5d20cd84e2dc6d9e0c4a",
+      "bytes": 149409,
+      "retrieved_at": "2026-10-15T03:14:01.014113+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80087": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/87.jpg",
+      "sha256": "50473b7d3a12c92ac5b6b5eddd7189bea4887aa7a7e13374c84712d756a87694",
+      "bytes": 171451,
+      "retrieved_at": "2026-10-15T03:14:02.020261+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80088": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/88.jpg",
+      "sha256": "bb2a98c009f2fa69b611a165df9eafda316c164b4ef7639299865cf778769b20",
+      "bytes": 167680,
+      "retrieved_at": "2026-10-15T03:14:01.039342+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80089": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/89.jpg",
+      "sha256": "b30111a1ea1314406e9b8e98e739482f675258ccbf892f8c49df9f22778025da",
+      "bytes": 171321,
+      "retrieved_at": "2026-10-15T03:14:02.172662+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80090": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/90.jpg",
+      "sha256": "2302651440f0c4728cb94ad8eb95abf52f4b3c2f38f54e2c27c040d34177ed07",
+      "bytes": 159948,
+      "retrieved_at": "2026-10-15T03:14:01.553356+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80091": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/91.jpg",
+      "sha256": "97ea1e3f7bcb283433981563ba2486c9b824a52b550ddf3a3abfbdf84671b3f0",
+      "bytes": 167564,
+      "retrieved_at": "2026-10-15T03:14:02.207186+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80092": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/92.jpg",
+      "sha256": "a434acc5b69444f6a08e6862d96a6eef3c624eb0e5e5611ac1bfeb717fc26783",
+      "bytes": 185210,
+      "retrieved_at": "2026-10-15T03:14:03.363245+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80093": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/93.jpg",
+      "sha256": "3317fcc2a68f8a9bffeac847eff364f27d23dcb6cebfc75087685453f6b31a46",
+      "bytes": 149097,
+      "retrieved_at": "2026-10-15T03:14:03.203468+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80094": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/94.jpg",
+      "sha256": "cd8f94159aa924651f9d40c6aae713c7229d9aff34eff064c97ddf2c21822be7",
+      "bytes": 157548,
+      "retrieved_at": "2026-10-15T03:14:03.363032+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80095": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/95.jpg",
+      "sha256": "ea62b056de812466604032a2c674feea6961411fa5195fe02526656b69fefd94",
+      "bytes": 163602,
+      "retrieved_at": "2026-10-15T03:14:03.726264+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80096": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/96.jpg",
+      "sha256": "f150ddf968f7a48191f4be1781e62b8ff17548b2b18c96744bdedee986172dc0",
+      "bytes": 153591,
+      "retrieved_at": "2026-10-15T03:14:04.011335+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80097": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/97.jpg",
+      "sha256": "52c85473b21239d0da250ea8dfbff21256cc52bee5398fc22a7b315bcc6e4e61",
+      "bytes": 168330,
+      "retrieved_at": "2026-10-15T03:14:04.078062+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80098": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/98.jpg",
+      "sha256": "3ba9e6765f6dd9dd935a88440bd1339827fffda25cecdfd56d3bd034d7cf15dd",
+      "bytes": 162578,
+      "retrieved_at": "2026-10-15T03:14:04.374631+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80099": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/99.jpg",
+      "sha256": "11d86a5749b96ff50078a63bc0bb937ce6c012fcd2d5ce5956ea3e32eaa54319",
+      "bytes": 172207,
+      "retrieved_at": "2026-10-15T03:14:04.639023+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80100": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/100.jpg",
+      "sha256": "e884b007ada65e74951a853b460c8bcbf13bd14f99342776e7af6973263b438a",
+      "bytes": 150639,
+      "retrieved_at": "2026-10-15T03:14:04.712222+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80101": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/101.jpg",
+      "sha256": "fc6c91ee7660777527c2db82bcb5eb8a268aacc51917a943414839d82cd52985",
+      "bytes": 168893,
+      "retrieved_at": "2026-10-15T03:14:04.904334+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80102": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/102.jpg",
+      "sha256": "2bf756c51a3cb224c87c18a561bee63cde0176fb9a8c0887197a73b50f731b7a",
+      "bytes": 175312,
+      "retrieved_at": "2026-10-15T03:14:05.348856+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80103": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/103.jpg",
+      "sha256": "f3de2971a719eda621275202576dfd62fe920cb68115dd23c926b64ad84995ca",
+      "bytes": 177963,
+      "retrieved_at": "2026-10-15T03:14:05.266469+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80104": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/104.jpg",
+      "sha256": "caa29ca92d88889cc15da4a5be852da33d66919316dceaabeeeda334cfae2622",
+      "bytes": 159810,
+      "retrieved_at": "2026-10-15T03:14:05.404237+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80105": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/105.jpg",
+      "sha256": "fdc1ff8f3b1cf407007af287af9154a3cc52c2dc9d7939de5de06d08346cb413",
+      "bytes": 161582,
+      "retrieved_at": "2026-10-15T03:14:05.907498+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80106": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/106.jpg",
+      "sha256": "00c0a0ad24c3774c6a2a1f09ade1cae7823d51154d67e82bae9f87b6911d6d10",
+      "bytes": 155178,
+      "retrieved_at": "2026-10-15T03:14:05.966221+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80107": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/107.jpg",
+      "sha256": "8f21ccc1f9e199baf8b5767cd1d89e7c7bf6dcdb430a5b99e8257d5009962dd2",
+      "bytes": 170931,
+      "retrieved_at": "2026-10-15T03:14:06.012625+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80108": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/108.jpg",
+      "sha256": "e451224676b5f83b0b0ce2ee5ad663c9462f2ae1cb0774ad12a4a998e0b8eb7c",
+      "bytes": 164770,
+      "retrieved_at": "2026-10-15T03:14:06.591461+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80109": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/109.jpg",
+      "sha256": "00beccd52b05e19087824df49956083e30ca21fc3efa54a17e9acc4153747706",
+      "bytes": 166370,
+      "retrieved_at": "2026-10-15T03:14:06.771319+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80110": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/110.jpg",
+      "sha256": "db4f2e507e9edeaa2566c93cea158487d6634c74cacaf8305150b91865f27f4f",
+      "bytes": 146594,
+      "retrieved_at": "2026-10-15T03:14:06.771224+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80111": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/111.jpg",
+      "sha256": "f1dce6530db76ae2fa01d3fd2f1e67515de8cf22e77cf2576e1983c78de6acd0",
+      "bytes": 166706,
+      "retrieved_at": "2026-10-15T03:14:07.108960+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80112": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/112.jpg",
+      "sha256": "31ae565e6fd8aed2bd548760003dfdbd00e681c20a41d58916d053ff7f5952a5",
+      "bytes": 171055,
+      "retrieved_at": "2026-10-15T03:14:07.497021+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80113": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/113.jpg",
+      "sha256": "83a5f83be8a6b2d1a8d0ca75f658695e71aae21c96773ac51a9b2e5886335664",
+      "bytes": 174406,
+      "retrieved_at": "2026-10-15T03:14:07.425183+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80114": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/114.jpg",
+      "sha256": "529cbb56b45443c957966a45b7c4874653f621f3a7ed1c7601cfedf71c5aa278",
+      "bytes": 171324,
+      "retrieved_at": "2026-10-15T03:14:07.740053+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80115": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/115.jpg",
+      "sha256": "1c485a8facd9cb2f48027ee8d4173103afbc1b6a224a51f37ad963b53696685f",
+      "bytes": 143517,
+      "retrieved_at": "2026-10-15T03:14:08.138671+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80116": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/116.jpg",
+      "sha256": "e558319e13928a10976251d12d51885ea9e392d7c29aeec96391954d0888d450",
+      "bytes": 161618,
+      "retrieved_at": "2026-10-15T03:14:08.176334+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80117": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/117.jpg",
+      "sha256": "f8515230b86183a8c4d019b9430d5a922d4ff9f1c9d6fbdb06f46c68da8dcff1",
+      "bytes": 175369,
+      "retrieved_at": "2026-10-15T03:14:08.516870+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80118": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/118.jpg",
+      "sha256": "a5808f3ce029f1b3b874df8284775aa021b5ffa2475c4d1b7f8390f0361ba030",
+      "bytes": 161931,
+      "retrieved_at": "2026-10-15T03:14:08.713197+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80119": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/119.jpg",
+      "sha256": "6407563db0fb107155acd3ef036065491ba128e8f1ebb507cdecf64868efd0a3",
+      "bytes": 171414,
+      "retrieved_at": "2026-10-15T03:14:08.780621+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80120": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/120.jpg",
+      "sha256": "2552716d221fb42b388c898405850377f67a90f6a60e564f469a5d7d13f2b16b",
+      "bytes": 141870,
+      "retrieved_at": "2026-10-15T03:14:09.071535+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80121": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/121.jpg",
+      "sha256": "989a4589665176005670b485e0a293cc841d5751a4c3c38c9734d064fd4d6e04",
+      "bytes": 160049,
+      "retrieved_at": "2026-10-15T03:14:09.441687+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80122": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/122.jpg",
+      "sha256": "56ce8eabc24e2c622514e9c9e122737a99acce497b19bcbf01e3c77a3f9b461a",
+      "bytes": 175015,
+      "retrieved_at": "2026-10-15T03:14:09.859039+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80123": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/123.jpg",
+      "sha256": "d96895e7aa2f5e775b08ee598abdf8afa22cd1a085dbae02f47f5dd034ae5f00",
+      "bytes": 153799,
+      "retrieved_at": "2026-10-15T03:14:09.859124+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80124": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/124.jpg",
+      "sha256": "de9fff96feec815617a3cdf34f21964a6d1feee4bc495097869d784ceb943731",
+      "bytes": 162951,
+      "retrieved_at": "2026-10-15T03:14:10.094257+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80125": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/125.jpg",
+      "sha256": "840b05a6c22d17e12724cb1ebfa0e16532b631939213586dd1f46eb7e136eead",
+      "bytes": 161310,
+      "retrieved_at": "2026-10-15T03:14:10.432763+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80126": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/126.jpg",
+      "sha256": "c188752183b0b661ecf4e44575bd5fc380bd99b7c462e87e3fe15d9b8f4323f3",
+      "bytes": 175342,
+      "retrieved_at": "2026-10-15T03:14:10.525718+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80127": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/127.jpg",
+      "sha256": "bb1c8714ea615e004f12842c4b6a1b65f3e7951f54fa18949d437bc6a73b0c06",
+      "bytes": 161135,
+      "retrieved_at": "2026-10-15T03:14:10.653078+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80128": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/128.jpg",
+      "sha256": "b0770f81e4474e6cec62babc3df0e081846ad624fd6aabc2a459113316e3575c",
+      "bytes": 182546,
+      "retrieved_at": "2026-10-15T03:14:10.994287+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80129": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/129.jpg",
+      "sha256": "56e10e887ee0c42abaee714ed8a0d6482548273ab712a71f53cf7176f7ce6608",
+      "bytes": 161998,
+      "retrieved_at": "2026-10-15T03:14:11.101986+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80130": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/130.jpg",
+      "sha256": "0f7909481580554cc87c5883e552b63c40c9007323710af5a8b6122de16122a2",
+      "bytes": 155797,
+      "retrieved_at": "2026-10-15T03:14:11.217224+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80131": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/131.jpg",
+      "sha256": "d94096472ac096b8275dd1903e3b081c45bd8c57bafaf21fe9488f1ff62b12cf",
+      "bytes": 155176,
+      "retrieved_at": "2026-10-15T03:14:11.500749+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80132": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/132.jpg",
+      "sha256": "f4a477bc5130f314dfa2428d196a9f829b86196d7635df4474ef5f45acbf95ae",
+      "bytes": 183530,
+      "retrieved_at": "2026-10-15T03:14:11.593693+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80133": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/133.jpg",
+      "sha256": "d80d608a0fb29202e625710c7c12bb11469b3f004e34d2fb8132c44d7a111e0c",
+      "bytes": 151427,
+      "retrieved_at": "2026-10-15T03:14:11.730002+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80134": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/134.jpg",
+      "sha256": "65a3570e334f6011d3200cd2e59182fb7419645646b29b6f8ddcb3ccc3320f56",
+      "bytes": 161594,
+      "retrieved_at": "2026-10-15T03:14:12.029538+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80135": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/135.jpg",
+      "sha256": "4300c9ab08334e154e2355dfdb20955e655831520523879cc6f400a0f96e629f",
+      "bytes": 155853,
+      "retrieved_at": "2026-10-15T03:14:12.109003+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80136": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/136.jpg",
+      "sha256": "26f55ce86d7c344b90a7b75a5c12c804906e61e677ba7fac49149c36a9cf101b",
+      "bytes": 175744,
+      "retrieved_at": "2026-10-15T03:14:12.207240+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80137": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/137.jpg",
+      "sha256": "eb31a69df9325f1e9c75dc8cfa781eae542f48570f24503b4dd6a1075e5d7a50",
+      "bytes": 181936,
+      "retrieved_at": "2026-10-15T03:14:12.523039+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80138": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/138.jpg",
+      "sha256": "f6e577212c6923c07a411c5d571912cc43c3336782696c461ed2d5baabc5c20f",
+      "bytes": 166791,
+      "retrieved_at": "2026-10-15T03:14:12.686124+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80139": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/139.jpg",
+      "sha256": "a19d276f70a6dcc246f9fa205630c1a7a08a231ac3113a7b2e01350242c23d93",
+      "bytes": 169854,
+      "retrieved_at": "2026-10-15T03:14:12.903704+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80140": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/140.jpg",
+      "sha256": "3dda5961166c74c208802b2da29201406ca6c532929d936464da99a78c05bb7c",
+      "bytes": 168415,
+      "retrieved_at": "2026-10-15T03:14:13.194563+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80141": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/141.jpg",
+      "sha256": "0dcf4803ee08f42c431e039e870edaaa73979cdfe2967b2aec634da0db95adca",
+      "bytes": 154266,
+      "retrieved_at": "2026-10-15T03:14:13.594491+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80142": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/142.jpg",
+      "sha256": "ceea4304e82e440d7e637f37e3b322cc29989f1174bda7e46e8bde9131e5998b",
+      "bytes": 162610,
+      "retrieved_at": "2026-10-15T03:14:13.439196+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80143": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/143.jpg",
+      "sha256": "2a9d50e11ec12edf3a47a722facfddd910092f043f5e8d94014c6ca10f4bd43d",
+      "bytes": 157887,
+      "retrieved_at": "2026-10-15T03:14:14.342809+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80144": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/144.jpg",
+      "sha256": "138e663f961325cd1b7cc1d19593908d5d050452e88a3486f268a770ed6b1e50",
+      "bytes": 161920,
+      "retrieved_at": "2026-10-15T03:14:14.065196+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80145": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/145.jpg",
+      "sha256": "83ccae5d1e565b18e3ac5ab395bbf2d7c917d6b087d66514596461d60954e1af",
+      "bytes": 179555,
+      "retrieved_at": "2026-10-15T03:14:14.210308+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80146": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/146.jpg",
+      "sha256": "2bcc3830cf2829d6ec67ea0067ef148b93e8f48e5b9feb7453e49df2ad898eac",
+      "bytes": 163333,
+      "retrieved_at": "2026-10-15T03:14:15.144779+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80147": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/147.jpg",
+      "sha256": "048e86e9d7ce517b06d1c72294704d7f2d4dab0b45c5a538c2adf063da70f051",
+      "bytes": 174180,
+      "retrieved_at": "2026-10-15T03:14:14.830045+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80148": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/148.jpg",
+      "sha256": "99c57a97971782bec8ebba69826999c50fd8b162a3a43b28eb6af31b13048cba",
+      "bytes": 177680,
+      "retrieved_at": "2026-10-15T03:14:14.876809+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80149": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/149.jpg",
+      "sha256": "bcb29611ecae350a696d0bc2e0df0907e058f94ab2203b8e1c825e53533efba8",
+      "bytes": 162524,
+      "retrieved_at": "2026-10-15T03:14:15.383982+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80150": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/150.jpg",
+      "sha256": "1ca228490810b6e29322f524a73942e24a11cb9320b985b8a2ef92a17cf31ec8",
+      "bytes": 161576,
+      "retrieved_at": "2026-10-15T03:14:15.418259+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80151": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/151.jpg",
+      "sha256": "ddc8708b4160ec1cc155efe4dbb43c6364fcdb943aee4a8aba7ef53dafcc0ab6",
+      "bytes": 178931,
+      "retrieved_at": "2026-10-15T03:14:15.669260+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80152": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/152.jpg",
+      "sha256": "6079c5ed6c12de463ed24029abad8ac30339388c2153f99fe0e2da525075a336",
+      "bytes": 157952,
+      "retrieved_at": "2026-10-15T03:14:15.878153+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80153": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/153.jpg",
+      "sha256": "4283ef8628e2fa96a69d37ed93e072119fc55cccd52c691c07bb568b3e445734",
+      "bytes": 195485,
+      "retrieved_at": "2026-10-15T03:14:15.948474+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80154": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/154.jpg",
+      "sha256": "3831b9d2f13961b3ee13beaafa9d32f853d282ef5221f3a6bbc7c60f971e7dd0",
+      "bytes": 169300,
+      "retrieved_at": "2026-10-15T03:14:16.189036+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80155": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/155.jpg",
+      "sha256": "a14f07a5137a0525fc54bc8de70f8a69f403ae6c792c84c12d5e987abb247603",
+      "bytes": 161565,
+      "retrieved_at": "2026-10-15T03:14:16.395364+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80156": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/156.jpg",
+      "sha256": "aa90dbe7ddfa69d29ea09a4bebf4886f55c5fd5d91cd8adf1b7400b4f26fae15",
+      "bytes": 182785,
+      "retrieved_at": "2026-10-15T03:14:16.561839+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80157": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/157.jpg",
+      "sha256": "041143dbb8df3a1e9979bc03b3d015491c3d333a0a6951ca1888785461de7375",
+      "bytes": 162094,
+      "retrieved_at": "2026-10-15T03:14:16.671253+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80158": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/158.jpg",
+      "sha256": "d98074506e6f4bb72b5d788fd9123a94bcd09f63927e4d97ff1521dc457eb9ea",
+      "bytes": 163587,
+      "retrieved_at": "2026-10-15T03:14:16.909236+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80159": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/159.jpg",
+      "sha256": "49f638a70eac6bd05cbf45ae7672982b11d7c0702cb1250b4fa14388daa41fa5",
+      "bytes": 134700,
+      "retrieved_at": "2026-10-15T03:14:17.149286+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80160": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/160.jpg",
+      "sha256": "fa9c72694788accb87f31df5d185d49ecade473e546a4729a66be707f354e50a",
+      "bytes": 170110,
+      "retrieved_at": "2026-10-15T03:14:17.259517+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80161": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/161.jpg",
+      "sha256": "f249a836219735494c6a5dcc0f8abcd8503dc3b8e0813aab4372ebc3337fd1c1",
+      "bytes": 165075,
+      "retrieved_at": "2026-10-15T03:14:17.492360+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80162": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/162.jpg",
+      "sha256": "f621e31e8b999c433ddef732560985d3afa3c22db5bd5c455a2dd231e4a18691",
+      "bytes": 159896,
+      "retrieved_at": "2026-10-15T03:14:17.676991+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80163": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/163.jpg",
+      "sha256": "59b5603d17c6af8e33a4c8b330db1195ec9b63ddcbd4bbe923f8d60443ec8259",
+      "bytes": 152810,
+      "retrieved_at": "2026-10-15T03:14:17.728039+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80164": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/164.jpg",
+      "sha256": "c731cc02b2e1d4f536b086525940cdf64ccd0b354fe68e6060e75fa86653b25d",
+      "bytes": 162579,
+      "retrieved_at": "2026-10-15T03:14:18.106754+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80165": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/165.jpg",
+      "sha256": "567622677c00a73c1d8d36e66ce2b86c2afcc88833f119e399549942d45ff90b",
+      "bytes": 167495,
+      "retrieved_at": "2026-10-15T03:14:18.382624+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80166": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/166.jpg",
+      "sha256": "bdaff01bc4f7089ae804793d87b97a1366f3b5141939726ad7d9016f8d35982a",
+      "bytes": 175309,
+      "retrieved_at": "2026-10-15T03:14:18.590658+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80167": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/167.jpg",
+      "sha256": "8a9726ca282344a3591b87cf19fa32c607004ba5b11de7cfeeed28de9ac1da4a",
+      "bytes": 159072,
+      "retrieved_at": "2026-10-15T03:14:18.663845+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80168": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/168.jpg",
+      "sha256": "b1b64b81bca1d23c98c766dfac5c6b0f139e7e8d0f0521e32f90584951f88ee4",
+      "bytes": 166752,
+      "retrieved_at": "2026-10-15T03:14:18.924571+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80169": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/169.jpg",
+      "sha256": "6245bcaef84c7071663459ba3d3060f125a68231aca402864176b8aa06e161f3",
+      "bytes": 172536,
+      "retrieved_at": "2026-10-15T03:14:19.083431+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80170": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/170.jpg",
+      "sha256": "4d95c2a6460a9feb0a5df68ed3cf752944b3d4654b019db52729aeceeb4cb916",
+      "bytes": 147431,
+      "retrieved_at": "2026-10-15T03:14:19.158036+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80171": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/171.jpg",
+      "sha256": "c4f326484b28be72d125a8f751a37126193d7571b86b820281fdf37dd0b8440b",
+      "bytes": 146703,
+      "retrieved_at": "2026-10-15T03:14:19.438763+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80172": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/172.jpg",
+      "sha256": "472c7783e72e45a892afdf780577a460f4be34df292668802fa98019f4c3c1f0",
+      "bytes": 185227,
+      "retrieved_at": "2026-10-15T03:14:19.637195+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80173": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/173.jpg",
+      "sha256": "f0263e6c96c817ac64eba4de53bf3fdd80c5a55bef4359b6bde3b431ea555cca",
+      "bytes": 155804,
+      "retrieved_at": "2026-10-15T03:14:19.738899+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80174": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/174.jpg",
+      "sha256": "770846c73e151d96929874a73629e9bcf7e8ac6e7e4965bddccb89369314b35f",
+      "bytes": 151355,
+      "retrieved_at": "2026-10-15T03:14:20.043168+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80175": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/175.jpg",
+      "sha256": "44c878d857929f99df7d750a19f176fc01b9204e5e771a549e3d311cce5653c2",
+      "bytes": 171920,
+      "retrieved_at": "2026-10-15T03:14:20.244506+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80176": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/176.jpg",
+      "sha256": "c1f78a83b32de49b794f4e1f4c4b613902ffc060ba19c7fe5176a041088ecb6f",
+      "bytes": 156424,
+      "retrieved_at": "2026-10-15T03:14:20.289635+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80177": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/177.jpg",
+      "sha256": "b05603f4270362c1e535a3f764bef163502b17fcf5842454eb4e441460ac5d8d",
+      "bytes": 166419,
+      "retrieved_at": "2026-10-15T03:14:20.595002+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80178": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/178.jpg",
+      "sha256": "22f87a0328fa8634efa0e6ba3e788dea88c8ec9c928d7d86f0d000af72b22b85",
+      "bytes": 185128,
+      "retrieved_at": "2026-10-15T03:14:20.813106+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80179": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/179.jpg",
+      "sha256": "1f9b2fa84810b955136fa77b18e6d84b2e99aa983d07960deec5f3fdbaad07ff",
+      "bytes": 167311,
+      "retrieved_at": "2026-10-15T03:14:20.899263+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80180": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/180.jpg",
+      "sha256": "4b0d210b502a89693dc6a41a3ea89cc1a73926c853a1b8a262c7cb4f53bbdc0f",
+      "bytes": 171056,
+      "retrieved_at": "2026-10-15T03:14:21.132798+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80181": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/181.jpg",
+      "sha256": "99234a6c9a8e350f248417295e529ab0affe2d519143c31d43f689cc1f872a4d",
+      "bytes": 177236,
+      "retrieved_at": "2026-10-15T03:14:21.309322+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80182": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/182.jpg",
+      "sha256": "b802a313fa1ce9cf4c81ca00eaf571ec4ab70cc51abb54350f30d6334cb8cc5f",
+      "bytes": 176606,
+      "retrieved_at": "2026-10-15T03:14:21.785102+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80183": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/183.jpg",
+      "sha256": "73b31cdc71d8feb18147e80e388afb3793986bdd7f581878e1ac318d703570d6",
+      "bytes": 181929,
+      "retrieved_at": "2026-10-15T03:14:22.019120+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80184": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/184.jpg",
+      "sha256": "6fd69e53473a7cbc2b864002c4cece5f1d0bd2a1bee768b0a07abe78c6640a23",
+      "bytes": 168981,
+      "retrieved_at": "2026-10-15T03:14:21.886694+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80185": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/185.jpg",
+      "sha256": "9cb15e3cc5e33d1f5925ca27152d2c067d27db1ea4ff3832f4805e40020555cf",
+      "bytes": 183264,
+      "retrieved_at": "2026-10-15T03:14:22.342298+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80186": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/186.jpg",
+      "sha256": "6c63708319bc403fb0cfb21298dcac8b137050dafe99ce7d5285a6b8da14fc96",
+      "bytes": 171115,
+      "retrieved_at": "2026-10-15T03:14:23.501600+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80187": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/187.jpg",
+      "sha256": "066d897fb775f0c7d3440d9aa60de3ff798df889a7b762cca6cf8202ee9b8e8b",
+      "bytes": 140354,
+      "retrieved_at": "2026-10-15T03:14:22.576490+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80188": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/188.jpg",
+      "sha256": "5e089f3f3ccf4d62068615994d6b5f1f7c2b12210be0dd4324fc05c917b9444b",
+      "bytes": 152149,
+      "retrieved_at": "2026-10-15T03:14:22.915667+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80189": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/189.jpg",
+      "sha256": "7df3e203310a198e2f782bcbe56b4516cb9dff7eb2929fbb6dbcf4579556728d",
+      "bytes": 164737,
+      "retrieved_at": "2026-10-15T03:14:23.153386+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80190": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/190.jpg",
+      "sha256": "c0bcb15879462eee50f94515aab349c0dc36996c8e7df912714f17ad33ec04dd",
+      "bytes": 165549,
+      "retrieved_at": "2026-10-15T03:14:23.572741+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80191": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/191.jpg",
+      "sha256": "17a05d82ad0c7e9fcefd79fdf59576d32c43a1d83a13a6c7f53aa8443e0e1ae4",
+      "bytes": 157020,
+      "retrieved_at": "2026-10-15T03:14:23.837212+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80192": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/192.jpg",
+      "sha256": "d1478e5fed8bbe90bc6a34733db4d9b3a6a168049e0e2a3a70a0a5d176626454",
+      "bytes": 163954,
+      "retrieved_at": "2026-10-15T03:14:24.144165+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80193": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/193.jpg",
+      "sha256": "ac4c041b42d5f48e59146155a843139195cedc3811bb7849d0ab91b8b6fa09f0",
+      "bytes": 148062,
+      "retrieved_at": "2026-10-15T03:14:24.209597+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80194": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/194.jpg",
+      "sha256": "71ec395d3cf536f95a2a56c815ecd8c5d542474ce96dbd42715fea51e9407bc1",
+      "bytes": 152126,
+      "retrieved_at": "2026-10-15T03:14:24.611693+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80195": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/195.jpg",
+      "sha256": "412c8d883a3ff699c673251d9241db3446355c4f181748f350151e15b77ddc90",
+      "bytes": 141561,
+      "retrieved_at": "2026-10-15T03:14:24.913188+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80196": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/196.jpg",
+      "sha256": "e08df8fd42d752c8db1e37ae308b8b409f8f41853d6b66380ce3354284f18574",
+      "bytes": 155869,
+      "retrieved_at": "2026-10-15T03:14:24.909194+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80197": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/197.jpg",
+      "sha256": "183cee7f3d61886d87dcc487a8496d8746d8e7f919f771c944affec9f112faff",
+      "bytes": 153144,
+      "retrieved_at": "2026-10-15T03:14:25.177943+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80198": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/198.jpg",
+      "sha256": "5153c66a5ecb322698decf37c0d5035ba3535b7a882ebae191edd88e6af0659d",
+      "bytes": 156578,
+      "retrieved_at": "2026-10-15T03:14:25.485018+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80199": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/199.jpg",
+      "sha256": "9e58c6ab80cb14c55faa8728d662152404046031261c4e9d66baa940162e90d4",
+      "bytes": 164865,
+      "retrieved_at": "2026-10-15T03:14:25.484858+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80200": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/200.jpg",
+      "sha256": "26baf333eaf39f57a1ba820e67b2291fe93593f65ef577d997a0d70422151f54",
+      "bytes": 169869,
+      "retrieved_at": "2026-10-15T03:14:25.683548+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80201": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/201.jpg",
+      "sha256": "3b1b763649d2b0374ea44320e89e2d4e670c0ee2ac05313e637b7045f6452b12",
+      "bytes": 156407,
+      "retrieved_at": "2026-10-15T03:14:26.122405+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80202": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/202.jpg",
+      "sha256": "82ed436d6260d3f39c8fa7ae4e6bd257b65fc323fa2045da2788377718f398b9",
+      "bytes": 148460,
+      "retrieved_at": "2026-10-15T03:14:26.084432+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80203": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/203.jpg",
+      "sha256": "17b15ed648ed77fa2d6091289a011853b03fd42a1cf52df1778d77fadc7e092f",
+      "bytes": 147228,
+      "retrieved_at": "2026-10-15T03:14:26.175023+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80204": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/204.jpg",
+      "sha256": "f197380281bdf0fdd16c89a6c72db11582394dc0ea4a675a174b90fd496e9f0e",
+      "bytes": 157271,
+      "retrieved_at": "2026-10-15T03:14:26.654794+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80205": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/205.jpg",
+      "sha256": "a70fbf42de973564b3e413c76a612b7e86721868571faf46c4ce5a3feeca76c4",
+      "bytes": 149228,
+      "retrieved_at": "2026-10-15T03:14:26.746828+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80206": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/206.jpg",
+      "sha256": "1c0bcd05b59d59b5329bf807afab0e00035f7fe154874d2a309d048e0c5150b4",
+      "bytes": 148201,
+      "retrieved_at": "2026-10-15T03:14:26.782731+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80207": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/207.jpg",
+      "sha256": "5add836b3bf1a1df280eacc9adb174e3606d4de6c09f3a06f78580fece07d0da",
+      "bytes": 181415,
+      "retrieved_at": "2026-10-15T03:14:27.250032+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80208": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/208.jpg",
+      "sha256": "0da55d18e96f68c12441ff007dbc246189e4777341e7126bbb4f8db93cd659ca",
+      "bytes": 164924,
+      "retrieved_at": "2026-10-15T03:14:27.447125+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80209": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/209.jpg",
+      "sha256": "09ad229726faac49ec5444321164aa7e30bcc96355ebc85f53ad3fbb13cbfe95",
+      "bytes": 134930,
+      "retrieved_at": "2026-10-15T03:14:27.482830+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80210": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/210.jpg",
+      "sha256": "6c281e7e9f851217511bb8d385ac99f1cedeb2a47c546c2224899f39d54a93eb",
+      "bytes": 154052,
+      "retrieved_at": "2026-10-15T03:14:27.738311+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80211": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/211.jpg",
+      "sha256": "3fc1ad24297b24bcca8a29c8e9a47fb65c1d82e6d2482adaef705a229157c3d4",
+      "bytes": 165180,
+      "retrieved_at": "2026-10-15T03:14:27.987926+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80212": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/212.jpg",
+      "sha256": "0746e2cd044eb822587e3173400405f7fd72e528ae147037f811796fdd58a86b",
+      "bytes": 165680,
+      "retrieved_at": "2026-10-15T03:14:28.063892+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80213": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/213.jpg",
+      "sha256": "0cb76534ba7b9bd227f148ee20246dacb9c8e107b4ebc771dc880fe5932d5d3a",
+      "bytes": 156157,
+      "retrieved_at": "2026-10-15T03:14:28.296743+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80214": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/214.jpg",
+      "sha256": "c0ce76115cd8ec9922234d1439bc0ca9064514758e351573083c40738550b774",
+      "bytes": 159343,
+      "retrieved_at": "2026-10-15T03:14:28.555109+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80215": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/215.jpg",
+      "sha256": "2bb8c6b1ba8b2ab4f35a98b13821aefe945a407cbb0b136cdf4d8ddbba4c079a",
+      "bytes": 143216,
+      "retrieved_at": "2026-10-15T03:14:28.626044+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80216": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/216.jpg",
+      "sha256": "2292414e06156f53db316994952ef60f8c385ebef360e21b21e842f00c8147f0",
+      "bytes": 150129,
+      "retrieved_at": "2026-10-15T03:14:28.882905+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80217": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/217.jpg",
+      "sha256": "99a31146c1f18e734d7af0a5253f63661ee397cfbaad34032efec7cb33617e1d",
+      "bytes": 174881,
+      "retrieved_at": "2026-10-15T03:14:29.266477+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80218": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/218.jpg",
+      "sha256": "97cd721789267ef356370f711b58743b5e3222eec8e6611690213fcc6d9c1626",
+      "bytes": 166396,
+      "retrieved_at": "2026-10-15T03:14:29.344611+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80219": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/219.jpg",
+      "sha256": "406b8cc8f45351c8303f099c5599637b55764fb18a48a6f6ab0543fb0b65300a",
+      "bytes": 169262,
+      "retrieved_at": "2026-10-15T03:14:29.466457+00:00",
+      "width": 496,
+      "height": 700
+    },
+    "80220": {
+      "url": "https://pro.berserk-nxt.ru/images/cards/8/220.jpg",
+      "sha256": "4974c5b6ee05441b6ee553b89fa6b11585b650aa4f32cfaf996ea5fa9947788b",
+      "bytes": 154267,
+      "retrieved_at": "2026-10-15T03:14:29.748081+00:00",
+      "width": 496,
+      "height": 700
+    }
+  },
+  "warnings": [
+    {
+      "id": "80078",
+      "kind": "name_difference",
+      "listing": "Алирра",
+      "checklist": "Аллира",
+      "review": "Listing spelling verified against downloaded card scan"
+    },
+    {
+      "id": "80078f",
+      "kind": "name_difference",
+      "listing": "Алирра",
+      "checklist": "Аллира",
+      "review": "Listing spelling verified against downloaded card scan"
+    },
+    {
+      "id": "80120",
+      "kind": "name_difference",
+      "listing": "Менгир Каррефура",
+      "checklist": "Менгир Карефура",
+      "review": "Listing spelling verified against downloaded card scan"
+    }
+  ],
+  "missing_edition_artwork": [
+    "80003altn",
+    "80003pf",
+    "80005pf",
+    "80006alt",
+    "80011n",
+    "80013altn",
+    "80017altn",
+    "80018n",
+    "80021fpf",
+    "80028pf",
+    "80031pf",
+    "80039pf",
+    "80042n",
+    "80048alt",
+    "80051pf",
+    "80057fpf",
+    "80060pf",
+    "80064alt",
+    "80066n",
+    "80067pf",
+    "80068altn",
+    "80087pf",
+    "80097n",
+    "80099pf",
+    "80104pf",
+    "80105n",
+    "80106fpf",
+    "80107alt",
+    "80109altn",
+    "80110pf",
+    "80124pf",
+    "80131altn",
+    "80134n",
+    "80135pf",
+    "80136pf",
+    "80138alt",
+    "80140n",
+    "80141pf",
+    "80145alt",
+    "80148fpf",
+    "80151alt",
+    "80154altn",
+    "80160pf",
+    "80164altn",
+    "80164pf",
+    "80166alt",
+    "80169fpf",
+    "80173n",
+    "80177pf",
+    "80181pf",
+    "80184n",
+    "80190n",
+    "80191pf",
+    "80194pf",
+    "80196alt",
+    "80197altn",
+    "80199altn",
+    "80200altn",
+    "80203pf",
+    "80206pf",
+    "80218n"
+  ],
+  "notes": [
+    "Base artwork is explicitly used as a placeholder for editions without scans.",
+    "No draft ratings, printing dates, bans, or TTS atlas URLs have been inferred.",
+    "Publisher page is a reference only; collection uses the two listed public databases."
+  ]
+}

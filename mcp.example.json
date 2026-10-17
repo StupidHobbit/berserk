@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "berserk": {
+      "command": "/absolute/path/to/berserk/target/release/berserk-mcp",
+      "env": {
+        "BERSERK_APP_ORIGIN": "http://127.0.0.1:8080"
+      }
+    }
+  }
+}

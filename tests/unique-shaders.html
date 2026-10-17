@@ -1,0 +1,79 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Unique card shader proof sheet</title>
+<style>
+body{background:#141a1b;color:#ecebe4;font:15px system-ui;margin:24px}h1{margin:0}p{color:#bbc2bc}
+main{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+article{background:#202a2b;border:1px solid #3d4948;padding:12px;border-radius:14px}
+h2{font-size:16px;margin:0 0 12px;min-height:20px}figure{margin:0;min-width:0}figcaption{margin:6px 0;color:#c7ccc3;font-size:12px}
+.editions{display:grid;grid-template-columns:1fr 1fr;gap:9px}img{width:100%;display:block;border-radius:8.5% / 6%}.error{border-color:#f88;color:#fbb}
+</style>
+<h1>Карты · индивидуальные анимации</h1>
+<p>Обычная и фойловая версии при одинаковом времени. Движение привязано к иллюстрации; текст сохранён.</p>
+<div id="status">Rendering…</div><main></main>
+<script>
+// The isolated Firefox runner injects local scan data and shader sources here.
+/* TEST_DATA */
+const result=[],captures=[];
+window.shaderResults=result;window.shaderCaptures=captures;window.shaderDone=false;
+const source=document.createElement('canvas');
+const gl=source.getContext('webgl',{alpha:false,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:true});
+function program(fragment){
+ const p=gl.createProgram();
+ for(const [type,code] of [[gl.VERTEX_SHADER,vertex],[gl.FRAGMENT_SHADER,fragment]]){
+  const s=gl.createShader(type);gl.shaderSource(s,code);gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));
+  gl.attachShader(p,s);gl.deleteShader(s);
+ }
+ gl.bindAttribLocation(p,0,'a_position');gl.linkProgram(p);
+ if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(p));
+ return p;
+}
+function pixels(){const a=new Uint8Array(source.width*source.height*4);gl.readPixels(0,0,source.width,source.height,gl.RGBA,gl.UNSIGNED_BYTE,a);return a;}
+function diff(a,b){let art=0,print=0;for(let i=0;i<a.length;i++){if(a[i]!==b[i]){const y=1-(Math.floor(i/4/source.width)+.5)/source.height;if(y<.13||y>.57)print++;else art++;}}return {art,print};}
+// Count clearly changing compact pixels, not just rounding noise from a faint glow.
+function visibleMotion(a,b){let count=0;for(let i=0;i<a.length;i+=4){if(Math.max(Math.abs(a[i]-b[i]),Math.abs(a[i+1]-b[i+1]),Math.abs(a[i+2]-b[i+2]))>=12)count++;}return count;}
+(async()=>{
+ try{
+  if(!gl)throw Error('WebGL unavailable');
+  const original=program('precision highp float; uniform sampler2D u_card; varying vec2 v_uv; void main(){gl_FragColor=texture2D(u_card,v_uv);}');
+  const vertices=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vertices);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);gl.activeTexture(gl.TEXTURE0);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  for(const card of cards){
+   const article=document.createElement('article'),title=document.createElement('h2');title.textContent=card.name;article.append(title);document.querySelector('main').append(article);
+   let p=null,tex=null;
+   try{
+    const img=new Image();img.src=card.image;await img.decode();source.width=496;source.height=Math.round(496*img.naturalHeight/img.naturalWidth);gl.viewport(0,0,source.width,source.height);
+    tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+    for(const [key,val] of [[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE],[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR]])gl.texParameteri(gl.TEXTURE_2D,key,val);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+    gl.useProgram(original);gl.uniform1i(gl.getUniformLocation(original,'u_card'),0);gl.drawArrays(gl.TRIANGLES,0,6);const scan=pixels();
+    p=program(card.fragment);gl.useProgram(p);
+    const u={};for(const name of ['u_card','u_resolution','u_time','u_seed','u_is_foil']){u[name]=gl.getUniformLocation(p,name);if(u[name]===null)throw Error('Inactive uniform '+name);}
+    gl.uniform1i(u.u_card,0);gl.uniform2f(u.u_resolution,source.width,source.height);gl.uniform1f(u.u_seed,.137);
+    const render=(time,foil)=>{gl.uniform1f(u.u_time,time);gl.uniform1i(u.u_is_foil,foil);gl.drawArrays(gl.TRIANGLES,0,6);return pixels();};
+    const base=render(2,0),basePng=source.toDataURL();const animated=render(4,0);const foil=render(2,1),foilPng=source.toDataURL();const again=render(2,0);const zero=render(0,0),zeroAgain=render(0,0),zeroFoil=render(0,1),zeroFoilAgain=render(0,1);
+    const motion=diff(base,animated),coating=diff(base,foil),restore=diff(base,again),text=diff(scan,base),still=diff(zero,zeroAgain),stillCoating=diff(zero,zeroFoil),foilStill=diff(zeroFoil,zeroFoilAgain);
+    // Exercise the same shader at compact listing size, including its AA masks.
+    source.width=128;source.height=Math.round(128*img.naturalHeight/img.naturalWidth);gl.viewport(0,0,source.width,source.height);
+    gl.useProgram(original);gl.drawArrays(gl.TRIANGLES,0,6);const smallScan=pixels();
+    gl.useProgram(p);gl.uniform2f(u.u_resolution,source.width,source.height);
+    const smallBase=render(2,0),smallAnimated=render(4,0),smallFoil=render(2,1);
+    const compactMotion=visibleMotion(smallBase,smallAnimated);
+    if(card.requireVisibleMotion&&compactMotion<40)throw Error('Insufficient visible compact motion: '+compactMotion+' pixels');
+    const compactText=diff(smallScan,smallBase),compactCoating=diff(smallBase,smallFoil);
+    if(compactText.print||compactCoating.print||!compactCoating.art)throw Error('Compact output: '+JSON.stringify({compactText,compactCoating}));
+    const error=gl.getError();if(error)throw Error('WebGL error '+error);
+    if(!motion.art||motion.print||!coating.art||coating.print||restore.art||restore.print||text.print||still.art||still.print||!stillCoating.art||stillCoating.print||foilStill.art||foilStill.print)throw Error(JSON.stringify({motion,coating,restore,text,still,stillCoating,foilStill}));
+    result.push({id:card.id,name:card.name,pass:true,motion:motion.art,compactMotion,foil:coating.art});captures.push({id:card.id,base:basePng,foil:foilPng});
+    const pair=document.createElement('div');pair.className='editions';article.append(pair);
+    for(const [label,url] of [['Обычная',basePng],['Фойловая',foilPng]]){const fig=document.createElement('figure'),picture=new Image(),caption=document.createElement('figcaption');picture.src=url;caption.textContent=label;fig.append(picture,caption);pair.append(fig);}
+   }catch(e){result.push({id:card.id,name:card.name,pass:false,error:String(e)});article.className='error';article.append(String(e));}
+   finally{if(p)gl.deleteProgram(p);if(tex)gl.deleteTexture(tex);}
+   document.querySelector('#status').textContent=`${result.length} / ${cards.length}`;
+   await new Promise(requestAnimationFrame);
+  }
+ }catch(e){result.push({pass:false,error:String(e)});}
+ window.shaderDone=true;
+})();
+</script>

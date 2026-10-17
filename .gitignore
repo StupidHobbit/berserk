@@ -1,0 +1,12 @@
+/target/
+/dist/
+.DS_Store
+/dist-release/
+/.cache/
+/gathered/
+__pycache__/
+/desktop/build/
+/release/
+.env
+.env.*
+!.env.example
