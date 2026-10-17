@@ -249,7 +249,11 @@ fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::error::E
     let web = {
         use tao::platform::unix::WindowExtUnix;
         use wry::WebViewBuilderExtUnix;
-        builder.build_gtk(window.gtk_window())?
+        builder.build_gtk(
+            window
+                .default_vbox()
+                .ok_or("Missing GTK content container")?,
+        )?
     };
     #[cfg(not(target_os = "linux"))]
     let web = builder.build(&window)?;
