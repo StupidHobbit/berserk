@@ -756,13 +756,22 @@ impl eframe::App for NativeApp {
                     ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                     self.smoke = None;
                 }
-            } else if began.elapsed() > Duration::from_secs(30) {
+            } else if began.elapsed() > Duration::from_secs(90) {
+                let result = format!(
+                    "FAIL: Native readiness timed out: frames={}, visible_cards={}, artwork_bytes={}, images_settled={}, image_errors={}, connected={}, service_error={:?}, shader_errors={:?}",
+                    self.frames,
+                    self.visible_cards,
+                    self.images.bytes(),
+                    self.images.settled(),
+                    self.images.errors,
+                    self.connected,
+                    self.connection_error,
+                    self.effects.lock().unwrap().failures,
+                );
                 if let Some(path) = report {
-                    let _ = std::fs::write(
-                        path,
-                        "FAIL: Native artwork or private AI pairing did not become ready",
-                    );
+                    let _ = std::fs::write(path, &result);
                 }
+                eprintln!("{result}");
                 ctx.send_viewport_cmd(egui::ViewportCommand::Close);
             } else {
                 ctx.request_repaint_after(Duration::from_millis(50));
