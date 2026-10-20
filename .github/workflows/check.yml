@@ -104,6 +104,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: native-${{ matrix.platform }}-${{ matrix.arch }}
+          cache-on-failure: true
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -151,6 +152,9 @@ jobs:
       - name: Test native Windows window
         if: matrix.platform == 'windows'
         shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 'true'
+          GALLIUM_DRIVER: llvmpipe
         run: python scripts/test_native.py release/Berserk-*-windows-x86_64/berserk.exe
       - uses: actions/upload-artifact@v7
         with:
