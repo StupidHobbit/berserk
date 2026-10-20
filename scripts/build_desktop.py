@@ -17,32 +17,33 @@ def run(*args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--skip-build', action='store_true', help='Reuse previously built Rust and web assets')
+    parser.add_argument('--skip-build', action='store_true', help='Reuse previously built native binaries')
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('The desktop wrapper currently targets macOS.')
     if not args.skip_build:
-        run('env', 'NO_COLOR=true', 'trunk', 'build', '--release', '--locked', '--dist', 'dist-release')
-        run('cargo', 'build', '--release', '--locked', '--features', 'mcp', '--bin', 'berserk-mcp')
+        run('cargo', 'build', '--release', '--locked', '--no-default-features', '--features', 'desktop', '--bin', 'berserk', '--bin', 'berserk-mcp')
     build = ROOT / 'desktop' / 'build'
     app = build / 'Berserk.app'
     contents = app / 'Contents'
     macos, resources = contents / 'MacOS', contents / 'Resources'
-    # Only generated output beneath desktop/build is replaced.
-    if app.exists():
+    # Keep the last webview build available for exporting its existing profile.
+    legacy = build / 'Berserk-Webview.app'
+    if app.exists() and (resources / 'web').is_dir() and not legacy.exists():
+        app.rename(legacy)
+    elif app.exists():
+        # Only generated output beneath desktop/build is replaced.
         shutil.rmtree(app)
     macos.mkdir(parents=True)
     resources.mkdir()
-    run('swiftc', '-O', '-target', f'{platform.machine()}-apple-macos13.0',
-        '-module-cache-path', str(build / 'swift-cache'),
-        'desktop/main.swift', 'desktop/CodexInstallation.swift', '-framework', 'Cocoa', '-framework', 'WebKit',
-        '-o', str(macos / 'Berserk'))
-    shutil.copy2(ROOT / 'target/release/berserk-mcp', resources / 'berserk-service')
-    shutil.copytree(ROOT / 'dist-release', resources / 'web')
+    shutil.copy2(ROOT / 'target/release/berserk', macos / 'Berserk')
+    shutil.copy2(ROOT / 'target/release/berserk-mcp', macos / 'berserk-mcp')
+    shutil.copytree(ROOT / 'public/cards', resources / 'public/cards')
     notices = resources / 'Notices'
     notices.mkdir()
     for name in ('LICENSE', 'NOTICE'):
         shutil.copy2(ROOT / name, notices / name)
+    shutil.copy2(ROOT / 'assets/fonts/OFL-PTSerif.txt', notices)
     with (contents / 'Info.plist').open('wb') as file:
         plistlib.dump({
             'CFBundleExecutable': 'Berserk', 'CFBundleIdentifier': 'ru.berserk.collection',
@@ -51,7 +52,6 @@ def main():
             'CFBundleShortVersionString': tomllib.loads((ROOT / 'Cargo.toml').read_text())['package']['version'],
             'CFBundleVersion': '1', 'LSMinimumSystemVersion': '13.0',
             'NSHighResolutionCapable': True,
-            'NSAppTransportSecurity': {'NSAllowsLocalNetworking': True},
         }, file)
     run('codesign', '--force', '--deep', '--sign', '-', str(app))
     print(f'\nReady: {app}\nDouble-click Berserk.app. No terminal or separate service is needed.')

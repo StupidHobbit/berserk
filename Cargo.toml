@@ -1,31 +1,33 @@
 [package]
 name = "berserk-leptos"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2024"
-default-run = "berserk-leptos"
+default-run = "berserk"
 license = "LGPL-3.0-only"
-description = "Berserk card encyclopedia and deck builder, rewritten in Rust and Leptos"
+description = "Berserk card encyclopedia and deck builder, native Rust desktop application and optional browser client"
 
 [dependencies]
-leptos = { version = "0.8", features = ["csr"] }
+leptos = { optional = true, version = "0.8", features = ["csr"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }
-web-sys = { version = "0.3", features = ["Window", "Navigator", "Clipboard", "Storage", "Document", "HtmlElement", "HtmlAnchorElement", "Blob", "BlobPropertyBag", "Url", "File", "FileList", "HtmlInputElement", "Location", "HashChangeEvent", "KeyboardEvent", "PointerEvent", "DomRect", "CssStyleDeclaration", "WebSocket", "MessageEvent", "CloseEvent", "ErrorEvent", "History", "HtmlCanvasElement", "HtmlImageElement", "CanvasRenderingContext2d", "ImageData", "WebGlRenderingContext", "WebGlProgram", "WebGlShader", "WebGlBuffer", "WebGlTexture", "WebGlUniformLocation", "MediaQueryList", "console"] }
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-js-sys = "0.3"
-console_error_panic_hook = "0.1"
+web-sys = { optional = true, version = "0.3", features = ["Window", "Navigator", "Clipboard", "Storage", "Document", "HtmlElement", "HtmlAnchorElement", "Blob", "BlobPropertyBag", "Url", "File", "FileList", "HtmlInputElement", "Location", "HashChangeEvent", "KeyboardEvent", "PointerEvent", "DomRect", "CssStyleDeclaration", "WebSocket", "MessageEvent", "CloseEvent", "ErrorEvent", "History", "HtmlCanvasElement", "HtmlImageElement", "CanvasRenderingContext2d", "ImageData", "WebGlRenderingContext", "WebGlProgram", "WebGlShader", "WebGlBuffer", "WebGlTexture", "WebGlUniformLocation", "MediaQueryList", "console"] }
+wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen-futures = { version = "0.4", optional = true }
+js-sys = { version = "0.3", optional = true }
+console_error_panic_hook = { version = "0.1", optional = true }
 
 [profile.release]
-opt-level = "s"
+opt-level = 3
 lto = true
 codegen-units = 1
 panic = "abort"
 
 [features]
+default = ["desktop"]
+web = ["dep:leptos", "dep:web-sys", "dep:wasm-bindgen", "dep:wasm-bindgen-futures", "dep:js-sys", "dep:console_error_panic_hook"]
 mcp = ["dep:rmcp", "dep:tokio", "dep:axum", "dep:uuid", "dep:tower-http"]
-desktop = ["mcp", "dep:wry", "dep:tao", "dep:rfd"]
+desktop = ["mcp", "dep:eframe", "dep:image", "dep:rfd", "dep:tempfile", "dep:tungstenite"]
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 rmcp = { version = "3.5.1", features = ["transport-io", "schemars"], optional = true }
@@ -33,9 +35,17 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync",
 axum = { version = "0.8", features = ["ws"], optional = true }
 uuid = { version = "1", features = ["v4"], optional = true }
 tower-http = { version = "0.6", features = ["fs"], optional = true }
-wry = { version = "0.57", optional = true }
-tao = { version = "0.37", optional = true }
-rfd = { version = "0.17", default-features = false, features = ["gtk3"], optional = true }
+
+eframe = { version = "=0.36.2", default-features = false, features = ["default_fonts", "glow", "x11", "wayland", "accesskit"], optional = true }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"], optional = true }
+rfd = { version = "0.17", default-features = false, features = ["xdg-portal", "wayland"], optional = true }
+tempfile = { version = "3", optional = true }
+tungstenite = { version = "0.29", optional = true }
+
+[[bin]]
+name = "berserk-leptos"
+path = "src/main.rs"
+required-features = ["web"]
 
 [[bin]]
 name = "berserk-mcp"
@@ -46,3 +56,7 @@ required-features = ["mcp"]
 name = "berserk"
 path = "src/bin/berserk.rs"
 required-features = ["desktop"]
+
+[profile.web-release]
+inherits = "release"
+opt-level = "s"

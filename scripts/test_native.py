@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Open the real desktop window in an isolated profile and verify Wasm readiness."""
+"""Open the real desktop window in an isolated profile and verify native GPU and artwork readiness."""
 import argparse
 from pathlib import Path
 import subprocess

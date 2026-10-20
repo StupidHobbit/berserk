@@ -1,4 +1,4 @@
-Berserk Leptos — browser rewrite of berserk-nxt
+Berserk — native desktop and browser clients for berserk-nxt
 
 Original project: https://github.com/SkAZi/berserk-nxt
 Original author: Игорь «SkAZi» Потапов
@@ -12,7 +12,7 @@ revision. Card text and artwork retain their original credits and rights; the
 software license does not imply ownership of the Berserk game or its artwork.
 
 All application views, state management, storage integration and domain logic in
-src/ are implemented in Rust using Leptos. No Electron, Svelte or Node.js runtime
+src/ are implemented in Rust using egui/eframe (desktop) and Leptos (browser). No Electron, Svelte or Node.js runtime
 is required. Python is used by the data collection, validation and synchronization utilities.
 
 Additional set 80: Сердце роя
@@ -24,3 +24,11 @@ Source snapshots, retrieval times and SHA-256 checksums: data/sets/80/manifest.j
 No ownership of card text, scans or illustrations is claimed. The LGPL software
 license does not relicense these assets. Editions with unavailable scans use an
 explicitly labeled base-artwork placeholder, not a fabricated alternate scan.
+
+Native interface typography: PT Serif Bold, Copyright (c) 2010 ParaType Ltd.
+Bundled unmodified under the SIL Open Font License 1.1, included in
+assets/fonts/OFL-PTSerif.txt and in packaged application notices.
+Upstream: https://github.com/google/fonts/tree/main/ofl/ptserif
+
+Native material shaders are original procedural artwork. No Hearthstone or
+Blizzard artwork, icons, textures or fonts are distributed with this application.

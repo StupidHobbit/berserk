@@ -29,14 +29,14 @@ jobs:
           components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
       - run: cargo fmt --check
-      - run: cargo clippy --locked --features mcp --all-targets -- -D warnings
-      - run: cargo test --locked --features mcp
+      - run: cargo clippy --locked --no-default-features --features mcp --all-targets -- -D warnings
+      - run: cargo test --locked --no-default-features --features mcp
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: python -m pip install -r scripts/requirements.txt
       - run: python -m unittest discover -s tests -p 'test_*.py'
-      - run: cargo build --locked --features mcp --bin berserk-mcp
+      - run: cargo build --locked --no-default-features --features mcp --bin berserk-mcp
       - run: python scripts/test_mcp.py
       - run: python scripts/test_catalog_mcp.py
       - run: python scripts/test_codex.py
@@ -79,7 +79,6 @@ jobs:
           retention-days: 7
 
   binaries:
-    needs: web
     strategy:
       fail-fast: false
       matrix:
@@ -106,20 +105,16 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@v8
-        with:
-          name: web-assets
-          path: dist-release
-      - run: cargo test --locked --features mcp
+      - run: cargo test --locked --no-default-features --features mcp
       - name: Install Ubuntu desktop dependencies
         if: matrix.platform == 'ubuntu'
-        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev xvfb dbus-x11
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev libegl1-mesa-dev libxkbcommon-dev libwayland-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev xvfb dbus-x11 xdg-desktop-portal
       - name: Build native application
-        if: matrix.platform != 'macos'
-        run: cargo build --release --locked --features desktop --bin berserk-mcp --bin berserk
-      - name: Build macOS service
-        if: matrix.platform == 'macos'
-        run: cargo build --release --locked --features mcp --bin berserk-mcp
+        run: cargo build --release --locked --no-default-features --features desktop --bin berserk-mcp --bin berserk
+      - name: Test and lint native client
+        run: |
+          cargo test --locked --no-default-features --features desktop
+          cargo clippy --locked --no-default-features --features desktop --all-targets -- -D warnings
       - run: python scripts/package_release.py --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
       - name: Test packaged service and offline assets
         shell: bash
@@ -136,6 +131,21 @@ jobs:
         run: |
           sudo apt-get install -y ./release/*.deb
           xvfb-run -a dbus-run-session -- python scripts/test_native.py /opt/berserk/berserk
+      - name: Test native macOS window
+        if: matrix.platform == 'macos'
+        run: python scripts/test_native.py desktop/build/Berserk.app/Contents/MacOS/Berserk
+      # Hosted Windows runners have no physical GPU. Test with MSYS2 Mesa;
+      # this driver is not included in the already-created release archive.
+      - uses: msys2/setup-msys2@v2
+        if: matrix.platform == 'windows'
+        with:
+          msystem: MINGW64
+          install: mingw-w64-x86_64-mesa
+      - name: Install test-only Windows software renderer
+        if: matrix.platform == 'windows'
+        shell: msys2 {0}
+        run: |
+          cp /mingw64/bin/*.dll release/Berserk-*-windows-x86_64/
       - name: Test native Windows window
         if: matrix.platform == 'windows'
         shell: bash
@@ -153,7 +163,7 @@ jobs:
 
   publish:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [check, binaries]
+    needs: [check, web, binaries]
     runs-on: ubuntu-22.04
     permissions:
       contents: write

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke-test the packaged service and offline assets on every release OS."""
+"""Check packaged native binaries, offline artwork and authenticated AI service."""
 import argparse
 import http.client
 import json
@@ -28,39 +28,34 @@ def main():
     args = parser.parse_args()
     package = args.package.resolve()
     if package.suffix == '.app':
-        directory = package / 'Contents/Resources'
-        binary = directory / 'berserk-service'
+        directory = package / 'Contents/MacOS'
+        assets = package / 'Contents/Resources'
+        assert (directory / 'Berserk').is_file()
     else:
-        directory = package
-        binary = directory / ('berserk-mcp.exe' if os.name == 'nt' else 'berserk-mcp')
+        directory = assets = package
         assert (directory / ('berserk.exe' if os.name == 'nt' else 'berserk')).is_file()
-    web = directory / 'web'
-    assert list(web.rglob('*.wasm')), 'Wasm missing from package'
-    images = [p for p in (web / 'public/cards').rglob('*') if p.suffix in {'.jpg', '.webp', '.png'}]
+    binary = directory / ('berserk-mcp.exe' if os.name == 'nt' else 'berserk-mcp')
+    images = [p for p in (assets / 'public/cards').rglob('*') if p.suffix in {'.jpg', '.webp', '.png'}]
     assert len(images) > 1000, 'Card images missing from package'
-    env = dict(os.environ, BERSERK_WEB_ROOT=str(web), BERSERK_DESKTOP_PORT='0')
+    assert not (assets / 'web').exists(), 'Native release must not bundle a web runtime'
+    env = dict(os.environ, BERSERK_DESKTOP_PORT='0')
     with tempfile.TemporaryDirectory(prefix='berserk-release-test-') as cwd:
-        process = subprocess.Popen([binary, '--app'], cwd=cwd, env=env,
+        process = subprocess.Popen([binary, '--native-app'], cwd=cwd, env=env,
                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
         try:
             info = json.loads(first_line(process))
             port, token = info['port'], info['token']
-            connection = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
-            connection.request('GET', '/')
-            response = connection.getresponse()
-            body = response.read()
-            assert response.status == 200 and b'<html' in body
-            assert token.encode() not in body, 'Pairing secret leaked in static response'
-            connection.request('GET', '/', headers={'Host': 'attacker.example'})
-            response = connection.getresponse()
-            assert response.status == 403
-            response.read()
-            wasm = next(web.glob('*.wasm')).relative_to(web).as_posix()
-            connection.request('GET', '/' + wasm)
-            response = connection.getresponse()
-            assert response.status == 200 and response.getheader('Content-Type') == 'application/wasm'
-            assert response.read(4) == b'\x00asm'
-            connection.close()
+            assert info['origin'] == f'http://127.0.0.1:{port}' and len(token) == 32
+            for origin, key, expected in [('http://attacker.example', token, 403),
+                                          (info['origin'], '0' * 32, 403),
+                                          (info['origin'], token, 101)]:
+                connection = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
+                connection.request('GET', f'/bridge?token={key}', headers={
+                    'Origin': origin, 'Connection': 'Upgrade', 'Upgrade': 'websocket',
+                    'Sec-WebSocket-Version': '13', 'Sec-WebSocket-Key': 'dGhlIHNhbXBsZSBub25jZQ=='})
+                response = connection.getresponse()
+                assert response.status == expected, (response.status, expected)
+                connection.close()
             process.stdin.close()
             assert process.wait(timeout=15) == 0
         finally:
@@ -70,7 +65,7 @@ def main():
             process.stdout.close()
             if not process.stdin.closed:
                 process.stdin.close()
-    print('PASS: packaged service, offline assets, Host isolation and parent shutdown')
+    print('PASS: native binaries, offline artwork, token/origin isolation and parent shutdown')
 
 
 if __name__ == '__main__':

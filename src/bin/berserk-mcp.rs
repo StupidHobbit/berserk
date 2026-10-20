@@ -587,7 +587,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         service.waiting().await?;
         return Ok(());
     }
-    let desktop = std::env::args().any(|arg| arg == "--app");
+    let native = std::env::args().any(|arg| arg == "--native-app");
+    let desktop = native || std::env::args().any(|arg| arg == "--app");
     let port = if desktop {
         std::env::var("BERSERK_DESKTOP_PORT")
             .unwrap_or_else(|_| "47381".into())
@@ -626,35 +627,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut routes = Router::new()
         .route("/bridge", get(pair))
         .with_state(bridge.clone());
-    if desktop {
+    if desktop && !native {
         let assets = std::env::var("BERSERK_WEB_ROOT")?;
         if !std::path::Path::new(&assets).join("index.html").is_file() {
             return Err("Bundled web interface is missing".into());
         }
+        routes = routes.fallback_service(tower_http::services::ServeDir::new(assets));
+    }
+    if desktop {
         let host = format!("127.0.0.1:{}", bridge.port);
-        routes = routes
-            .fallback_service(tower_http::services::ServeDir::new(assets))
-            .layer(axum::middleware::from_fn(
-                move |request: axum::extract::Request, next: axum::middleware::Next| {
-                    let host = host.clone();
-                    async move {
-                        if request.headers().get("host").and_then(|h| h.to_str().ok())
-                            != Some(host.as_str())
-                        {
-                            return StatusCode::FORBIDDEN.into_response();
-                        }
-                        let mut response = next.run(request).await;
-                        response
-                            .headers_mut()
-                            .insert("x-content-type-options", "nosniff".parse().unwrap());
-                        response.headers_mut().insert(
-                            "content-security-policy",
-                            "frame-ancestors 'none'; frame-src 'none'".parse().unwrap(),
-                        );
-                        response
+        routes = routes.layer(axum::middleware::from_fn(
+            move |request: axum::extract::Request, next: axum::middleware::Next| {
+                let host = host.clone();
+                async move {
+                    if request.headers().get("host").and_then(|h| h.to_str().ok())
+                        != Some(host.as_str())
+                    {
+                        return StatusCode::FORBIDDEN.into_response();
                     }
-                },
-            ));
+                    let mut response = next.run(request).await;
+                    response
+                        .headers_mut()
+                        .insert("x-content-type-options", "nosniff".parse().unwrap());
+                    response.headers_mut().insert(
+                        "content-security-policy",
+                        "frame-ancestors 'none'; frame-src 'none'".parse().unwrap(),
+                    );
+                    response
+                }
+            },
+        ));
     }
     let http = tokio::spawn(async move {
         if let Err(e) = axum::serve(listener, routes).await {

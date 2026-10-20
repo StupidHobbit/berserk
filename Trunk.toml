@@ -1,5 +1,7 @@
 [build]
 target = "index.html"
+no_default_features = true
+features = ["web"]
 dist = "dist"
 
 [serve]

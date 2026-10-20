@@ -19,10 +19,9 @@ Extract the entire archive before launching.
 All platforms open a standalone desktop window and manage their local service
 and persistent app storage automatically.
 On Ubuntu, install the `.deb` with `sudo apt install ./Berserk-*-ubuntu-x86_64.deb`
-and launch **Berserk** from Applications. For the portable archive, install
-`libwebkit2gtk-4.1-0` and run `./berserk`. Windows uses Microsoft Edge WebView2
-Runtime, included with Windows 11 and most Windows 10 installations; install it
-from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) if missing.
+and launch **Berserk** from Applications. For the portable archive, use a current OpenGL driver and run `./berserk`.
+The desktop UI is native Rust on all three systems; WebKit and WebView2 are no
+longer required. Linux supports Wayland and X11.
 
 AI features require your own Codex CLI installation. **Войти в Codex** opens the
 sign-in page; browsing cards and editing collections work offline without Codex.
@@ -40,9 +39,9 @@ Applications. Codex is assumed to be installed already. Berserk finds it automat
 no terminal, browser server or MCP configuration is needed for normal use.
 
 1. Add cards, or transfer an existing collection: export a JSON backup from
-   **Мои данные** in the old browser app, then import it through **Перенести данные**
-   or **Мои данные** in Berserk. `.brsc` collection imports also work.
-2. Open **Мои колоды → Создать колоду с Codex AI**.
+   **Мои данные** in the old browser app, then open **Мои данные → Восстановить из файла…**
+   in Berserk. `.brsc` collection imports also work.
+2. Open **Мои колоды → Создать с Codex**.
 3. If needed, click **Войти в Codex** and finish signing in in your browser.
    An existing Codex login is reused. Return to Berserk and click **Создать колоду**.
 
@@ -50,6 +49,21 @@ Cards, decks and notes are saved in the desktop app's own persistent storage.
 The old browser storage stays intact. Backups use the native macOS save/open dialogs.
 The local service starts and stops with the app, and connects automatically.
 See [desktop packaging and checks](docs/desktop.md) for development details.
+
+## Build the native application
+
+```sh
+make native
+cargo run --release --locked --bin berserk
+```
+
+The native client uses GPU rendering, virtualized card rows, a 64 MiB texture
+cache, background image decoding and durable background saves. Existing card
+rules, formats, notes, collection data and Codex workflows share their Rust
+implementation with the browser client. Before switching from an existing
+webview installation, export its JSON backup and import it through **Мои данные →
+Восстановить из файла…**; the old profile remains untouched. See [native architecture and
+verification](docs/desktop.md).
 
 ## Run in a browser (development)
 
@@ -89,7 +103,7 @@ Trunk may download its matching wasm-bindgen CLI on the first build.
   printing counts and purchase costs are preserved in imports, exports and backup,
   and displayed in card details. Imports preview total and foil quantities.
 - **Editions:** all editions are visible by default, including 580 foil records.
-  A shared WebGL shader renders Balatro-inspired rainbow reflections and glitter;
+  Shared GPU shaders render Balatro-inspired rainbow reflections and glitter;
   pointer-driven tilt and the finish respect reduced-motion preferences. A CSS
   fallback keeps the effect available without WebGL. See [foil rendering](docs/foil.md).
   Explicit ordinary/foil/alternative/full-art filters, finish labels and animated foil
@@ -99,7 +113,7 @@ Trunk may download its matching wasm-bindgen CLI on the first build.
   paths, wings, weapons, and other effects follow each card's illustration and
   rules. Ordinary and foil editions share the animation; `is_foil` adds a distinct
   metallic finish. All effects use time, preserve printed text, and respect reduced
-  motion. Programs compile lazily in one shared context. See the
+  motion. Programs compile lazily in one shared context; native rendering uses no GPU readback. See the
   [card-by-card effect list](docs/unique-effects.md).
 - **Codex deck creation:** collection-only generation from My decks using the local
   Codex CLI, with progress, cancellation, strategy preferences and validated saving.
@@ -132,8 +146,9 @@ Data and artwork are bundled from upstream commit
 calls to the upstream site while browsing cards. Tabletop Simulator exports retain
 upstream atlas URLs, which TTS itself fetches when loading the deck.
 
-State lives under **`berserk-leptos-v1`** in localStorage, scoped to the site's
-origin. It does not migrate automatically from the Electron app or another host.
+The browser build stores state under **`berserk-leptos-v1`** in localStorage, scoped
+to the site's origin. Native desktop builds use atomic JSON files in the OS app-data
+directory; see [storage and migration](docs/desktop.md#state-and-migration). It does not migrate automatically from the Electron app or another host.
 Export original collection/deck files and import them using the corresponding
 screen. Use **Мои данные** for a full backup. Download a backup before clearing
 browser data or switching hosts. A storage/validation failure shows an error and
@@ -161,6 +176,7 @@ Decks previously created from draft or sealed pools remain ordinary saved decks.
 ## Layout
 
 ```text
+src/native/        Native GPU UI, artwork cache, atomic storage and service bridge
 src/model.rs       Card catalog, filters, collection, decks, statistics, squad rules
 src/formats.rs     Original text/compact/collection/CSV and TTS formats
 src/shuffle.rs     Seeded shuffle for the hand simulator

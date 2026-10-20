@@ -1,26 +1,50 @@
-Berserk card encyclopedia, collection manager and deck builder. All downloads include the interface and card images for offline use. AI deck creation requires your own installed and signed-in Codex CLI.
+# Berserk v0.2.0 — native desktop
 
-### Changes in v0.1.1
+Berserk now runs in a GPU-rendered Rust interface on Linux, macOS and Windows.
+Linux supports Wayland and X11; desktop packages no longer require WebKitGTK or
+WebView2.
 
-Linux now applies a WebKitGTK rendering workaround automatically. Disabling the
-DMA-BUF path substantially improved heavily pixelated animated cards reported on
-AMD/Bazzite, including the detail view. Animations stay enabled. An explicitly
-set `WEBKIT_DISABLE_DMABUF_RENDERER` value is respected. This may reduce rendering
-performance on some systems; it is not a claim that every GPU artifact is fixed.
+## Performance and rendering
 
-The Linux GUI smoke test now exercises this launcher default without supplying
-the workaround through CI. Existing collection and deck storage is retained.
+- Direct GPU rendering removes animated-card GPU-to-CPU readback while retaining
+  all 99 bespoke card effects and foil finishes.
+- Virtualized card rows, a 64 MiB artwork texture cache and background image
+  decoding keep browsing responsive. Previews adapt to display resolution.
+- Frameless cards have depth, pointer-driven tilt, shadows and varnish; rounded
+  artwork corners no longer leave white patches.
+- Procedural parchment, wood, leather and bronze accompany a subtle animated
+  fantasy map inspired by Laar. Reduced-motion settings and background pausing
+  limit unnecessary animation.
+- Saves run on background workers with atomic writes, profile locking,
+  validation, failed-save rollback and undo.
 
-| Download | Platform | Launch |
-| --- | --- | --- |
-| `macos-arm64.zip` | macOS 13+, Apple Silicon | Extract and open Berserk.app |
-| `macos-x86_64.zip` | macOS 13+, Intel | Extract and open Berserk.app |
-| `ubuntu-x86_64.deb` | Ubuntu 22.04+, x64 desktop | Install with `sudo apt install ./Berserk-*.deb`, then open Berserk |
-| `ubuntu-x86_64.tar.gz` | Ubuntu 22.04+, x64 desktop, portable | Install `libwebkit2gtk-4.1-0`, extract, and run `./berserk` |
-| `windows-x86_64.zip` | Windows 10/11, x64 | Extract all files and open `berserk.exe` |
+## Collection and decks
 
-Every platform opens a standalone desktop window with its own persistent collection storage, native save dialogs and automatic local-service startup/shutdown. No browser or terminal is required for normal use. Run only one copy at a time. Windows uses Microsoft Edge WebView2 Runtime, included with Windows 11 and most Windows 10 installations; if missing, install it from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/). The Ubuntu `.deb` installs its WebKitGTK dependencies automatically through apt.
+- Collection import shows totals by rarity and the number of represented sets,
+  without raw-text editing or card previews.
+- **Мои данные** offers two actions: save a backup or restore from a file.
+  Restore accepts files without extension restrictions and detects backups and
+  collection exports by their contents.
+- Deck import accepts multiple files, names each deck after its filename, and
+  previews card counts by element before saving the batch.
+- A dedicated **Создать с Codex** page checks CLI login in the background, caches
+  the result for five minutes, and supports manual refresh and sign-in.
+- Clearing or changing allowed sets keeps the selector open.
+- Shared catalog rules, collection metadata, deck formats, notes, the simulator
+  and revision-checked Codex generation/refinement remain available.
 
-The macOS app is ad-hoc signed, not Apple-notarized. If macOS blocks the downloaded app, use System Settings → Privacy & Security → Open Anyway after verifying the download. Windows binaries are unsigned and may show a SmartScreen warning.
+## Updating from v0.1.x
 
-Use My data to back up or transfer your collection and decks. No personal collection or Codex credentials are included in these downloads. Checksums are in `SHA256SUMS`; source for each release is available from its tag.
+Before switching, export a JSON backup through **Мои данные** in the old app.
+In this version, use **Мои данные → Восстановить из файла…** to import it. The old
+browser profile remains intact; migration is not automatic. Collection-only
+`.brsc` exports can also be imported.
+
+Downloads include offline card images. AI features require your own Codex CLI
+installation and login. Rendering requires OpenGL 3.3 or OpenGL ES 3.0. Printing
+opens the deck list in the system browser.
+
+macOS downloads are ad-hoc signed, without Apple notarization; Windows binaries
+are unsigned. SHA-256 checksums accompany the downloads. Linux CI uses Mesa
+software rendering, so performance on physical Linux GPUs still depends on the
+driver and hardware.

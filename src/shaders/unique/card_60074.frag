@@ -56,13 +56,13 @@ void main() {
     for(int i=0;i<5;i++) {
         float k=float(i);
         vec2 d=(p-chargePoint(k))*vec2(1.0,1.4113);
-        float active=0.19+0.81*smoothstep(k-0.15,k+0.35,cycle);
+        float sparkActivity=0.19+0.81*smoothstep(k-0.15,k+0.35,cycle);
         float flicker=0.76+0.24*sin(t*2.8+k*1.7+seed*6.0);
         float core=1.0-smoothstep(0.0015,0.0045+aa,length(d));
         float rays=exp(-abs(d.x)/0.014-abs(d.y)/0.0028)
                   +exp(-abs(d.x)/0.0028-abs(d.y)/0.020);
-        sparks+=(core+rays*0.4)*active*flicker;
-        halo+=exp(-dot(d,d)/0.00062)*active*flicker;
+        sparks+=(core+rays*0.4)*sparkActivity*flicker;
+        halo+=exp(-dot(d,d)/0.00062)*sparkActivity*flicker;
     }
     color+=chargeColor*(sparks*0.85+halo*0.20);
 
