@@ -1,5 +1,5 @@
 use super::*;
-use crate::{deck_text, formats};
+use crate::formats;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(super) enum FileAction {
@@ -457,61 +457,6 @@ impl NativeApp {
         if open && !cancel && !applied {
             self.transfer = Some(transfer);
         }
-    }
-    pub(super) fn print(&mut self, deck: &Deck, ctx: &egui::Context) {
-        let escape = |s: &str| {
-            s.replace('&', "&amp;")
-                .replace('<', "&lt;")
-                .replace('>', "&gt;")
-                .replace('"', "&quot;")
-        };
-        let mut body = format!("<h1>{}</h1>", escape(&deck.name));
-        for (label, ids) in [("Колода", &deck.cards), ("Запас", &deck.side)] {
-            body.push_str(&format!("<h2>{label} ({})</h2><ul>", ids.len()));
-            for (id, n) in grouped(ids) {
-                if let Some(c) = self.cat.get(&id) {
-                    body.push_str(&format!(
-                        "<li>{n} × {} · {} · {} · {}</li>",
-                        escape(&c.name),
-                        c.cost,
-                        escape(&self.cat.edition_name(c)),
-                        escape(&id)
-                    ));
-                }
-            }
-            body.push_str("</ul>");
-        }
-        for (label, text) in [
-            ("Описание", &deck.description),
-            ("Как играть", &deck.how_to_play),
-            ("Улучшения", &deck.improvements),
-        ] {
-            body.push_str(&format!(
-                "<h2>{label}</h2>{}",
-                deck_text::render(text, &self.cat)
-            ));
-        }
-        let html = format!(
-            "<!doctype html><html lang=ru><meta charset=utf-8><title>{}</title><style>body{{font:15px system-ui;max-width:800px;margin:2em auto}}button{{border:0;background:none;font:inherit}}@media print{{.print{{display:none}}}}</style><button class=print onclick='window.print()'>Печать / PDF</button>{body}</html>",
-            escape(&deck.name)
-        );
-        self.file_job(ctx, move || {
-            let file =
-                std::env::temp_dir().join(format!("berserk-print-{}.html", uuid::Uuid::new_v4()));
-            storage::atomic_write(&file, html.as_bytes())?;
-            #[cfg(target_os = "macos")]
-            let mut command = std::process::Command::new("open");
-            #[cfg(target_os = "linux")]
-            let mut command = std::process::Command::new("xdg-open");
-            #[cfg(target_os = "windows")]
-            let mut command = {
-                let mut c = std::process::Command::new("rundll32.exe");
-                c.arg("url.dll,FileProtocolHandler");
-                c
-            };
-            command.arg(&file).spawn().map_err(|e| e.to_string())?;
-            Ok(None)
-        });
     }
 }
 #[cfg(test)]

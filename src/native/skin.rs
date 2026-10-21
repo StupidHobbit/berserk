@@ -20,15 +20,15 @@ pub enum Material {
 struct Program {
     program: glow::Program,
     vao: glow::VertexArray,
-    uniforms: [Option<glow::UniformLocation>; 5],
+    uniforms: [Option<glow::UniformLocation>; 6],
 }
 #[derive(Default)]
-struct MapDrift {
-    phase: f64,
+struct MapCamera {
+    elapsed: f64,
     last_time: Option<f64>,
     running: bool,
 }
-impl MapDrift {
+impl MapCamera {
     fn update(&mut self, time: f64, enabled: bool) {
         if enabled
             && self.running
@@ -36,31 +36,52 @@ impl MapDrift {
         {
             // Pause time and long stalls never turn into a visible jump on return.
             let dt = (time - previous).clamp(0.0, 0.25);
-            self.phase =
-                (self.phase + dt * std::f64::consts::TAU / 120.0).rem_euclid(std::f64::consts::TAU);
+            self.elapsed += dt;
         }
         self.last_time = Some(time);
         self.running = enabled;
     }
-    fn offset(&self) -> egui::Vec2 {
-        // Two-minute orbit, at most 1.26 logical points/second. Paper stays fixed.
-        egui::vec2(
-            (self.phase.sin() * 24.0) as f32,
-            ((self.phase.cos() - 1.0) * 14.0) as f32,
-        )
+    fn view(&self) -> [f32; 4] {
+        // Travel through an unbounded, stationary world. Gentle heading and zoom
+        // changes reveal new terrain without looping back over the same chart.
+        // Keep time in f64 so long sessions do not lose their per-frame movement.
+        let t = self.elapsed;
+        [
+            (1.2 + t * 0.012 + (t * 0.013).sin() * 0.16) as f32,
+            (0.8 + t * 0.004 + ((t * 0.009).cos() - 1.0) * 0.17) as f32,
+            (0.94 + (t * 0.012).sin() * 0.09) as f32,
+            ((t * 0.009).sin() * 0.045) as f32,
+        ]
     }
 }
-#[derive(Default)]
 pub struct Skin {
     program: Option<Program>,
     attempted: bool,
     pub error: Option<String>,
-    map_drift: MapDrift,
+    map_camera: MapCamera,
+    map_seed: [f32; 3],
+}
+impl Default for Skin {
+    fn default() -> Self {
+        // Sample once per app instance; drawing, resizing and pausing must never
+        // change the world. Keep the seed fractional to preserve shader precision.
+        let random = uuid::Uuid::new_v4();
+        let bytes = random.as_bytes();
+        Self {
+            program: None,
+            attempted: false,
+            error: None,
+            map_camera: MapCamera::default(),
+            map_seed: std::array::from_fn(|i| {
+                u16::from_le_bytes([bytes[i * 2], bytes[i * 2 + 1]]) as f32 / 65536.0
+            }),
+        }
+    }
 }
 impl Skin {
     pub fn update_map_motion(&mut self, time: f64, enabled: bool) -> bool {
         let enabled = enabled && self.error.is_none();
-        self.map_drift.update(time, enabled);
+        self.map_camera.update(time, enabled);
         enabled
     }
     pub fn prepare(&mut self, gl: &glow::Context) {
@@ -111,8 +132,15 @@ impl Skin {
             Ok(Program {
                 program,
                 vao,
-                uniforms: ["u_size", "u_pointer", "u_kind", "u_active", "u_map_offset"]
-                    .map(|s| gl.get_uniform_location(program, s)),
+                uniforms: [
+                    "u_size",
+                    "u_pointer",
+                    "u_kind",
+                    "u_active",
+                    "u_map_camera",
+                    "u_map_seed",
+                ]
+                .map(|s| gl.get_uniform_location(program, s)),
             })
         }
     }
@@ -156,8 +184,10 @@ impl Skin {
                     gl.uniform_2_f32(p.uniforms[1].as_ref(), pointer.x, pointer.y);
                     gl.uniform_1_f32(p.uniforms[2].as_ref(), material as u8 as f32);
                     gl.uniform_1_f32(p.uniforms[3].as_ref(), active);
-                    let offset = skin.map_drift.offset();
-                    gl.uniform_2_f32(p.uniforms[4].as_ref(), offset.x, offset.y);
+                    let [x, y, zoom, heading] = skin.map_camera.view();
+                    gl.uniform_4_f32(p.uniforms[4].as_ref(), x, y, zoom, heading);
+                    let [seed_x, seed_y, seed_z] = skin.map_seed;
+                    gl.uniform_3_f32(p.uniforms[5].as_ref(), seed_x, seed_y, seed_z);
                     gl.draw_arrays(glow::TRIANGLES, 0, 6);
                     gl.bind_vertex_array(None);
                 }
@@ -366,30 +396,45 @@ mod tests {
     use super::*;
 
     #[test]
-    fn map_drift_is_slow_bounded_and_resumes_without_jumping() {
-        let mut drift = MapDrift::default();
-        drift.update(0.0, true);
-        let mut previous = drift.offset();
+    fn map_camera_explores_new_terrain_smoothly() {
+        let mut camera = MapCamera::default();
+        camera.update(0.0, true);
+        let start = camera.view();
+        let mut previous = start;
         for frame in 1..=1800 {
-            drift.update(frame as f64 / 15.0, true);
-            let offset = drift.offset();
-            assert!((offset - previous).length() < 0.085);
-            assert!(offset.x.abs() <= 24.0 && offset.y >= -28.0 && offset.y <= 0.0);
-            previous = offset;
+            camera.update(frame as f64 / 15.0, true);
+            let view = camera.view();
+            let distance = egui::vec2(view[0] - previous[0], view[1] - previous[1]).length();
+            assert!(
+                distance < 0.0011,
+                "camera moves less than a point per frame"
+            );
+            assert!(view[0] > previous[0], "travel never loops back");
+            assert!((0.85..=1.03).contains(&view[2]));
+            assert!(view[3].abs() <= 0.045);
+            previous = view;
         }
-        assert!(drift.offset().length() < 0.001, "orbit closes smoothly");
-        drift.update(120.1, true);
-        let frozen = drift.offset();
-        drift.update(121.0, false);
-        drift.update(3600.0, false);
-        assert_eq!(drift.offset(), frozen);
-        drift.update(7200.0, true);
-        assert_eq!(drift.offset(), frozen, "resume excludes all paused time");
-        drift.update(7200.0 + 1.0 / 15.0, true);
-        assert!((drift.offset() - frozen).length() < 0.085);
-        assert_ne!(drift.offset(), frozen);
-        let before_stall = drift.offset();
-        drift.update(10000.0, true);
-        assert!((drift.offset() - before_stall).length() < 0.32);
+        assert!(camera.view()[0] - start[0] > 1.4, "reveal new map regions");
+    }
+
+    #[test]
+    fn map_camera_pauses_and_excludes_stalls() {
+        let mut camera = MapCamera::default();
+        camera.update(0.0, true);
+        camera.update(0.1, true);
+        let frozen = camera.view();
+        camera.update(1.0, false);
+        camera.update(3600.0, false);
+        assert_eq!(camera.view(), frozen);
+        camera.update(7200.0, true);
+        assert_eq!(camera.view(), frozen, "resume excludes all paused time");
+        camera.update(7200.0 + 1.0 / 15.0, true);
+        assert_ne!(camera.view(), frozen);
+        let before_stall = camera.elapsed;
+        camera.update(10000.0, true);
+        assert!((camera.elapsed - before_stall - 0.25).abs() < 1e-12);
+        let before_clock_reset = camera.view();
+        camera.update(0.0, true);
+        assert_eq!(camera.view(), before_clock_reset);
     }
 }

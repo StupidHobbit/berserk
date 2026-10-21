@@ -3,6 +3,8 @@ mod bridge;
 mod card_shape;
 mod codex_auth;
 mod deck_import;
+mod deck_overview;
+mod deck_widgets;
 mod effects;
 mod images;
 mod motion;
@@ -93,6 +95,7 @@ pub struct NativeApp {
     page: Page,
     active: Option<String>,
     side: bool,
+    deck_full: bool,
     detail: Option<String>,
     draft: Option<Deck>,
     delete: Option<String>,
@@ -197,6 +200,7 @@ impl NativeApp {
             page: Page::Catalog,
             active: None,
             side: false,
+            deck_full: false,
             detail: None,
             draft: None,
             delete: None,
@@ -606,6 +610,7 @@ impl eframe::App for NativeApp {
             if self.filters_open
                 && self.page != Page::CreateWithCodex
                 && (self.page != Page::Decks || self.active.is_some())
+                && !(self.page == Page::Decks && self.deck_full)
             {
                 egui::Panel::left("filters")
                     .default_size(222.0)
@@ -656,6 +661,8 @@ impl eframe::App for NativeApp {
                         self.codex_creation(ui);
                     } else if self.page == Page::Decks && self.active.is_none() {
                         self.deck_library(ui);
+                    } else if self.page == Page::Decks && self.deck_full {
+                        self.deck_overview(ui);
                     } else {
                         self.catalog(ui);
                     }
@@ -663,9 +670,9 @@ impl eframe::App for NativeApp {
         });
         self.detail_window(&ctx);
         self.draft_window(&ctx);
+        self.delete_window(&ctx);
         self.transfer_window(&ctx);
         self.hand_window(&ctx);
-        self.delete_window(&ctx);
         if let Some((started, center, rarity)) = self.burst {
             let t = started.elapsed().as_secs_f32() / 0.65;
             if t >= 1.0 || self.settings.reduced || self.motion.reduced {
@@ -937,26 +944,35 @@ pub fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::erro
                         }
                     }
                     "ai" | "compact-ai" => app.page = Page::CreateWithCodex,
-                    "decks" | "deck" | "compact-deck" => {
+                    "decks" | "deck" | "compact-deck" | "deck-full" | "compact-deck-full" => {
                         for (index, name) in ["Стражи леса", "Пески Лаара", "Дыхание бури"]
                             .iter()
                             .enumerate()
                         {
                             let mut deck = Deck::new(format!("smoke-{index}"), name.to_string());
-                            deck.cards = app
-                                .cat
-                                .cards
+                            // Mixed sets, editions, costs and repeated copies exercise the
+                            // compact editor and keep the histogram visible in smoke captures.
+                            let sample = [
+                                "80010", "10020", "70007", "10007pf", "60003", "50010", "40001",
+                                "30003", "20001", "10002",
+                            ];
+                            deck.cards = sample
                                 .iter()
-                                .skip(index * 20)
+                                .cycle()
+                                .skip(index)
                                 .take(30)
-                                .map(|c| c.id.clone())
+                                .map(|id| (*id).to_string())
                                 .collect();
                             deck.allowed_sets = Some(app.cat.set_ids());
+                            if smoke_view.ends_with("-full") {
+                                deck.side = vec!["10010".into(), "10010".into(), "80001".into()];
+                            }
                             app.user.decks.push(deck);
                         }
                         app.page = Page::Decks;
-                        if smoke_view == "deck" || smoke_view == "compact-deck" {
+                        if smoke_view != "decks" {
                             app.active = Some("smoke-0".into());
+                            app.deck_full = smoke_view.ends_with("-full");
                         }
                     }
                     "hover" | "hover-plain" => {
@@ -1013,6 +1029,280 @@ mod tests {
         }
         assert_eq!(storage::load(&app.store.path, &app.cat).unwrap(), app.user);
     }
+    #[test]
+    fn compact_deck_rows_stay_within_panel_and_top_navigation_saves_name() {
+        let (_root, mut app, ctx) = fixture();
+        let mut deck = Deck::new("compact".into(), "Колода".into());
+        deck.cards = ["80010", "10020", "10007pf", "10002"]
+            .iter()
+            .cycle()
+            .take(12)
+            .map(|id| (*id).to_string())
+            .collect();
+        app.active = Some(deck.id.clone());
+        app.user.decks.push(deck);
+        app.page = Page::Decks;
+        let screen = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(850.0, 600.0));
+        let mut target = None;
+        for _ in 0..24 {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(screen),
+                    ..Default::default()
+                },
+                |ui| {
+                    app.top(ui);
+                    let panel = egui::Panel::right("test-deck")
+                        .default_size(340.0)
+                        .min_size(280.0)
+                        .resizable(true)
+                        .frame(egui::Frame::new().inner_margin(16))
+                        .show(ui, |ui| app.deck_panel(ui));
+                    assert!(
+                        panel.response.rect.width() <= 341.0,
+                        "rows widened the deck panel: {:?}",
+                        panel.response.rect
+                    );
+                },
+            );
+            output.textures_delta.clear();
+            for shape in &output.shapes {
+                if let egui::epaint::Shape::Text(text) = &shape.shape {
+                    let label = text.galley.text();
+                    assert!(
+                        ![
+                            "Все колоды",
+                            "Копия",
+                            "Удалить",
+                            "Импорт колод",
+                            "Экспорт",
+                            "Печать"
+                        ]
+                        .contains(&label)
+                    );
+                    if label == "Мои колоды" {
+                        target = Some(text.galley.rect.translate(text.pos.to_vec2()).center());
+                    }
+                    if label == "Раздача" {
+                        let rect = text.galley.rect.translate(text.pos.to_vec2());
+                        assert!(
+                            rect.top() > screen.bottom() - 100.0,
+                            "deal action is pinned at the bottom"
+                        );
+                        assert!(shape.clip_rect.contains_rect(rect), "clipped deal action");
+                    }
+                    if label.starts_with('#') {
+                        let rect = text.galley.rect.translate(text.pos.to_vec2());
+                        assert!(shape.clip_rect.contains_rect(rect), "clipped card number");
+                    }
+                }
+            }
+        }
+        app.rename = Some(("compact".into(), "Новое имя".into()));
+        let pos = target.expect("top deck navigation");
+        for pressed in [true, false] {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(screen),
+                    events: vec![
+                        egui::Event::PointerMoved(pos),
+                        egui::Event::PointerButton {
+                            pos,
+                            button: egui::PointerButton::Primary,
+                            pressed,
+                            modifiers: egui::Modifiers::NONE,
+                        },
+                    ],
+                    ..Default::default()
+                },
+                |ui| app.top(ui),
+            );
+            output.textures_delta.clear();
+        }
+        assert!(app.active.is_none(), "top navigation opens the library");
+        saved(&mut app, &ctx);
+        assert_eq!(app.user.decks[0].name, "Новое имя");
+        assert!(app.active.is_none(), "saving must not reopen the editor");
+    }
+
+    #[test]
+    fn library_delete_requires_confirmation_and_supports_undo() {
+        let (_root, mut app, ctx) = fixture();
+        app.page = Page::Decks;
+        app.user.decks = vec![
+            Deck::new("first".into(), "Первая колода".into()),
+            Deck::new("second".into(), "Вторая колода".into()),
+        ];
+        let before = app.user.clone();
+        let render = |app: &mut NativeApp, events| {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(850.0, 600.0),
+                    )),
+                    events,
+                    ..Default::default()
+                },
+                |ui| {
+                    egui::CentralPanel::default().show(ui, |ui| app.deck_library(ui));
+                    app.delete_window(&ctx);
+                },
+            );
+            output.textures_delta.clear();
+            output
+        };
+        let click = |app: &mut NativeApp, pos| {
+            for pressed in [true, false] {
+                render(
+                    app,
+                    vec![
+                        egui::Event::PointerMoved(pos),
+                        egui::Event::PointerButton {
+                            pos,
+                            button: egui::PointerButton::Primary,
+                            pressed,
+                            modifiers: egui::Modifiers::NONE,
+                        },
+                    ],
+                );
+            }
+        };
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        let delete_positions = |output: &egui::FullOutput| {
+            output
+                .shapes
+                .iter()
+                .filter_map(|shape| {
+                    if let egui::epaint::Shape::Text(text) = &shape.shape
+                        && text.galley.text() == "Удалить"
+                    {
+                        Some(text.galley.rect.translate(text.pos.to_vec2()).center())
+                    } else {
+                        None
+                    }
+                })
+                .collect::<Vec<_>>()
+        };
+        let positions = delete_positions(&output);
+        assert_eq!(positions.len(), 2, "each library tile has a delete action");
+        click(&mut app, positions[0]);
+        assert_eq!(app.delete.as_deref(), Some("first"));
+        assert_eq!(
+            app.user, before,
+            "opening confirmation cannot delete a deck"
+        );
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        let confirm = *delete_positions(&output)
+            .last()
+            .expect("confirmation action");
+        click(&mut app, confirm);
+        saved(&mut app, &ctx);
+        assert_eq!(app.user.decks.len(), 1);
+        assert_eq!(app.user.decks[0].id, "second");
+        app.undo();
+        saved(&mut app, &ctx);
+        assert_eq!(app.user, before);
+    }
+
+    #[test]
+    fn detailed_deck_toggle_shows_only_deck_and_reserve_and_preserves_filters() {
+        let (_root, mut app, ctx) = fixture();
+        let mut deck = Deck::new("overview".into(), "Подробная колода".into());
+        deck.cards = vec!["10002".into(); 3];
+        deck.side = vec!["80010".into(); 2];
+        app.user.decks.push(deck);
+        app.page = Page::Decks;
+        app.active = Some("overview".into());
+        app.filter.query = "no matching cards".into();
+        let before = app.user.clone();
+        let filter = app.filter.clone();
+        let mut frame = eframe::Frame::_new_kittest();
+        let mut render = |app: &mut NativeApp, events| {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(1280.0, 860.0),
+                    )),
+                    events,
+                    ..Default::default()
+                },
+                |ui| app.ui(ui, &mut frame),
+            );
+            output.textures_delta.clear();
+            output
+        };
+        let text_rect = |output: &egui::FullOutput, label: &str| {
+            output.shapes.iter().find_map(|shape| {
+                if let egui::epaint::Shape::Text(text) = &shape.shape
+                    && text.galley.text() == label
+                {
+                    Some(text.galley.rect.translate(text.pos.to_vec2()))
+                } else {
+                    None
+                }
+            })
+        };
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        assert_eq!(app.visible_cards, 0, "catalog filter excludes every card");
+        let button = text_rect(&output, "Подробно").expect("detail toggle");
+        for pressed in [true, false] {
+            render(
+                &mut app,
+                vec![
+                    egui::Event::PointerMoved(button.center()),
+                    egui::Event::PointerButton {
+                        pos: button.center(),
+                        button: egui::PointerButton::Primary,
+                        pressed,
+                        modifiers: egui::Modifiers::NONE,
+                    },
+                ],
+            );
+        }
+        assert!(app.deck_full);
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        assert_eq!(
+            app.visible_cards, 2,
+            "gallery includes deck and reserve despite catalog filters"
+        );
+        assert!(text_rect(&output, "Запас · 2").is_some());
+        assert!(text_rect(&output, "×3").is_some());
+        assert!(text_rect(&output, "Отбор карт").is_none());
+        assert!(text_rect(&output, "Книга карт").is_none());
+        assert_eq!(app.user, before);
+        let button = text_rect(&output, "Карты").expect("return to catalog");
+        for pressed in [true, false] {
+            render(
+                &mut app,
+                vec![
+                    egui::Event::PointerMoved(button.center()),
+                    egui::Event::PointerButton {
+                        pos: button.center(),
+                        button: egui::PointerButton::Primary,
+                        pressed,
+                        modifiers: egui::Modifiers::NONE,
+                    },
+                ],
+            );
+        }
+        assert!(!app.deck_full);
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        assert!(text_rect(&output, "Отбор карт").is_some());
+        assert_eq!(app.filter, filter);
+        assert_eq!(app.user, before);
+        assert!(
+            app.pending.is_none(),
+            "view switching must not modify the deck"
+        );
+    }
+
     #[test]
     fn deck_batch_preview_save_undo_and_stale_picker_results() {
         let (_root, mut app, ctx) = fixture();

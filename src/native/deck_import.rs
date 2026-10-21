@@ -1,5 +1,4 @@
 use super::*;
-use crate::formats;
 
 pub(super) struct DeckFile {
     pub(super) path: PathBuf,
@@ -202,42 +201,12 @@ impl NativeApp {
             self.transfer = Some(transfer);
         }
     }
-
-    pub(super) fn deck_export_menu(&mut self, ui: &mut egui::Ui, deck: &Deck) {
-        let busy = self.file_result.is_some();
-        ui.add_enabled_ui(!busy, |ui| {
-            for (label, extension, names) in [
-                ("Деклист .txt", "txt", true),
-                ("По ID .brsd", "brsd", false),
-            ] {
-                if ui.button(label).clicked() {
-                    self.export(
-                        &format!("deck.{extension}"),
-                        formats::write_deck(deck, &self.cat, names),
-                        ui.ctx(),
-                    );
-                    ui.close();
-                }
-            }
-            if ui.button("Копировать компактный код").clicked() {
-                ui.ctx().copy_text(formats::write_compact(deck, &self.cat));
-                self.status = "Код колоды скопирован".into();
-                ui.close();
-            }
-            if ui.button("Tabletop Simulator .json").clicked() {
-                match formats::write_tts(deck, &self.cat) {
-                    Ok(text) => self.export("deck-tts.json", text, ui.ctx()),
-                    Err(error) => self.status = error,
-                }
-                ui.close();
-            }
-        });
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::formats;
 
     #[test]
     fn file_names_override_embedded_names_and_statistics_count_all_copies() {

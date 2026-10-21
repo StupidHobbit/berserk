@@ -69,6 +69,20 @@ fn set_selector(ui: &mut egui::Ui, cat: &Catalog, selected: &mut Vec<u16>, open:
     });
 }
 impl NativeApp {
+    fn show_deck_library(&mut self) {
+        if let Some((id, name)) = self.rename.clone()
+            && !name.trim().is_empty()
+            && self
+                .deck()
+                .is_some_and(|deck| deck.id == id && deck.name != name)
+        {
+            self.edit_deck(|deck| deck.name = name);
+        }
+        self.active = None;
+        self.deck_full = false;
+        self.hand = Hand::default();
+    }
+
     pub(super) fn top(&mut self, root: &mut egui::Ui) {
         egui::Panel::top("header").frame(egui::Frame::new().inner_margin(egui::Margin::symmetric(22, 14))).show(root, |ui| {
             let compact = ui.available_width() < 1000.0;
@@ -77,7 +91,7 @@ impl NativeApp {
                 ui.label(skin::heading("БЕРСЕРК", if compact {24.0}else{28.0}).color(skin::GOLD));
                 ui.add_space(if compact {8.0}else{20.0});
                 for (page,label) in [(Page::Catalog,"Энциклопедия"),(Page::Collection,"Моя коллекция"),(Page::Decks,"Мои колоды")] {
-                    if skin::button(&self.skin, ui, label, egui::vec2(if compact {130.0}else{145.0}, 40.0), self.page == page || (page == Page::Decks && self.page == Page::CreateWithCodex)).clicked() { self.page = page; self.page_number = 0; self.dirty = true; }
+                    if skin::button(&self.skin, ui, label, egui::vec2(if compact {130.0}else{145.0}, 40.0), self.page == page || (page == Page::Decks && self.page == Page::CreateWithCodex)).clicked() { self.page = page; if page == Page::Decks { self.show_deck_library(); } self.page_number = 0; self.dirty = true; }
                 }
                 if !compact && ui.button("Мои данные").clicked() { self.open_transfer(TransferKind::Backup); }
                 if !compact && ui.add_enabled(!self.undo.is_empty() && self.pending.is_none(), egui::Button::new("Отменить")).clicked() { self.undo(); }
@@ -379,12 +393,21 @@ impl NativeApp {
         let image_width = width.min(image_limit);
         let row_height = if self.settings.list {
             if ui.available_width() < 460.0 {
-                160.0
+                if self.page == Page::Decks {
+                    160.0
+                } else {
+                    122.0
+                }
             } else {
                 84.0
             }
         } else {
-            image_width * 1.4167 + 162.0
+            image_width * 1.4167
+                + if self.page == Page::Decks {
+                    162.0
+                } else {
+                    124.0
+                }
         };
         egui::ScrollArea::vertical()
             .id_salt(("catalog", self.page_number, self.settings.list))
@@ -476,6 +499,9 @@ impl NativeApp {
                     }
                 }
             });
+            if self.page != Page::Decks {
+                return;
+            }
             let allowed = self.deck().is_none_or(|d| d.allows(card));
             let width = ui.available_width().clamp(115.0, 250.0);
             ui.add_enabled_ui(allowed, |ui| {
@@ -635,9 +661,11 @@ impl NativeApp {
                         ui.label(format!("Художник: {}",card.art));
                         if card.uses_base_art() { ui.label("Скан этого издания пока недоступен. Показана иллюстрация обычной карты."); }
                         ui.separator(); self.card_controls(ui,&card);
-                        let name = self.deck().map(|d| d.name.as_str()).unwrap_or("Выберите колоду");
-                        egui::ComboBox::from_id_salt("detail_deck").selected_text(name).show_ui(ui, |ui| { for d in &self.user.decks { if ui.selectable_value(&mut self.active,Some(d.id.clone()),&d.name).changed() { self.dirty = true; } } });
-                        ui.checkbox(&mut self.side,"Добавлять в запас");
+                        if self.page == Page::Decks {
+                            let name = self.deck().map(|d| d.name.as_str()).unwrap_or("Выберите колоду");
+                            egui::ComboBox::from_id_salt("detail_deck").selected_text(name).show_ui(ui, |ui| { for d in &self.user.decks { if ui.selectable_value(&mut self.active,Some(d.id.clone()),&d.name).changed() { self.dirty = true; } } });
+                            ui.checkbox(&mut self.side,"Добавлять в запас");
+                        }
                         ui.separator(); ui.strong("Издания в коллекции");
                         for alt in std::iter::once(String::new()).chain(card.alts.clone()) {
                             let Some(edition) = self.cat.get(&format!("{}{}",card.base_id,alt)).cloned() else { continue };
@@ -719,9 +747,6 @@ impl NativeApp {
             if ui.button("Создать с Codex").clicked() {
                 self.page = Page::CreateWithCodex;
             }
-            if ui.button("Импорт колод").clicked() {
-                self.open_transfer(TransferKind::Deck);
-            }
         });
         if self.progress.busy() {
             ui.horizontal_wrapped(|ui| {
@@ -732,7 +757,7 @@ impl NativeApp {
                 }
             });
         }
-        ui.add_space(20.0);
+        ui.add_space(12.0);
         if self.user.decks.is_empty() {
             ui.add_space(60.0);
             ui.vertical_centered(|ui| {
@@ -745,7 +770,7 @@ impl NativeApp {
             .min(340.0);
         egui::ScrollArea::vertical().show_rows(
             ui,
-            276.0,
+            140.0,
             self.user.decks.len().div_ceil(columns),
             |ui, rows| {
                 for row in rows {
@@ -757,7 +782,7 @@ impl NativeApp {
                             let d = self.user.decks[index].clone();
                             ui.push_id(&d.id, |ui| {
                                 let (rect, _) = ui.allocate_exact_size(
-                                    egui::vec2(width, 260.0),
+                                    egui::vec2(width, 132.0),
                                     egui::Sense::hover(),
                                 );
                                 ui.painter().rect_filled(
@@ -773,14 +798,10 @@ impl NativeApp {
                                     0.0,
                                 );
                                 skin::ornament(ui, rect);
-                                for (i, id) in d.cards.iter().take(3).enumerate() {
+                                for (i, id) in d.cards.iter().take(1).enumerate() {
                                     if let Some(card) = self.cat.get(id).cloned() {
                                         let r = egui::Rect::from_min_size(
-                                            rect.min
-                                                + egui::vec2(
-                                                    22.0 + i as f32 * 62.0,
-                                                    18.0 + i as f32 * 3.0,
-                                                ),
+                                            rect.min + egui::vec2(12.0 + i as f32 * 8.0, 14.0),
                                             egui::vec2(74.0, 105.0),
                                         );
                                         let response = ui.interact(
@@ -795,24 +816,27 @@ impl NativeApp {
                                     egui::UiBuilder::new()
                                         .layout(egui::Layout::top_down(egui::Align::Min))
                                         .max_rect(egui::Rect::from_min_max(
-                                            rect.min + egui::vec2(18.0, 137.0),
+                                            rect.min + egui::vec2(98.0, 14.0),
                                             rect.max - egui::vec2(18.0, 10.0),
                                         )),
                                     |ui| {
                                         ui.add(
                                             egui::Label::new(
-                                                skin::heading(&d.name, 21.0).color(skin::GOLD),
+                                                skin::heading(&d.name, 18.0).color(skin::GOLD),
                                             )
                                             .truncate(),
                                         )
                                         .on_hover_text(&d.name);
-                                        ui.label(
-                                            RichText::new(format!(
-                                                "{} карт  ·  {} в запасе",
-                                                d.cards.len(),
-                                                d.side.len()
-                                            ))
-                                            .color(egui::Color32::from_rgb(202, 190, 161)),
+                                        ui.add(
+                                            egui::Label::new(
+                                                RichText::new(format!(
+                                                    "{} карт  ·  {} в запасе",
+                                                    d.cards.len(),
+                                                    d.side.len()
+                                                ))
+                                                .color(egui::Color32::from_rgb(202, 190, 161)),
+                                            )
+                                            .truncate(),
                                         );
                                         ui.horizontal(|ui| {
                                             ui.spacing_mut().item_spacing.x = 6.0;
@@ -820,35 +844,29 @@ impl NativeApp {
                                                 &self.skin,
                                                 ui,
                                                 "Открыть",
-                                                egui::vec2(100.0, 34.0),
+                                                egui::vec2(84.0, 34.0),
                                                 false,
                                             )
                                             .clicked()
                                             {
                                                 self.active = Some(d.id.clone());
+                                                self.deck_full = false;
                                                 self.side = false;
                                                 self.dirty = true;
                                                 self.hand = Hand::default();
                                                 self.notes_draft = None;
                                             }
-                                            ui.menu_button(
-                                                RichText::new("Ещё").color(skin::INK),
-                                                |ui| {
-                                                    if ui.button("Создать копию").clicked()
-                                                    {
-                                                        let mut copy = d.clone();
-                                                        copy.id = Self::id();
-                                                        copy.name.push_str(" — копия");
-                                                        copy.agent_session = None;
-                                                        self.change(|u| u.decks.insert(0, copy));
-                                                        ui.close();
-                                                    }
-                                                    if ui.button("Удалить").clicked() {
-                                                        self.delete = Some(d.id.clone());
-                                                        ui.close();
-                                                    }
-                                                },
-                                            );
+                                            if skin::button(
+                                                &self.skin,
+                                                ui,
+                                                "Удалить",
+                                                egui::vec2(70.0, 34.0),
+                                                false,
+                                            )
+                                            .clicked()
+                                            {
+                                                self.delete = Some(d.id.clone());
+                                            }
                                         });
                                     },
                                 );
@@ -863,11 +881,42 @@ impl NativeApp {
         let Some(deck) = self.deck().cloned() else {
             return;
         };
-        if ui.button("Все колоды").clicked() {
-            self.active = None;
-            self.dirty = true;
-            return;
-        }
+        egui::Panel::bottom("deck-actions")
+            .frame(egui::Frame::new().inner_margin(egui::Margin::symmetric(0, 8)))
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.spacing_mut().button_padding.x = 4.0;
+                    if ui
+                        .add_enabled(!deck.cards.is_empty(), egui::Button::new("Раздача"))
+                        .clicked()
+                    {
+                        self.hand = Hand {
+                            open: true,
+                            ..Default::default()
+                        };
+                        self.draw();
+                    }
+                    if ui
+                        .button(if self.deck_full {
+                            "Карты"
+                        } else {
+                            "Подробно"
+                        })
+                        .on_hover_text(if self.deck_full {
+                            "Вернуться к каталогу карт"
+                        } else {
+                            "Показать все карты колоды, запас и вероятность раздачи"
+                        })
+                        .clicked()
+                    {
+                        self.deck_full = !self.deck_full;
+                    }
+                    ui.menu_button("Обсудить с Codex", |ui| {
+                        ui.set_width(320.0);
+                        self.refine_with_codex(ui);
+                    });
+                });
+            });
         egui::ScrollArea::vertical()
             .id_salt("deck_panel")
             .show(ui, |ui| {
@@ -880,32 +929,6 @@ impl NativeApp {
                     let name = name.clone();
                     self.edit_deck(|d| d.name = name);
                 }
-                ui.horizontal_wrapped(|ui| {
-                    if ui.button("Копия").clicked() {
-                        let mut copy = deck.clone();
-                        copy.id = Self::id();
-                        copy.name.push_str(" — копия");
-                        copy.agent_session = None;
-                        self.change(|u| u.decks.insert(0, copy));
-                    }
-                    if ui.button("Удалить").clicked() {
-                        self.delete = Some(deck.id.clone());
-                    }
-                    if ui.button("Импорт колод").clicked() {
-                        self.open_transfer(TransferKind::Deck);
-                    }
-                    ui.menu_button("Экспорт", |ui| self.deck_export_menu(ui, &deck));
-                    if ui.button("Печать").clicked() {
-                        self.print(&deck, ui.ctx());
-                    }
-                    if ui.button("Раздача").clicked() {
-                        self.hand = Hand {
-                            open: true,
-                            ..Default::default()
-                        };
-                        self.draw();
-                    }
-                });
                 ui.horizontal(|ui| {
                     ui.selectable_value(
                         &mut self.side,
@@ -919,98 +942,110 @@ impl NativeApp {
                     );
                 });
                 let ids = if self.side { &deck.side } else { &deck.cards };
-                for (id, count) in grouped(ids) {
-                    let Some(card) = self.cat.get(&id).cloned() else {
-                        continue;
-                    };
-                    ui.push_id(&id, |ui| {
-                        egui::Frame::new()
-                            .fill(egui::Color32::from_black_alpha(35))
-                            .inner_margin(6)
-                            .corner_radius(3)
-                            .show(ui, |ui| {
-                                ui.spacing_mut().item_spacing = egui::vec2(4.0, 3.0);
-                                ui.spacing_mut().button_padding = egui::vec2(6.0, 5.0);
-                                ui.horizontal(|ui| {
-                                    let name_width = (ui.available_width() - 148.0).max(50.0);
-                                    if ui
-                                        .add_sized(
-                                            [name_width, 32.0],
+                let cards: Vec<_> = deck_widgets::sorted_cards(ids, &self.cat)
+                    .into_iter()
+                    .map(|(card, count)| (card.clone(), count))
+                    .collect();
+                ui.scope(|ui| {
+                    ui.spacing_mut().item_spacing.y = 3.0;
+                    for (card, count) in cards {
+                        let id = &card.id;
+                        ui.push_id(id, |ui| {
+                            egui::Frame::new()
+                                .fill(egui::Color32::from_black_alpha(35))
+                                .inner_margin(egui::Margin::symmetric(4, 2))
+                                .corner_radius(3)
+                                .show(ui, |ui| {
+                                    ui.spacing_mut().item_spacing.x = 3.0;
+                                    ui.spacing_mut().button_padding = egui::vec2(3.0, 2.0);
+                                    ui.spacing_mut().interact_size = egui::vec2(22.0, 26.0);
+                                    ui.horizontal(|ui| {
+                                        deck_widgets::set_icon(
+                                            ui,
+                                            card.set_id,
+                                            &self.cat.set_name(card.set_id),
+                                        );
+                                        ui.add_sized(
+                                            [30.0, 26.0],
                                             egui::Label::new(
-                                                RichText::new(&card.name).color(skin::GOLD),
-                                            )
-                                            .truncate()
-                                            .sense(egui::Sense::click()),
+                                                RichText::new(format!("#{}", card.number))
+                                                    .size(11.0),
+                                            ),
                                         )
-                                        .on_hover_text(&card.name)
-                                        .clicked()
-                                    {
-                                        self.detail = Some(id.clone());
-                                    }
-                                    ui.add_sized(
-                                        [32.0, 32.0],
-                                        egui::Label::new(format!("×{count}")).truncate(),
-                                    );
-                                    let side = self.side;
-                                    if ui
-                                        .add_sized([32.0, 32.0], egui::Button::new("−"))
-                                        .on_hover_text("Убрать карту")
-                                        .clicked()
-                                    {
-                                        self.edit_deck(|d| d.remove(&id, side));
-                                    }
-                                    if ui
-                                        .add_sized([32.0, 32.0], egui::Button::new("+"))
-                                        .on_hover_text("Добавить карту")
-                                        .clicked()
-                                    {
-                                        self.edit_deck(|d| d.add(&id, side));
-                                    }
-                                    ui.menu_button("…", |ui| {
+                                        .on_hover_text(self.cat.edition_name(&card));
+                                        // Reserve every control and gap so rows cannot widen the panel.
+                                        let name_width = (ui.available_width() - 134.0).max(24.0);
                                         if ui
-                                            .button(if side {
-                                                "В колоду"
-                                            } else {
-                                                "В запас"
-                                            })
+                                            .allocate_ui_with_layout(
+                                                egui::vec2(name_width, 26.0),
+                                                egui::Layout::left_to_right(egui::Align::Center),
+                                                |ui| {
+                                                    ui.set_min_size(egui::vec2(name_width, 26.0));
+                                                    ui.add(
+                                                        egui::Label::new(
+                                                            RichText::new(&card.name)
+                                                                .color(skin::GOLD),
+                                                        )
+                                                        .truncate()
+                                                        .sense(egui::Sense::click()),
+                                                    )
+                                                },
+                                            )
+                                            .inner
+                                            .on_hover_text(format!(
+                                                "{} · {}",
+                                                card.name,
+                                                self.cat.edition_name(&card)
+                                            ))
                                             .clicked()
                                         {
+                                            self.detail = Some(id.clone());
+                                        }
+                                        deck_widgets::coin(ui, card.cost, card.elite);
+                                        let side = self.side;
+                                        if ui
+                                            .add_sized([22.0, 26.0], egui::Button::new("−"))
+                                            .on_hover_text("Убрать карту")
+                                            .clicked()
+                                        {
+                                            self.edit_deck(|d| d.remove(id, side));
+                                        }
+                                        ui.add_sized(
+                                            [24.0, 26.0],
+                                            egui::Label::new(count.to_string()).truncate(),
+                                        );
+                                        if ui
+                                            .add_sized([22.0, 26.0], egui::Button::new("+"))
+                                            .on_hover_text("Добавить карту")
+                                            .clicked()
+                                        {
+                                            self.edit_deck(|d| d.add(id, side));
+                                        }
+                                        if deck_widgets::move_button(ui, side).clicked() {
                                             self.edit_deck(|d| {
-                                                d.remove(&id, side);
-                                                d.add(&id, !side);
+                                                d.remove(id, side);
+                                                d.add(id, !side);
                                             });
-                                            ui.close();
                                         }
                                     });
                                 });
-                                ui.small(format!(
-                                    "Цена {}  ·  в коллекции {}",
-                                    card.cost,
-                                    self.user.count(&id)
-                                ));
-                            });
-                    });
-                }
+                        });
+                    }
+                });
                 let stats = Stats::of(&deck.cards, &self.cat);
                 ui.separator();
                 ui.label(format!(
                     "{} карт · золото {} · серебро {}",
                     stats.total, stats.gold, stats.silver
                 ));
-                ui.collapsing("Стоимость и стихии", |ui| {
-                    for (cost, n) in &stats.curve {
-                        ui.horizontal(|ui| {
-                            ui.label(format!("{cost}:"));
-                            ui.add(
-                                egui::ProgressBar::new(*n as f32 / stats.total.max(1) as f32)
-                                    .text(n.to_string()),
-                            );
-                        });
-                    }
-                    for (color, n) in &stats.colors {
-                        ui.label(format!("{}: {n}", self.cat.color_name(*color)));
-                    }
-                });
+                egui::CollapsingHeader::new("Стоимость и стихии")
+                    .default_open(true)
+                    .show(ui, |ui| {
+                        deck_widgets::histogram(ui, &stats);
+                        for (color, n) in &stats.colors {
+                            ui.label(format!("{}: {n}", self.cat.color_name(*color)));
+                        }
+                    });
                 ui.collapsing("Разрешённые наборы", |ui| {
                     let mut selected = deck
                         .allowed_sets
@@ -1072,7 +1107,6 @@ impl NativeApp {
                         }
                     }
                 }
-                self.refine_with_codex(ui);
             });
     }
     fn codex_status(&mut self, ui: &mut egui::Ui) {
@@ -1241,50 +1275,45 @@ impl NativeApp {
         }
     }
     fn refine_with_codex(&mut self, ui: &mut egui::Ui) {
-        egui::CollapsingHeader::new("Обсудить колоду с Codex")
-            .id_salt("codex-refine")
-            .show(ui, |ui| {
-                self.codex_status(ui);
-                ui.add(
-                    egui::TextEdit::multiline(&mut self.feedback)
-                        .desired_width(f32::INFINITY)
-                        .hint_text("Что изменить в колоде?"),
-                );
-                ui.checkbox(&mut self.restart, "Начать новую беседу");
-                if let Some(session) = self.deck().and_then(|d| d.agent_session.as_ref()) {
-                    ui.collapsing("История обсуждения", |ui| {
-                        for feedback in &session.feedback {
-                            ui.label(feedback);
-                        }
-                    });
-                }
-                if ui
-                    .add_enabled(
-                        self.ai_blocker(true).is_none(),
-                        egui::Button::new("Отправить"),
-                    )
-                    .clicked()
-                    && let Some(deck) = self.deck()
-                {
-                    self.build(BuildEvent::RefineDeck {
-                        request_id: Self::id(),
-                        deck_id: deck.id.clone(),
-                        expected_revision: agent::revision(deck),
-                        feedback: self.feedback.clone(),
-                        restart_session: self.restart,
-                    });
-                }
-                if let Some(reason) = self.ai_blocker(true) {
-                    ui.label(reason);
-                }
-                ui.label(&self.progress.message);
-                if self.progress.busy() && ui.button("Отменить генерацию").clicked()
-                {
-                    self.build(BuildEvent::CancelBuild {
-                        request_id: self.progress.request_id.clone(),
-                    });
+        self.codex_status(ui);
+        ui.add(
+            egui::TextEdit::multiline(&mut self.feedback)
+                .desired_width(f32::INFINITY)
+                .hint_text("Что изменить в колоде?"),
+        );
+        ui.checkbox(&mut self.restart, "Начать новую беседу");
+        if let Some(session) = self.deck().and_then(|d| d.agent_session.as_ref()) {
+            ui.collapsing("История обсуждения", |ui| {
+                for feedback in &session.feedback {
+                    ui.label(feedback);
                 }
             });
+        }
+        if ui
+            .add_enabled(
+                self.ai_blocker(true).is_none(),
+                egui::Button::new("Отправить"),
+            )
+            .clicked()
+            && let Some(deck) = self.deck()
+        {
+            self.build(BuildEvent::RefineDeck {
+                request_id: Self::id(),
+                deck_id: deck.id.clone(),
+                expected_revision: agent::revision(deck),
+                feedback: self.feedback.clone(),
+                restart_session: self.restart,
+            });
+        }
+        if let Some(reason) = self.ai_blocker(true) {
+            ui.label(reason);
+        }
+        ui.label(&self.progress.message);
+        if self.progress.busy() && ui.button("Отменить генерацию").clicked() {
+            self.build(BuildEvent::CancelBuild {
+                request_id: self.progress.request_id.clone(),
+            });
+        }
     }
     fn draw(&mut self) {
         if let Some(deck) = self.deck() {
@@ -1374,21 +1403,34 @@ impl NativeApp {
         let Some(id) = self.delete.clone() else {
             return;
         };
+        let Some(deck) = self.user.decks.iter().find(|deck| deck.id == id) else {
+            self.delete = None;
+            return;
+        };
+        let name = deck.name.clone();
         let mut open = true;
         egui::Window::new("Удалить колоду?")
+            .collapsible(false)
+            .resizable(false)
             .open(&mut open)
             .show(ctx, |ui| {
+                ui.label(format!("Удалить «{name}»?"));
                 ui.label("Удаление можно отменить.");
-                if ui
-                    .add_enabled(self.pending.is_none(), egui::Button::new("Удалить"))
-                    .clicked()
-                {
-                    self.change(|u| u.decks.retain(|d| d.id != id));
-                    self.delete = None;
-                }
-                if ui.button("Отмена").clicked() {
-                    self.delete = None;
-                }
+                ui.horizontal(|ui| {
+                    if ui
+                        .add_enabled(
+                            self.pending.is_none() && self.storage_error.is_none(),
+                            egui::Button::new("Удалить"),
+                        )
+                        .clicked()
+                    {
+                        self.change(|user| user.decks.retain(|deck| deck.id != id));
+                        self.delete = None;
+                    }
+                    if ui.button("Отмена").clicked() {
+                        self.delete = None;
+                    }
+                });
             });
         if !open {
             self.delete = None;
