@@ -34,7 +34,7 @@ def main():
     else:
         directory = assets = package
         assert (directory / ('berserk.exe' if os.name == 'nt' else 'berserk')).is_file()
-    binary = directory / ('berserk-mcp.exe' if os.name == 'nt' else 'berserk-mcp')
+    binary = directory / ('Berserk' if package.suffix == '.app' else ('berserk.exe' if os.name == 'nt' else 'berserk'))
     images = [p for p in (assets / 'public/cards').rglob('*') if p.suffix in {'.jpg', '.webp', '.png'}]
     assert len(images) > 1000, 'Card images missing from package'
     assert not (assets / 'web').exists(), 'Native release must not bundle a web runtime'

@@ -91,7 +91,7 @@ impl NativeApp {
                 ui.label(skin::heading("БЕРСЕРК", if compact {24.0}else{28.0}).color(skin::GOLD));
                 ui.add_space(if compact {8.0}else{20.0});
                 for (page,label) in [(Page::Catalog,"Энциклопедия"),(Page::Collection,"Моя коллекция"),(Page::Decks,"Мои колоды")] {
-                    if skin::button(&self.skin, ui, label, egui::vec2(if compact {130.0}else{145.0}, 40.0), self.page == page || (page == Page::Decks && self.page == Page::CreateWithCodex)).clicked() { self.page = page; if page == Page::Decks { self.show_deck_library(); } self.page_number = 0; self.dirty = true; }
+                    if skin::button(&self.skin, ui, label, egui::vec2(if compact {130.0}else{145.0}, 40.0), self.page == page || (page == Page::Decks && self.page == Page::Codex)).clicked() { self.page = page; if page == Page::Decks { self.show_deck_library(); } self.page_number = 0; self.dirty = true; }
                 }
                 if !compact && ui.button("Мои данные").clicked() { self.open_transfer(TransferKind::Backup); }
                 if !compact && ui.add_enabled(!self.undo.is_empty() && self.pending.is_none(), egui::Button::new("Отменить")).clicked() { self.undo(); }
@@ -745,7 +745,7 @@ impl NativeApp {
                 self.draft = Some(d);
             }
             if ui.button("Создать с Codex").clicked() {
-                self.page = Page::CreateWithCodex;
+                self.open_codex(None);
             }
         });
         if self.progress.busy() {
@@ -753,7 +753,7 @@ impl NativeApp {
                 ui.spinner();
                 ui.label(&self.progress.message);
                 if ui.button("Открыть Codex").clicked() {
-                    self.page = Page::CreateWithCodex;
+                    self.open_codex(self.progress.deck_id.clone());
                 }
             });
         }
@@ -911,10 +911,9 @@ impl NativeApp {
                     {
                         self.deck_full = !self.deck_full;
                     }
-                    ui.menu_button("Обсудить с Codex", |ui| {
-                        ui.set_width(320.0);
-                        self.refine_with_codex(ui);
-                    });
+                    if ui.button("Обсудить с Codex").clicked() {
+                        self.open_codex(Some(deck.id.clone()));
+                    }
                 });
             });
         egui::ScrollArea::vertical()
@@ -1175,145 +1174,313 @@ impl NativeApp {
                 }
             });
     }
-    pub(super) fn codex_creation(&mut self, ui: &mut egui::Ui) {
-        ui.horizontal(|ui| {
+    pub(super) fn codex_view(&mut self, ui: &mut egui::Ui) {
+        let deck = self
+            .codex_deck
+            .as_ref()
+            .and_then(|id| self.user.decks.iter().find(|deck| &deck.id == id))
+            .cloned();
+        let editing = self.codex_deck.is_some();
+        let own_progress = self.codex_owns_progress();
+        let busy = own_progress && self.progress.busy();
+        ui.horizontal_wrapped(|ui| {
             if ui.button("К моим колодам").clicked() {
                 self.page = Page::Decks;
                 self.active = None;
             }
-            ui.heading("Создать с Codex");
+            ui.heading(if editing {
+                "Обсудить с Codex"
+            } else {
+                "Создать с Codex"
+            });
         });
-        ui.label("Соберите колоду из своих карт и получите план игры.");
-        ui.add_space(6.0);
-        // Keep the primary action visible even when sets or the prompt are expanded.
-        let body_height = (ui.available_height() - 120.0).max(100.0);
-        egui::ScrollArea::vertical().id_salt("codex-create-form").max_height(body_height)
-            .auto_shrink([false, false]).show(ui, |ui| {
-                ui.set_max_width(780.0);
-                self.codex_status(ui);
-                ui.add_space(10.0);
-                ui.horizontal_wrapped(|ui| {
-                    ui.strong(format!("В коллекции: {} карт", self.user.total()));
-                    if ui.button("Импорт коллекции").clicked() { self.open_transfer(TransferKind::Collection); }
-                    ui.label("Размер колоды");
-                    ui.add(egui::DragValue::new(&mut self.ai_size).range(30..=50).suffix(" карт"));
-                });
-                ui.add_space(6.0);
-                ui.strong("Какой колодой хотите играть?");
-                ui.add(egui::TextEdit::multiline(&mut self.preferences).desired_rows(3).desired_width(f32::INFINITY)
-                    .hint_text("Например: агрессивная колода лесов и болот, с простым планом игры"));
-                set_selector(ui, &self.cat, &mut self.settings.allowed_sets, false);
-                ui.collapsing("Как Codex собирает колоду", |ui| {
-                    ui.label("Учитывает доступные карты и выбранные наборы, описывает стратегию и проверяет пять стартовых раздач.");
-                    ui.hyperlink_to("Основы колодостроения", crate::deck_prompt::ARTICLE_URL);
-                    ui.collapsing("Посмотреть запрос", |ui| {
-                        match crate::deck_prompt::deck_build_prompt(self.ai_size, &self.preferences, Some(&self.settings.allowed_sets)) {
-                            Ok(mut prompt) => { ui.add(egui::TextEdit::multiline(&mut prompt).desired_rows(10).desired_width(f32::INFINITY).interactive(false)); }
-                            Err(error) => { ui.label(error); }
-                        }
+        ui.horizontal_wrapped(|ui| {
+            if let Some(deck) = &deck {
+                ui.strong(format!("{} · {} карт", deck.name, deck.cards.len()));
+                if ui.button("Открыть колоду").clicked() {
+                    self.active = Some(deck.id.clone());
+                    self.page = Page::Decks;
+                }
+                if ui
+                    .add_enabled(
+                        !self.progress.busy(),
+                        egui::Button::new("Новая колода с Codex"),
+                    )
+                    .clicked()
+                {
+                    self.open_codex(None);
+                }
+            } else if editing {
+                ui.label("Эта колода удалена. Вернитесь к моим колодам.");
+            } else {
+                ui.label("Соберите колоду из своих карт и получите план игры.");
+            }
+        });
+        // One conversation body and one pinned composer for both modes.
+        let chat = if own_progress {
+            self.progress.chat.clone()
+        } else {
+            deck.as_ref()
+                .and_then(|deck| deck.agent_session.as_ref())
+                .map(DeckAgentSession::history)
+                .unwrap_or_default()
+        };
+        let has_chat = !chat.entries.is_empty();
+        ui.strong("Чат с Codex");
+        let body_height = (ui.available_height() - if busy { 100.0 } else { 175.0 }).max(100.0);
+        egui::ScrollArea::vertical().id_salt(("codex-body", &self.codex_deck))
+            .max_height(body_height).auto_shrink([false, false]).stick_to_bottom(has_chat)
+            .show(ui, |ui| {
+                if has_chat {
+                    ui.collapsing("Подключение и параметры", |ui| self.codex_parameters(ui, deck.as_ref(), editing));
+                } else {
+                    self.codex_parameters(ui, deck.as_ref(), editing);
+                }
+                ui.add_space(8.0);
+                self.codex_chat(ui, &chat);
+                if !has_chat {
+                    ui.label(if editing {
+                        "Что хотите улучшить? Codex обновит эту колоду и её план игры с учётом ваших пожеланий."
+                    } else {
+                        "Опишите желаемую колоду. Здесь появятся ответы Codex и ход работы."
                     });
-                });
-                ui.small("Codex получает правила и количество карт. Покупные цены не передаются.");
+                }
             });
         ui.separator();
-        if self.progress.busy() {
-            ui.horizontal(|ui| {
+        if busy {
+            ui.horizontal_wrapped(|ui| {
                 ui.spinner();
                 ui.strong("Codex работает над колодой");
-                if ui.button("Отменить генерацию").clicked() {
+                if ui
+                    .add_enabled(
+                        self.progress.phase != "saving",
+                        egui::Button::new("Отменить генерацию"),
+                    )
+                    .clicked()
+                {
                     self.build(BuildEvent::CancelBuild {
                         request_id: self.progress.request_id.clone(),
                     });
                 }
             });
-            egui::ScrollArea::vertical()
-                .id_salt("codex-progress-message")
-                .max_height(48.0)
-                .show(ui, |ui| {
-                    ui.label(&self.progress.message);
-                });
         } else {
+            ui.strong(if editing {
+                "Что изменить в колоде?"
+            } else {
+                "Какой колодой хотите играть?"
+            });
+            let text = if editing {
+                &mut self.feedback
+            } else {
+                &mut self.preferences
+            };
+            ui.add(
+                egui::TextEdit::multiline(text)
+                    .desired_rows(2)
+                    .desired_width(f32::INFINITY)
+                    .hint_text(if editing {
+                        "Например: больше защиты при игре вторым"
+                    } else {
+                        "Например: агрессивная колода лесов и болот"
+                    }),
+            );
             ui.horizontal_wrapped(|ui| {
+                if editing {
+                    ui.checkbox(&mut self.restart, "Начать новую беседу");
+                }
+                let enabled = self.ai_blocker(editing).is_none() && (!editing || deck.is_some());
                 if ui
                     .add_enabled(
-                        self.ai_blocker(false).is_none(),
+                        enabled,
                         egui::Button::new(
-                            egui::RichText::new("Создать колоду")
-                                .strong()
-                                .color(skin::INK),
+                            egui::RichText::new(if editing {
+                                "Отправить пожелания"
+                            } else {
+                                "Создать колоду"
+                            })
+                            .strong()
+                            .color(skin::INK),
                         )
                         .fill(skin::GOLD)
-                        .min_size(egui::vec2(220.0, 42.0)),
+                        .min_size(egui::vec2(190.0, 36.0)),
                     )
                     .clicked()
                 {
-                    self.build(BuildEvent::BuildDeck {
-                        request_id: Self::id(),
-                        size: self.ai_size,
-                        preferences: self.preferences.clone(),
-                        allowed_sets: Some(self.settings.allowed_sets.clone()),
-                    });
+                    let event = if let Some(deck) = &deck {
+                        BuildEvent::RefineDeck {
+                            request_id: Self::id(),
+                            deck_id: deck.id.clone(),
+                            expected_revision: agent::revision(deck),
+                            feedback: self.feedback.clone(),
+                            restart_session: self.restart,
+                        }
+                    } else {
+                        BuildEvent::BuildDeck {
+                            request_id: Self::id(),
+                            size: self.ai_size,
+                            preferences: self.preferences.clone(),
+                            allowed_sets: Some(self.settings.allowed_sets.clone()),
+                        }
+                    };
+                    self.build(event);
                 }
-                if self.user.total() == 0 && ui.button("Добавить карты").clicked() {
+                if !editing && self.user.total() == 0 && ui.button("Добавить карты").clicked()
+                {
                     self.page = Page::Catalog;
                     self.filter = Filter::default();
                     self.page_number = 0;
                     self.dirty = true;
                 }
             });
-            egui::ScrollArea::vertical()
-                .id_salt("codex-create-message")
-                .max_height(48.0)
-                .show(ui, |ui| {
-                    if let Some(reason) = self.ai_blocker(false) {
-                        ui.label(reason);
-                    }
-                    if !self.progress.message.is_empty() {
-                        ui.label(&self.progress.message);
-                    }
-                });
         }
-    }
-    fn refine_with_codex(&mut self, ui: &mut egui::Ui) {
-        self.codex_status(ui);
-        ui.add(
-            egui::TextEdit::multiline(&mut self.feedback)
-                .desired_width(f32::INFINITY)
-                .hint_text("Что изменить в колоде?"),
-        );
-        ui.checkbox(&mut self.restart, "Начать новую беседу");
-        if let Some(session) = self.deck().and_then(|d| d.agent_session.as_ref()) {
-            ui.collapsing("История обсуждения", |ui| {
-                for feedback in &session.feedback {
-                    ui.label(feedback);
+        egui::ScrollArea::vertical()
+            .id_salt("codex-status-message")
+            .max_height(42.0)
+            .show(ui, |ui| {
+                if !busy && let Some(reason) = self.ai_blocker(editing) {
+                    ui.label(reason);
+                }
+                if own_progress && !self.progress.message.is_empty() {
+                    ui.label(&self.progress.message);
                 }
             });
-        }
-        if ui
-            .add_enabled(
-                self.ai_blocker(true).is_none(),
-                egui::Button::new("Отправить"),
-            )
-            .clicked()
-            && let Some(deck) = self.deck()
-        {
-            self.build(BuildEvent::RefineDeck {
-                request_id: Self::id(),
-                deck_id: deck.id.clone(),
-                expected_revision: agent::revision(deck),
-                feedback: self.feedback.clone(),
-                restart_session: self.restart,
+    }
+    fn codex_parameters(&mut self, ui: &mut egui::Ui, deck: Option<&Deck>, editing: bool) {
+        self.codex_status(ui);
+        if editing {
+            if let Some(deck) = deck {
+                ui.small("Codex сохранит размер колоды, запас и разрешённые наборы.");
+                ui.small(format!(
+                    "В коллекции: {} карт · в запасе: {}",
+                    self.user.total(),
+                    deck.side.len()
+                ));
+            }
+        } else {
+            ui.horizontal_wrapped(|ui| {
+                ui.strong(format!("В коллекции: {} карт", self.user.total()));
+                if ui.button("Импорт коллекции").clicked() {
+                    self.open_transfer(TransferKind::Collection);
+                }
+                ui.label("Размер колоды");
+                ui.add(
+                    egui::DragValue::new(&mut self.ai_size)
+                        .range(30..=50)
+                        .suffix(" карт"),
+                );
+            });
+            set_selector(ui, &self.cat, &mut self.settings.allowed_sets, false);
+            ui.collapsing("Как Codex собирает колоду", |ui| {
+                ui.label("Учитывает доступные карты и выбранные наборы, описывает стратегию и проверяет пять стартовых раздач.");
+                ui.hyperlink_to("Основы колодостроения", crate::deck_prompt::ARTICLE_URL);
+                ui.collapsing("Посмотреть запрос", |ui| {
+                    match crate::deck_prompt::deck_build_prompt(self.ai_size, &self.preferences, Some(&self.settings.allowed_sets)) {
+                        Ok(prompt) => { ui.label(prompt); }
+                        Err(error) => { ui.label(error); }
+                    }
+                });
             });
         }
-        if let Some(reason) = self.ai_blocker(true) {
-            ui.label(reason);
-        }
-        ui.label(&self.progress.message);
-        if self.progress.busy() && ui.button("Отменить генерацию").clicked() {
-            self.build(BuildEvent::CancelBuild {
-                request_id: self.progress.request_id.clone(),
-            });
-        }
+        ui.small("Codex получает правила и количество карт. Покупные цены не передаются.");
+    }
+    fn codex_chat(&mut self, ui: &mut egui::Ui, chat: &crate::agent_chat::Chat) {
+        ui.scope(|ui| {
+            ui.set_width(ui.available_width());
+            ui.spacing_mut().item_spacing.y = 4.0;
+            ui.spacing_mut().interact_size.y = 22.0;
+            ui.spacing_mut().button_padding = egui::vec2(6.0, 3.0);
+            if chat.omitted > 0 {
+                ui.small(format!("Ранних записей скрыто: {}", chat.omitted));
+            }
+            for entry in &chat.entries {
+                let entry = entry.for_display();
+                ui.push_id(&entry.id, |ui| {
+                    if entry.compact() {
+                        let status_color = match entry.status.as_str() {
+                            "failed" => egui::Color32::from_rgb(155, 44, 35),
+                            "in_progress" => egui::Color32::from_rgb(123, 84, 22),
+                            "cancelled" | "notice" => skin::MUTED,
+                            _ => egui::Color32::from_rgb(51, 105, 65),
+                        };
+                        egui::Frame::new()
+                            .fill(egui::Color32::from_white_alpha(45))
+                            .stroke(egui::Stroke::new(1.0, egui::Color32::from_rgb(214, 197, 166)))
+                            .inner_margin(8.0)
+                            .corner_radius(6.0)
+                            .show(ui, |ui| {
+                                ui.set_width(ui.available_width());
+                                let id = ui.make_persistent_id("activity");
+                                let mut clicked = false;
+                                let mut header = egui::collapsing_header::CollapsingState::load_with_default_open(
+                                    ui.ctx(), id, entry.status == "failed",
+                                )
+                                .show_header(ui, |ui| {
+                                    let response = ui.vertical(|ui| {
+                                        ui.style_mut().interaction.selectable_labels = false;
+                                        ui.horizontal_wrapped(|ui| {
+                                            ui.strong(&entry.title);
+                                            if entry.status == "in_progress" {
+                                                ui.add(egui::Spinner::new().size(12.0).color(status_color));
+                                            }
+                                            ui.label(egui::RichText::new(entry.status_label()).small().color(status_color));
+                                        });
+                                        if !entry.text.is_empty() {
+                                            ui.add(egui::Label::new(egui::RichText::new(entry.preview()).small().color(skin::MUTED)).wrap());
+                                        }
+                                    }).response.interact(egui::Sense::click());
+                                    clicked = response.clicked();
+                                    response.on_hover_cursor(egui::CursorIcon::PointingHand);
+                                });
+                                if clicked { header.toggle(); }
+                                header.body(|ui| {
+                                    if entry.sections.is_empty() && !entry.text.is_empty()
+                                        && let Some(id) = notes::show(ui, &entry.text, &self.cat) {
+                                        self.detail = Some(id);
+                                    }
+                                    for section in &entry.sections {
+                                        ui.add_space(6.0);
+                                        ui.strong(&section.title);
+                                        if let Some(id) = notes::show(ui, &section.text, &self.cat) {
+                                            self.detail = Some(id);
+                                        }
+                                    }
+                                    if !entry.details.is_empty() {
+                                        ui.add_space(6.0);
+                                        egui::CollapsingHeader::new("Технические данные")
+                                            .id_salt("raw")
+                                            .show(ui, |ui| {
+                                                egui::ScrollArea::vertical().max_height(240.0).show(ui, |ui| {
+                                                    ui.add(egui::Label::new(egui::RichText::new(&entry.details).monospace().size(11.0)).wrap().selectable(true));
+                                                });
+                                            });
+                                    }
+                                });
+                            });
+                    } else {
+                        let fill = if entry.kind == "user" {
+                            egui::Color32::from_rgb(234, 222, 189)
+                        } else {
+                            egui::Color32::from_white_alpha(60)
+                        };
+                        egui::Frame::new()
+                            .fill(fill)
+                            .inner_margin(8.0)
+                            .corner_radius(6.0)
+                            .show(ui, |ui| {
+                                if entry.kind == "user" {
+                                    ui.visuals_mut().override_text_color = Some(skin::INK);
+                                }
+                                ui.set_width(ui.available_width());
+                                ui.small(&entry.title);
+                                if let Some(id) = notes::show(ui, &entry.text, &self.cat) {
+                                    self.detail = Some(id);
+                                }
+                            });
+                        ui.add_space(5.0);
+                    }
+                });
+            }
+        });
     }
     fn draw(&mut self) {
         if let Some(deck) = self.deck() {

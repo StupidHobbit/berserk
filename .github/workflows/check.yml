@@ -39,6 +39,7 @@ jobs:
       - run: cargo build --locked --no-default-features --features mcp --bin berserk-mcp
       - run: python scripts/test_mcp.py
       - run: python scripts/test_catalog_mcp.py
+      - run: python scripts/test_proberserk.py
       - run: python scripts/test_codex.py
       - run: python scripts/test_desktop.py
 

@@ -237,13 +237,15 @@ fn deck_prompt_has_collection_workflow_and_article_guidance() {
         ARTICLE_URL,
         "10–14",
         "include_editions=true",
-        "check_collection=true",
+        "validate_current_deck",
         "description",
         "how_to_play",
         "improvements",
         "[card:ID]",
         "owned_only=false",
-        "save_deck",
+        "save_current_deck",
+        "set_deck_card_counts",
+        "set_deck_notes",
     ] {
         assert!(prompt.contains(expected), "Missing {expected}");
     }
@@ -279,6 +281,7 @@ fn conversation_metadata_survives_backups_and_participates_in_revisions() {
     deck.agent_session = Some(DeckAgentSession {
         id: "11111111-1111-4111-8111-111111111111".into(),
         feedback: vec!["Больше поддержки".into()],
+        chat: Default::default(),
     });
     assert_ne!(revision(&deck), revision(&original));
     let raw = serde_json::to_string(&deck).unwrap();
@@ -291,6 +294,38 @@ fn conversation_metadata_survives_backups_and_participates_in_revisions() {
             .agent_session
             .is_none()
     );
+    // Old session JSON round-trips unchanged (including its revision token).
+    assert!(!raw.contains("\"chat\""));
+    let restored: Deck = serde_json::from_str(&raw).unwrap();
+    assert_eq!(revision(&restored), revision(&deck));
+    assert_eq!(
+        restored.agent_session.unwrap().history().entries[0].kind,
+        "user"
+    );
+    let event = json!({"type":"item.completed","item":{
+        "id":"search", "type":"mcp_tool_call", "tool":"search_cards",
+        "server":"berserk_catalog", "arguments":{"query":"гномы"},
+        "result":{"cards":[]}, "status":"completed"
+    }});
+    let entry = berserk_leptos::agent_chat::Entry::from_event(&event, "saved").unwrap();
+    deck.agent_session
+        .as_mut()
+        .unwrap()
+        .chat
+        .upsert(entry.clone());
+    let mut backup = UserData::default();
+    backup.decks.push(deck.clone());
+    let restored: UserData = serde_json::from_slice(&serde_json::to_vec(&backup).unwrap()).unwrap();
+    assert_eq!(
+        restored.decks[0]
+            .agent_session
+            .as_ref()
+            .unwrap()
+            .history()
+            .entries,
+        vec![entry]
+    );
+    assert_eq!(restored, backup);
     deck.agent_session.as_mut().unwrap().feedback = vec!["x".repeat(8001)];
     assert!(validate_shape(&deck, &Catalog::load().unwrap()).is_err());
 }

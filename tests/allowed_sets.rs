@@ -117,7 +117,9 @@ fn both_prompts_limit_search_lookup_save_and_improvements() {
             "allowed_sets=[80]",
             "Не ищи карты отключённых наборов",
             "search_cards и get_card",
-            "validate_deck и save_deck",
+            "begin_deck_edit",
+            "неизменяемое ограничение",
+            "save_current_deck",
             "improvements",
         ] {
             assert!(prompt.contains(expected), "{expected}");

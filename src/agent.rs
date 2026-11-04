@@ -46,6 +46,8 @@ pub struct BuildProgress {
     pub phase: String,
     pub message: String,
     pub deck_id: Option<String>,
+    #[serde(default)]
+    pub chat: crate::agent_chat::Chat,
 }
 impl BuildProgress {
     pub fn busy(&self) -> bool {
@@ -111,7 +113,10 @@ pub fn validate_shape(deck: &Deck, catalog: &Catalog) -> Result<(), String> {
         return Err("Description/how_to_play/improvements exceed 16000/32000/32000 bytes.".into());
     }
     if deck.agent_session.as_ref().is_some_and(|s| {
-        s.id.len() > 128 || s.feedback.len() > 100 || s.feedback.iter().any(|f| f.len() > 8_000)
+        s.id.len() > 128
+            || s.feedback.len() > 100
+            || s.feedback.iter().any(|f| f.len() > 8_000)
+            || !s.chat.within_limits()
     }) {
         return Err("Deck conversation exceeds storage limits.".into());
     }

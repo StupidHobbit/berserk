@@ -2239,3 +2239,27 @@ legend {
 .deck-feedback-restart input { width: auto; }
 .deck-feedback-history { margin-top: 1rem; }
 .deck-feedback-history li { white-space: pre-wrap; margin: .65rem 0; overflow-wrap: anywhere; }
+
+/* Codex conversation: compact actions with optional parameters and results. */
+.codex-chat { margin-top: 16px; border-top: 1px solid var(--line, #d6c5a6); }
+.codex-chat-log { max-height: 440px; overflow-y: auto; overflow-wrap: anywhere; padding: 4px; }
+.codex-chat-message { padding: 10px 12px; margin: 8px 0; border-radius: 8px; background: #ffffff70; }
+.codex-chat-user { background: #eadcbe; margin-left: 24px; }
+.codex-chat-message p, .codex-chat-tool p { white-space: pre-wrap; margin: 5px 0; }
+.codex-chat-tool { margin: 8px 0; border: 1px solid #d6c5a6; border-radius: 8px; background: #ffffff40; }
+.codex-chat-tool summary { cursor: pointer; font-size: 13px; padding: 10px 12px; }
+.codex-chat-tool summary:focus-visible { outline: 2px solid #7b5416; outline-offset: 2px; border-radius: 6px; }
+.codex-tool-heading { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; max-width: calc(100% - 24px); vertical-align: middle; }
+.codex-tool-status { font-size: 11px; font-weight: 600; border-radius: 12px; padding: 2px 8px; color: #336941; background: #e6efdf; }
+.codex-tool-status[data-status="in_progress"] { color: #7b5416; background: #f3e6c7; }
+.codex-tool-status[data-status="failed"] { color: #9b2c23; background: #f8e2dc; }
+.codex-tool-status[data-status="cancelled"] { color: #665d51; background: #e9e5de; }
+.codex-tool-preview { display: block; margin: 5px 0 0 18px; line-height: 1.5; }
+.codex-tool-preview:empty { display: none; }
+.codex-tool-body { border-top: 1px solid #d6c5a6; padding: 4px 12px 12px 30px; font-size: 13px; }
+.codex-tool-section { margin-top: 12px; }
+.codex-tool-section > strong { font-size: 12px; color: #755b3c; }
+.codex-tool-section p { line-height: 1.6; }
+.codex-tool-raw { margin-top: 12px; }
+.codex-tool-raw summary { padding: 4px 0; color: #755b3c; font-size: 12px; }
+.codex-chat-tool pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 240px; overflow-y: auto; font-size: 12px; background: #ffffff50; padding: 10px; border-radius: 4px; }

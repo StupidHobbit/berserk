@@ -46,6 +46,10 @@ no terminal, browser server or MCP configuration is needed for normal use.
    An existing Codex login is reused. Return to Berserk and click **Создать колоду**.
 
 Cards, decks and notes are saved in the desktop app's own persistent storage.
+Codex researches large ProBerserk tournaments and top-finishing decks before building,
+then saves dated, source-backed lessons for other deck sessions. The shared memory
+includes an initial comparison of October 2026 regional winners. See
+[tournament research and memory](docs/proberserk.md) for tools, sources and storage.
 The old browser storage stays intact. Backups use the native macOS save/open dialogs.
 The local service starts and stops with the app, and connects automatically.
 See [desktop packaging and checks](docs/desktop.md) for development details.
@@ -53,9 +57,13 @@ See [desktop packaging and checks](docs/desktop.md) for development details.
 ## Build the native application
 
 ```sh
-make native
 cargo run --release --locked --bin berserk
 ```
+
+The app includes its Codex service and relaunches the same executable in background
+service mode, so this command updates the UI and service together. Restart the
+running app after source changes. `make native-run` is an alternative; `make native`
+also builds the standalone `berserk-mcp` binary for external MCP clients.
 
 The native client uses GPU rendering, virtualized card rows, a 64 MiB texture
 cache, background image decoding and durable background saves. Existing card
@@ -116,9 +124,19 @@ Trunk may download its matching wasm-bindgen CLI on the first build.
   motion. Programs compile lazily in one shared context; native rendering uses no GPU readback. See the
   [card-by-card effect list](docs/unique-effects.md).
 - **Codex deck creation:** collection-only generation from My decks using the local
-  Codex CLI, with progress, cancellation, strategy preferences and validated saving.
+  Codex CLI, with a live chat, cancellation, strategy preferences and validated saving.
+  The chat shows your requests, Codex messages, emitted reasoning summaries and
+  tool activity. Compact action rows expand to show parameters and results;
+  running rows update in place. Creation and editing share one full-page chat
+  with a pinned composer. After saving, continue discussing the new deck or open
+  it in the editor. Successful runs save their transcript with the deck, so replies
+  and actions return when you reopen a discussion or restart the app. Failed and
+  cancelled runs remain visible within the current app session; large entries and older history
+  are visibly shortened to keep the UI responsive.
   Open **Обсудить колоду с Codex** in the deck editor to send feedback and continue
-  the same conversation. The agent checks five sample hands and recruitment budgets
+  the same conversation. The agent edits a working deck through MCP tools and
+  deals directly from that deck; its final message contains only a summary.
+  Changes are validated and saved atomically. The agent checks five sample hands and recruitment budgets
   before saving; deck notes contain player-facing advice and clickable card links.
   Run `make ai` and pair the browser; see [setup and workflow](docs/mcp.md).
 - **Deck builder:** allowed sets enforced for main deck, sideboard and AI research; descriptions, how-to-play guides and optional upgrades using

@@ -4,6 +4,8 @@ pub mod model;
 pub mod shuffle;
 
 pub mod agent;
+pub mod agent_chat;
+pub mod data_paths;
 pub mod deck_prompt;
 pub mod deck_text;
 

@@ -9,8 +9,8 @@ def main():
         client.request('initialize', {'protocolVersion': '2025-11-25', 'capabilities': {}, 'clientInfo': {'name': 'catalog-test', 'version': '1'}})
         client.send({'jsonrpc': '2.0', 'method': 'notifications/initialized'})
         tools = client.request('tools/list', {})['tools']
-        assert {t['name'] for t in tools} == {'catalog_info', 'search_cards', 'get_card', 'deal_deck'}
-        assert all(t['annotations']['readOnlyHint'] for t in tools)
+        assert {t['name'] for t in tools} == {'catalog_info', 'search_cards', 'get_card', 'deal_deck', 'get_current_deck', 'set_deck_card_counts', 'set_deck_notes', 'validate_current_deck', 'save_current_deck'} | {'search_proberserk_tournaments','get_proberserk_tournament','get_proberserk_deck','analyze_proberserk_decks','search_deck_memory','remember_deck_insight'}
+        assert all(t['annotations']['readOnlyHint'] for t in tools if t['name'] not in {'set_deck_card_counts', 'set_deck_notes', 'save_current_deck', 'analyze_proberserk_decks', 'remember_deck_insight'})
         info = client.tool('catalog_info')
         ids, sets, offset = set(), set(), 0
         while True:
@@ -27,29 +27,9 @@ def main():
             card = client.tool('search_cards', {'set_id': set_id, 'limit': 1})['cards'][0]
             detail = client.tool('get_card', {'id': card['id']})
             assert detail['id'] == card['id'] and detail['name'] == card['name'] and 'rules' in detail
-        candidates=client.tool('search_cards', {'set_id':80,'limit':100})['cards']
-        distinct={}
-        for c in candidates:
-            if not c['banned']: distinct.setdefault(c['name'],c)
-        cards=[{'id':c['id'],'count':3} for c in list(distinct.values())[:10]]
-        first=client.tool('deal_deck', {'cards':cards,'allowed_sets':[80],'seed':123456})
-        assert len(first['hand'])==15 and first['deck_size']==30
-        hand_ids=[h['card']['id'] for h in first['hand']]
-        assert all(hand_ids.count(c['id'])<=c['count'] for c in cards)
-        again=client.tool('deal_deck', {'cards':cards,'allowed_sets':[80],'seed':123456,'squad_indices':[0,2,4]})
-        assert again['hand']==first['hand'] and again['squad']['stats']['total']==3
-        empty=client.tool('deal_deck', {'cards':cards,'seed':123456,'squad_indices':[]})['squad']
-        assert empty['first']['gold_left']==24 and empty['first']['silver_left']==22
-        assert empty['second']['gold_left']==25 and empty['second']['silver_left']==23
-        seeds={client.tool('deal_deck', {'cards':cards})['seed'] for _ in range(5)}
-        assert len(seeds)==5
-        for indices in [[0,0],[15],[-1]]:
-            client.tool('deal_deck', {'cards':cards,'squad_indices':indices},error=True)
-        for bad in [{}, {'cards':[]}, {'cards':[{'id':'80001','count':30}]},
-                    {'cards':cards,'deck_id':'missing'}, {'cards':cards,'allowed_sets':[10]},
-                    {'cards':[{'id':'missing','count':3}]+cards[1:]}]:
-            client.tool('deal_deck',bad,error=True)
-        print('PASS: reproducible 15-card hands, copy counts, fresh shuffles, squad budgets and invalid inputs')
+        client.tool('get_current_deck', error=True)
+        client.tool('deal_deck', error=True)
+        client.tool('deal_deck', {'cards': []}, error=True)
         client.tool('search_cards', {'owned_only': True}, error=True)
         client.tool('get_card', {'id': 'missing'}, error=True)
         print(f'PASS: read-only stdio MCP exposes all {len(ids)} records across {len(sets)} sets, pagination and exact card lookup')
@@ -67,9 +47,7 @@ def main():
                 offset = page['next_offset']
             assert len(seen) == scoped.tool('catalog_info')['card_records']
             assert scoped.tool('get_card', {'id': '80001f'})['set_id'] == 80
-            assert len(scoped.tool('deal_deck', {'cards':cards})['hand'])==15
-            scoped.tool('deal_deck', {'cards':[{'id':'10001','count':3}]+cards[1:]},error=True)
-            scoped.tool('deal_deck', {'cards':cards,'allowed_sets':[10,80]},error=True)
+            scoped.tool('deal_deck', error=True)
             scoped.tool('get_card', {'id': '10001'}, error=True)
             scoped.tool('search_cards', {'set_id': 10}, error=True)
             scoped.tool('search_cards', {'allowed_sets': [10, 80]}, error=True)

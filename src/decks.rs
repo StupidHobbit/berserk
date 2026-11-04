@@ -199,7 +199,7 @@ fn DeckFeedback() -> impl IntoView {
                     let request_id = new_id();
                     let text = feedback.get_untracked();
                     submitted.set(Some((request_id.clone(),text.clone())));
-                    ctx.build_progress.set(berserk_leptos::agent::BuildProgress { request_id:request_id.clone(), phase:"queued".into(), message:"Отправляю пожелания…".into(), deck_id:Some(deck.id.clone()) });
+                    ctx.build_progress.set(berserk_leptos::agent::BuildProgress { request_id:request_id.clone(), phase:"queued".into(), message:"Отправляю пожелания…".into(), deck_id:Some(deck.id.clone()), ..Default::default() });
                     ctx.build_event.set(Some(berserk_leptos::agent::BuildEvent::RefineDeck {request_id, expected_revision:berserk_leptos::agent::revision(&deck), deck_id:deck.id, feedback:text, restart_session:restart.get_untracked()}));
                 }
             }>"Отправить пожелания"</button>
@@ -208,11 +208,75 @@ fn DeckFeedback() -> impl IntoView {
             </Show>
         </div>
         <Show when=move || !ctx.agent_connected.get()><p class="muted">"Для отправки пожеланий подключите локальный сервис Codex."</p></Show>
-        <Show when=own_progress><p role="status" class:error=move || ctx.build_progress.with(|p|p.phase=="failed")>{move || ctx.build_progress.get().message}</p></Show>
-        {move || ctx.deck().and_then(|d| d.agent_session).filter(|s| !s.feedback.is_empty()).map(|session| view! {
-            <details class="deck-feedback-history"><summary>"Предыдущие пожелания"</summary><ol>{session.feedback.into_iter().map(|text| view!{<li>{text}</li>}).collect_view()}</ol></details>
-        })}
+        <CodexChat discussion=true/><Show when=own_progress><p role="status" class:error=move || ctx.build_progress.with(|p|p.phase=="failed")>{move || ctx.build_progress.get().message}</p></Show>
     </details>}
+}
+
+#[component]
+fn CodexChat(#[prop(default = false)] discussion: bool) -> impl IntoView {
+    let ctx = expect_context::<Ctx>();
+    let chat = Memo::new(move |_| {
+        let progress = ctx.build_progress.get();
+        if !discussion || (progress.deck_id.is_some() && progress.deck_id == ctx.active.get()) {
+            progress.chat
+        } else {
+            ctx.deck()
+                .and_then(|deck| deck.agent_session)
+                .map(|session| session.history())
+                .unwrap_or_default()
+        }
+    });
+    view! {
+        <Show when=move || chat.with(|chat| !chat.entries.is_empty())>
+            <section class="codex-chat" aria-label="Чат с Codex">
+                <h3>"Чат с Codex"</h3>
+                <div class="codex-chat-log" role="log" aria-live="polite" aria-relevant="additions text">
+                    <Show when=move || chat.with(|chat| chat.omitted > 0)>
+                        <p class="muted">{move || chat.with(|chat| format!("Ранних записей скрыто: {}", chat.omitted))}</p>
+                    </Show>
+                    <For each=move || chat.with(|chat| chat.entries.clone()) key=|entry| entry.id.clone() children=move |initial| {
+                        let id = initial.id.clone();
+                        let entry = Memo::new(move |_| chat.with(|chat| chat.entries.iter().find(|e| e.id == id).unwrap_or(&initial).for_display().into_owned()));
+                        view! {
+                            <Show when=move || entry.with(|e| e.compact()) fallback=move || view! {
+                                <div class="codex-chat-message" class:codex-chat-user=move || entry.with(|e| e.kind == "user")>
+                                    <strong>{move || entry.with(|e| e.title.clone())}</strong>
+                                    {move || view! { <DeckText text=entry.with(|e| e.text.clone())/> }}
+                                </div>
+                            }>
+                                <details class="codex-chat-tool" open=move || entry.with(|e| e.status == "failed")>
+                                    <summary>
+                                        <span class="codex-tool-heading">
+                                        <strong>{move || entry.with(|e| e.title.clone())}</strong>
+                                        <span class="codex-tool-status" data-status=move || entry.with(|e| e.status.clone())>{move || entry.with(|e| e.status_label().to_string())}</span>
+                                        </span>
+                                        <span class="codex-tool-preview muted">{move || entry.with(|e| e.preview())}</span>
+                                    </summary>
+                                    <div class="codex-tool-body">
+                                        <Show when=move || entry.with(|e| e.sections.is_empty() && !e.text.is_empty())>
+                                            {move || view! { <DeckText text=entry.with(|e| e.text.clone())/> }}
+                                        </Show>
+                                        {move || entry.with(|e| e.sections.iter().map(|section| view! {
+                                            <div class="codex-tool-section">
+                                                <strong>{section.title.clone()}</strong>
+                                                <DeckText text=section.text.clone()/>
+                                            </div>
+                                        }).collect_view())}
+                                        <Show when=move || entry.with(|e| !e.details.is_empty())>
+                                            <details class="codex-tool-raw">
+                                                <summary>"Технические данные"</summary>
+                                                <pre>{move || entry.with(|e| e.details.clone())}</pre>
+                                            </details>
+                                        </Show>
+                                    </div>
+                                </details>
+                            </Show>
+                        }
+                    }/>
+                </div>
+            </section>
+        </Show>
+    }
 }
 
 #[component]
@@ -245,7 +309,7 @@ fn CodexDeckBuilder() -> impl IntoView {
         <div class="intro-actions">
             <button class="button primary" disabled=move || prompt.get().is_err() || ctx.user.with(UserData::total)==0 || !ctx.agent_connected.get() || !ctx.storage_ok.get() || ctx.build_progress.with(|p|p.busy()) on:click=move |_| {
                 let request_id = new_id();
-                ctx.build_progress.set(berserk_leptos::agent::BuildProgress {request_id:request_id.clone(),phase:"queued".into(),message:"Запускаю Codex…".into(),deck_id:None});
+                ctx.build_progress.set(berserk_leptos::agent::BuildProgress {request_id:request_id.clone(),phase:"queued".into(),message:"Запускаю Codex…".into(),deck_id:None, ..Default::default()});
                 ctx.build_event.set(Some(berserk_leptos::agent::BuildEvent::BuildDeck {request_id,size:size.get_untracked(),preferences:preferences.get_untracked(),allowed_sets:Some(allowed_sets.get_untracked())}));
             }>{move || if ctx.build_progress.with(|p|p.busy()) {"Codex работает…"} else {"Создать колоду"}}</button>
             <Show when=move || ctx.build_progress.with(|p|p.busy() && p.phase!="saving")>
@@ -265,6 +329,7 @@ fn CodexDeckBuilder() -> impl IntoView {
         <Show when=move || ctx.user.with(UserData::total)==0><p class="error">"Сначала добавьте карты в коллекцию."</p></Show>
         <Show when=move || !ctx.agent_connected.get()><p class="muted">{if crate::desktop::available() {"Подключаем Codex…"} else {"Для запуска подключите локальный сервис — инструкция ниже."}}</p></Show>
         <p role="status" class:error=move || ctx.build_progress.with(|p|p.phase=="failed")>{move || ctx.build_progress.get().message}</p>
+        <CodexChat/>
         <p role="status">{move || message.get()}</p>
         {move || prompt.get().err().map(|error| view! {<p class="error">{error}</p>})}
         <details class="codex-prompt"><summary>"Посмотреть запрос"</summary><textarea aria-label="Запрос для Codex" rows="12" readonly prop:value=move || prompt.get().unwrap_or_default()/></details>

@@ -85,7 +85,7 @@ fn connect_from_hash(
     });
     let on_close = Closure::new(move |_: Event| {
         connected.set(false);
-        ctx.build_progress.update(|p| { if p.busy() { p.phase = "failed".into(); p.message = "Соединение потеряно. Перед повтором проверьте список колод: сохранение могло завершиться.".into(); } });
+        ctx.build_progress.update(|p| { if p.busy() { p.phase = "failed".into(); p.chat.finish("failed"); p.message = "Соединение потеряно. Перед повтором проверьте список колод: сохранение могло завершиться.".into(); } });
         status.set(if desktop {"Соединение с Codex потеряно. Нажмите «Подключить». Если это не поможет, перезапустите Berserk."} else {"Агент отключён. Для подключения откройте новую ссылку connection_info."}.into());
     });
     let reply_socket = socket.clone();
@@ -194,7 +194,7 @@ pub fn AgentConnection() -> impl IntoView {
                     }
                     link.update_value(|value|*value=None);
                     connected.set(false);
-                    ctx.build_progress.update(|p| { if p.busy() { p.phase = "failed".into(); p.message = "Сервис отключён. Проверьте список колод перед повтором.".into(); } });
+                    ctx.build_progress.update(|p| { if p.busy() { p.phase = "failed".into(); p.chat.finish("failed"); p.message = "Сервис отключён. Проверьте список колод перед повтором.".into(); } });
                     status.set(String::new());
                 }>{move || if crate::desktop::available() {"Подключить"} else if connected.get() {"Отключить агента"} else {"Закрыть"}}</button>
             </section>

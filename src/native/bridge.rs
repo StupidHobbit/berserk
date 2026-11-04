@@ -3,7 +3,7 @@ use crate::agent::{BrowserReply, BrowserRequest, BuildEvent};
 use eframe::egui;
 use std::{
     io::{BufRead, BufReader, Read},
-    path::{Path, PathBuf},
+    path::PathBuf,
     process::{Child, Command, Stdio},
     sync::{
         Arc,
@@ -89,12 +89,11 @@ impl Bridge {
             stop: Arc::new(AtomicBool::new(false)),
         }
     }
-    pub fn start(directory: &Path, ctx: egui::Context, pair_url: Option<String>) -> Self {
+    pub fn start(ctx: egui::Context, pair_url: Option<String>, profile: PathBuf) -> Self {
         let (incoming_tx, incoming) = mpsc::channel();
         let (outgoing, receiver) = mpsc::channel();
         let stop = Arc::new(AtomicBool::new(false));
         let stopping = stop.clone();
-        let directory = directory.to_owned();
         std::thread::spawn(move || {
             let send = |event| {
                 let _ = incoming_tx.send(event);
@@ -122,14 +121,12 @@ impl Bridge {
                         token.to_string(),
                     )
                 } else {
-                    let mut command = Command::new(directory.join(if cfg!(windows) {
-                        "berserk-mcp.exe"
-                    } else {
-                        "berserk-mcp"
-                    }));
+                    let executable = std::env::current_exe().map_err(|e| e.to_string())?;
+                    let mut command = Command::new(executable);
                     configure(&mut command);
                     command
                         .arg("--native-app")
+                        .env("BERSERK_DATA_DIR", &profile)
                         .env("BERSERK_DESKTOP_PORT", "0")
                         .stdin(Stdio::piped())
                         .stdout(Stdio::piped())
@@ -137,7 +134,7 @@ impl Bridge {
                     let mut service = Service(
                         command
                             .spawn()
-                            .map_err(|e| format!("Не удалось запустить berserk-mcp: {e}"))?,
+                            .map_err(|e| format!("Не удалось запустить сервис Berserk: {e}"))?,
                     );
                     let stdout = service.0.stdout.take().ok_or("Missing service output")?;
                     let (tx, rx) = mpsc::channel();

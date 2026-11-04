@@ -44,6 +44,108 @@ float mapCoast(vec2 q) {
     vec2 warp=vec2(mapNoise(q*0.63+4.8),mapNoise(q*0.63+19.2))-0.5;
     return mapTerrain(q*1.65+warp*0.85)-0.47;
 }
+// A finite drainage tree in each watershed, rather than a noise isoline (which
+// closes into loops). All distances and pen widths are measured in world space.
+vec2 mapRiverPoint(float t, float phase, float direction) {
+    t=direction>0.0?t:1.0-t;
+    float bend=sin(t*11.7+phase)*0.070+sin(t*26.1+phase*1.7)*0.018;
+    return vec2(bend,-0.39+0.78*t);
+}
+vec2 mapRiverBranch(float t, float join, float side, float phase, float direction) {
+    // Stay on one side of the trunk at every upstream station. This rules out
+    // crossings and loops even on a tight meander, and joins tangentially.
+    vec2 point=mapRiverPoint(join-0.20*(1.0-t),phase,direction);
+    point.x+=side*0.21*pow(1.0-t,1.35);
+    return point;
+}
+float mapRiverSegment(vec2 p, vec2 a, vec2 b, float wa, float wb) {
+    vec2 ab=b-a;
+    float t=clamp(dot(p-a,ab)/dot(ab,ab),0.0,1.0);
+    return length(p-mix(a,b,t))-mix(wa,wb,t);
+}
+vec2 mapRivers(vec2 q, float aa) {
+    const float basinSize=1.35;
+    vec2 cell=floor(q/basinSize);
+    vec2 center=(cell+0.5)*basinSize;
+    float seed=mapHash(cell+123.4);
+    float angle=seed*6.2831853;
+    mat2 bearing=mat2(cos(angle),sin(angle),-sin(angle),cos(angle));
+    vec2 p=(q-center)*bearing/basinSize;
+    // The whole tree fits inside its cell even after rotation; no cut edges.
+    if(length(p)>0.49) return vec2(0.0);
+    float phase=mapHash(cell+32.8)*6.2831853;
+    float head=mapCoast(center+bearing*mapRiverPoint(0.0,phase,1.0)*basinSize);
+    float foot=mapCoast(center+bearing*mapRiverPoint(1.0,phase,1.0)*basinSize);
+    // Orient the tree from the higher endpoint toward the lower one.
+    float direction=head>=foot?1.0:-1.0;
+    if(max(head,foot)<0.025) return vec2(0.0);
+    float distance=1.0;
+    float along=0.0;
+    float branch=-1.0;
+    // Both trunk and tributaries are monotone along the watershed axis. Only
+    // the local segment and its neighbors can contribute to this ink footprint.
+    float station=(direction*p.y+0.39)/0.78;
+    float segment=floor(clamp(station,0.0,1.0)*48.0);
+    for(int i=-1;i<=1;i++) {
+        float index=clamp(segment+float(i),0.0,47.0);
+        float t0=index/48.0;
+        float t1=(index+1.0)/48.0;
+        vec2 a=mapRiverPoint(t0,phase,direction);
+        vec2 b=mapRiverPoint(t1,phase,direction);
+        float d=mapRiverSegment(p,a,b,mix(0.00010,0.0025,sqrt(t0)),mix(0.00010,0.0025,sqrt(t1)));
+        if(d<distance) { distance=d; along=t1; }
+    }
+    float mainDistance=distance*basinSize;
+    float mainAlong=along;
+    // Two staggered tributaries, with narrow springs and no independent loops.
+    for(int j=0;j<2;j++) {
+        float join=0.24+float(j)*0.29;
+        float side=j==0?-1.0:1.0;
+        float segment=floor(clamp((station-join+0.20)/0.20,0.0,1.0)*12.0);
+        for(int i=-1;i<=1;i++) {
+            float index=clamp(segment+float(i),0.0,11.0);
+            float t0=index/12.0;
+            float t1=(index+1.0)/12.0;
+            vec2 a=mapRiverBranch(t0,join,side,phase,direction);
+            vec2 b=mapRiverBranch(t1,join,side,phase,direction);
+            float d=mapRiverSegment(p,a,b,0.00012+0.0008*t0,0.00012+0.0008*t1);
+            if(d<distance) { distance=d; along=join; branch=float(j); }
+        }
+    }
+    distance*=basinSize;
+    // Terrain checks are restricted to the narrow ink footprint. Stop at the
+    // FIRST water crossing; a channel cannot reappear on the opposite shore.
+    if(distance>aa*1.5+0.002) return vec2(0.0);
+    float mouth=1.0;
+    bool reachesWater=false;
+    for(int i=1;i<=48;i++) {
+        float t=float(i)/48.0;
+        vec2 point=mapRiverPoint(t,phase,direction);
+        if(mapCoast(center+bearing*point*basinSize)<0.0) {
+            mouth=t;
+            reachesWater=true;
+            break;
+        }
+    }
+    if(!reachesWater) return vec2(0.0);
+    bool validBranch=along<=mouth;
+    if(branch>=0.0 && validBranch) {
+        float join=0.24+branch*0.29;
+        float side=branch<0.5?-1.0:1.0;
+        for(int i=0;i<=4;i++) {
+            vec2 point=mapRiverBranch(float(i)/4.0,join,side,phase,direction);
+            float height=mapCoast(center+bearing*point*basinSize);
+            if(height<(i==0?0.025:0.004)) validBranch=false;
+        }
+    }
+    if(branch>=0.0 && !validBranch) {
+        distance=mainDistance;
+        along=mainAlong;
+    }
+    if(along>mouth) return vec2(0.0);
+    return vec2(1.0-smoothstep(0.0,aa,distance),
+                1.0-smoothstep(0.001,0.002+aa,distance));
+}
 float mapFort(vec2 p, float aa) {
     float wall=max(abs(p.x)-0.010,abs(p.y)-0.007);
     vec2 towers=abs(p)-vec2(0.011,0.008);
@@ -122,17 +224,13 @@ vec3 laarMap(vec3 paper, vec2 uv, vec2 p) {
     float pool=mapLine(tree.y-0.29,0.018,treeAA)*(1.0-smoothstep(0.23,0.35,abs(tree.x)));
     lines+=max(reeds,pool)*marsh*step(0.38,treeSeed)*0.26;
 
-    // Warped drainage channels narrow towards the highlands; branches join the
-    // main valley field and terminate at the shoreline rather than crossing sea.
-    vec2 drainage=q*2.1+vec2(mapNoise(q*4.0+31.0),mapNoise(q*4.0+47.0))*0.45;
-    float valley=mapNoise(drainage)-0.5;
-    float riverAA=max(fwidth(valley),0.0001);
-    float riverWidth=mix(0.0045,0.0010,smoothstep(0.02,0.17,coast));
-    float river=mapLine(valley,riverWidth,riverAA)*land*(1.0-smoothstep(0.16,0.22,coast));
-    float tributary=mapNoise(drainage*2.04+8.1)-0.5;
-    river=max(river,mapLine(tributary,0.0012,max(fwidth(tributary),0.0001))
-              *(1.0-smoothstep(0.025,0.09,abs(valley)))*inland*(1.0-mountains));
-    c=mix(c,vec3(0.32,0.45,0.43),river*0.43);
+    // Connected, tapered rivers with a faint bank wash. Clear vegetation and
+    // contours along the banks so water reads as a channel through the terrain.
+    vec2 drainage=mapRivers(q,aa)*land;
+    float river=drainage.x;
+    lines*=1.0-drainage.y*0.85;
+    c=mix(c,vec3(0.42,0.47,0.35),drainage.y*0.12);
+    c=mix(c,vec3(0.29,0.43,0.42),river*0.57);
 
     // Tiny wave engravings over deeper water, naturally interrupted by islands.
     vec2 seaGrid=q*vec2(24.0,32.0);

@@ -32,7 +32,7 @@ enum Page {
     Catalog,
     Collection,
     Decks,
-    CreateWithCodex,
+    Codex,
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum TransferKind {
@@ -123,10 +123,11 @@ pub struct NativeApp {
     progress: BuildProgress,
     preferences: String,
     feedback: String,
+    codex_deck: Option<String>,
+    codex_run: Option<String>,
     ai_size: u16,
     restart: bool,
     pair_url: String,
-    directory: PathBuf,
     login: Option<std::process::Child>,
     codex_auth: codex_auth::Auth,
     external_service: bool,
@@ -146,7 +147,6 @@ impl NativeApp {
         cc: &eframe::CreationContext<'_>,
         root: PathBuf,
         assets: PathBuf,
-        directory: PathBuf,
         smoke: Option<Option<PathBuf>>,
     ) -> Result<Self, String> {
         let cat = Arc::new(Catalog::load().map_err(|e| e.to_string())?);
@@ -189,7 +189,7 @@ impl NativeApp {
         }
         let bridge = smoke
             .is_some()
-            .then(|| Bridge::start(&directory, cc.egui_ctx.clone(), None));
+            .then(|| Bridge::start(cc.egui_ctx.clone(), None, root.clone()));
         Ok(Self {
             cat,
             user,
@@ -228,10 +228,11 @@ impl NativeApp {
             progress: BuildProgress::default(),
             preferences: String::new(),
             feedback: String::new(),
+            codex_deck: None,
+            codex_run: None,
             ai_size: 30,
             restart: false,
             pair_url: String::new(),
-            directory,
             login: None,
             codex_auth: codex_auth::Auth::default(),
             external_service: false,
@@ -353,7 +354,9 @@ impl NativeApp {
                             self.startup_empty = false;
                             if let Some(id) = pending.active {
                                 self.active = Some(id);
-                                self.page = Page::Decks;
+                                if self.page != Page::Codex {
+                                    self.page = Page::Decks;
+                                }
                                 self.side = false;
                             }
                             if self
@@ -406,6 +409,7 @@ impl NativeApp {
                     self.status = e;
                     if self.progress.busy() {
                         self.progress.phase = "failed".into();
+                        self.progress.chat.finish("failed");
                         self.progress.message =
                             "Соединение потеряно. Проверьте сохранённые колоды перед повтором."
                                 .into();
@@ -416,6 +420,18 @@ impl NativeApp {
                     if let BrowserCommand::BuildProgress { progress } = request.command {
                         if progress.phase == "failed" {
                             self.codex_auth.invalidate();
+                        }
+                        if self.codex_run.as_ref() == Some(&progress.request_id)
+                            && progress.phase == "succeeded"
+                        {
+                            self.feedback.clear();
+                            self.restart = false;
+                        }
+                        if self.codex_deck.is_none()
+                            && self.codex_run.as_ref() == Some(&progress.request_id)
+                            && progress.deck_id.is_some()
+                        {
+                            self.codex_deck = progress.deck_id.clone();
                         }
                         self.progress = progress;
                         self.reply(BrowserReply {
@@ -482,7 +498,11 @@ impl NativeApp {
         self.connected = false;
         self.external_service = pair_url.is_some();
         self.connection_error = None;
-        self.bridge = Some(Bridge::start(&self.directory, ctx.clone(), pair_url));
+        self.bridge = Some(Bridge::start(
+            ctx.clone(),
+            pair_url,
+            self.store.path.parent().unwrap().into(),
+        ));
         self.status = "Подключение…".into();
     }
     fn ai_blocker(&self, refine: bool) -> Option<&'static str> {
@@ -507,10 +527,40 @@ impl NativeApp {
             Some("Войдите в Codex, чтобы создать или обсудить колоду.")
         } else if !self.external_service && self.codex_auth.status == codex_auth::Status::Missing {
             Some("Установите Codex CLI, затем нажмите «Проверить вход».")
+        } else if refine && self.feedback.len() > 8_000 {
+            Some("Сократите пожелания до 8000 байт.")
         } else if refine && self.feedback.trim().is_empty() {
             Some("Напишите, что хотите изменить в колоде.")
         } else {
             None
+        }
+    }
+    fn open_codex(&mut self, deck_id: Option<String>) {
+        // An active run remains available when returning through the library.
+        let deck_id = if deck_id.is_none() && self.progress.busy() {
+            self.progress.deck_id.clone()
+        } else {
+            deck_id
+        };
+        if self.codex_deck != deck_id {
+            self.feedback.clear();
+            self.restart = false;
+        }
+        self.codex_run = if (deck_id.is_some() && deck_id == self.progress.deck_id)
+            || (deck_id.is_none() && self.progress.busy() && self.progress.deck_id.is_none())
+        {
+            Some(self.progress.request_id.clone())
+        } else {
+            None
+        };
+        self.codex_deck = deck_id;
+        self.page = Page::Codex;
+    }
+    fn codex_owns_progress(&self) -> bool {
+        if let Some(id) = &self.codex_deck {
+            self.progress.deck_id.as_ref() == Some(id)
+        } else {
+            self.codex_run.as_ref() == Some(&self.progress.request_id)
         }
     }
     fn build(&mut self, event: BuildEvent) {
@@ -519,15 +569,58 @@ impl NativeApp {
             | BuildEvent::RefineDeck { request_id, .. }
             | BuildEvent::CancelBuild { request_id } => request_id.clone(),
         };
+        let cancelling = matches!(event, BuildEvent::CancelBuild { .. });
+        let deck_id = match &event {
+            BuildEvent::RefineDeck { deck_id, .. } => Some(deck_id.clone()),
+            _ => None,
+        };
+        let mut chat = match &event {
+            BuildEvent::RefineDeck {
+                deck_id,
+                restart_session: false,
+                ..
+            } if self.progress.deck_id.as_ref() == Some(deck_id) => self.progress.chat.clone(),
+            BuildEvent::RefineDeck {
+                deck_id,
+                restart_session: false,
+                ..
+            } => self
+                .user
+                .decks
+                .iter()
+                .find(|deck| &deck.id == deck_id)
+                .and_then(|deck| deck.agent_session.as_ref())
+                .map(DeckAgentSession::history)
+                .unwrap_or_default(),
+            _ => Default::default(),
+        };
+        let text = match &event {
+            BuildEvent::BuildDeck {
+                size, preferences, ..
+            } => format!("Создать колоду · {size} карт\n{preferences}"),
+            BuildEvent::RefineDeck { feedback, .. } => feedback.clone(),
+            _ => String::new(),
+        };
+        chat.upsert(crate::agent_chat::Entry::message(
+            format!("{id}:user"),
+            "user",
+            "Вы",
+            &text,
+        ));
         if let Some(bridge) = &self.bridge
             && self.connected
             && bridge.outgoing.send(Outgoing::Build(event)).is_ok()
         {
+            if cancelling {
+                return;
+            }
+            self.codex_run = Some(id.clone());
             self.progress = BuildProgress {
                 request_id: id,
                 phase: "queued".into(),
                 message: "Отправлено в Codex…".into(),
-                deck_id: None,
+                deck_id,
+                chat,
             };
         } else {
             self.status = "Сначала подключите Codex".into();
@@ -608,7 +701,7 @@ impl eframe::App for NativeApp {
         );
         root.add_enabled_ui(self.pending.is_none(), |root| {
             if self.filters_open
-                && self.page != Page::CreateWithCodex
+                && self.page != Page::Codex
                 && (self.page != Page::Decks || self.active.is_some())
                 && !(self.page == Page::Decks && self.deck_full)
             {
@@ -657,8 +750,8 @@ impl eframe::App for NativeApp {
                     );
                     skin::ornament(ui, ui.max_rect().expand(14.0));
                     skin::paper_style(ui);
-                    if self.page == Page::CreateWithCodex {
-                        self.codex_creation(ui);
+                    if self.page == Page::Codex {
+                        self.codex_view(ui);
                     } else if self.page == Page::Decks && self.active.is_none() {
                         self.deck_library(ui);
                     } else if self.page == Page::Decks && self.deck_full {
@@ -713,11 +806,11 @@ impl eframe::App for NativeApp {
             if self.frames >= 5
                 && (self.smoke_pointer.is_none() || began.elapsed() > Duration::from_secs(2))
                 && (self.images.bytes() > 0
-                    || (matches!(self.page, Page::Decks | Page::CreateWithCodex)
-                        && self.user.decks.is_empty()))
+                    || self.page == Page::Codex
+                    || (self.page == Page::Decks && self.user.decks.is_empty()))
                 && self.images.settled()
                 && self.pending.is_none()
-                && (self.page != Page::CreateWithCodex || !self.codex_auth.checking())
+                && (self.page != Page::Codex || !self.codex_auth.checking())
                 && self.connected
             {
                 let errors = self.effects.lock().unwrap().failures.clone();
@@ -862,7 +955,7 @@ pub fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::erro
         "Berserk",
         options,
         Box::new(move |cc| {
-            let mut app = NativeApp::new(cc, root, assets, directory, smoke.then_some(report))
+            let mut app = NativeApp::new(cc, root, assets, smoke.then_some(report))
                 .map_err(std::io::Error::other)?;
             if smoke {
                 match smoke_view.as_str() {
@@ -943,8 +1036,28 @@ pub fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::erro
                             transfer.refresh_statistics(&app.cat);
                         }
                     }
-                    "ai" | "compact-ai" => app.page = Page::CreateWithCodex,
-                    "decks" | "deck" | "compact-deck" | "deck-full" | "compact-deck-full" => {
+                    "ai-chat" | "compact-ai-chat" => {
+                        app.page = Page::Codex;
+                        app.progress.request_id = "preview".into();
+                        app.codex_run = Some("preview".into());
+                        app.progress.phase = "running".into();
+                        app.progress.message = "Проверяю пробные раздачи…".into();
+                        app.progress.chat.upsert(crate::agent_chat::Entry::message("user".into(), "user", "Вы", "Создать колоду · 30 карт\nАгрессивная колода лесов и болот с простым планом игры"));
+                        for event in [
+                            serde_json::json!({"type":"item.completed","item":{"id":"reason","type":"reasoning","text":"Сравниваю стоимость бойцов и поддержку. Затем проверю стартовые раздачи."}}),
+                            serde_json::json!({"type":"item.completed","item":{"id":"message","type":"agent_message","text":"В коллекции достаточно карт. Подбираю бойцов первого ряда и поддержку, чтобы отряд был устойчивым при игре вторым."}}),
+                            serde_json::json!({"type":"item.completed","item":{"id":"search","type":"mcp_tool_call","server":"berserk_catalog","tool":"search_cards","arguments":{"query":"лес и болота","limit":20},"status":"completed","result":{"cards":20}}}),
+                            serde_json::json!({"type":"item.completed","item":{"id":"card","type":"mcp_tool_call","server":"berserk_catalog","tool":"get_card","arguments":{"id":"80010"},"status":"completed"}}),
+                            serde_json::json!({"type":"item.started","item":{"id":"deal","type":"mcp_tool_call","server":"berserk_catalog","tool":"deal_deck","arguments":{"seed":42,"expected_revision":"sample-revision","squad_indices":[0,2,4]},"status":"in_progress"}}),
+                        ] {
+                            app.progress.chat.upsert(
+                                crate::agent_chat::Entry::from_event(&event, "preview").unwrap(),
+                            );
+                        }
+                    }
+                    "ai" | "compact-ai" => app.page = Page::Codex,
+                    "decks" | "deck" | "compact-deck" | "deck-full" | "compact-deck-full"
+                    | "discussion" | "compact-discussion" => {
                         for (index, name) in ["Стражи леса", "Пески Лаара", "Дыхание бури"]
                             .iter()
                             .enumerate()
@@ -973,6 +1086,9 @@ pub fn run(smoke: bool, report: Option<PathBuf>) -> Result<(), Box<dyn std::erro
                         if smoke_view != "decks" {
                             app.active = Some("smoke-0".into());
                             app.deck_full = smoke_view.ends_with("-full");
+                        }
+                        if smoke_view.ends_with("discussion") {
+                            app.open_codex(app.active.clone());
                         }
                     }
                     "hover" | "hover-plain" => {
@@ -1014,7 +1130,6 @@ mod tests {
             &cc,
             root.path().into(),
             PathBuf::from(env!("CARGO_MANIFEST_DIR")),
-            PathBuf::new(),
             None,
         )
         .unwrap();
@@ -1615,7 +1730,7 @@ mod tests {
         let (outgoing, _rx) = mpsc::channel();
         app.bridge = Some(Bridge::for_test(incoming, outgoing));
         app.connected = true;
-        app.page = Page::CreateWithCodex;
+        app.page = Page::Codex;
         for status in [
             codex_auth::Status::SignedIn,
             codex_auth::Status::SignedOut,
@@ -1667,6 +1782,7 @@ mod tests {
                 "cached status does not spawn a CLI check"
             );
         }
+        app.codex_run = Some(app.progress.request_id.clone());
         app.progress.phase = "running".into();
         app.progress.message = "Длинное сообщение о ходе генерации. ".repeat(300);
         let mut output = ctx.run_ui(
@@ -1695,6 +1811,522 @@ mod tests {
             .expect("generation cancel action is visible");
         assert!(screen.contains_rect(rect) && clip.contains_rect(rect));
     }
+    #[test]
+    fn codex_page_reuses_creation_layout_for_editing_and_preserves_target() {
+        let (_root, mut app, ctx) = fixture();
+        let mut frame = eframe::Frame::_new_kittest();
+        let screen = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(850.0, 600.0));
+        let (_tx, incoming) = mpsc::channel();
+        let (outgoing, rx) = mpsc::channel();
+        app.bridge = Some(Bridge::for_test(incoming, outgoing));
+        app.connected = true;
+        app.codex_auth = codex_auth::Auth::cached_for_test(codex_auth::Status::SignedIn);
+        let mut deck = Deck::new("discussion".into(), "Обсуждаемая колода".into());
+        deck.cards = vec!["80010".into()];
+        let revision = agent::revision(&deck);
+        app.user.set_count("80010", 3);
+        app.active = Some(deck.id.clone());
+        app.user.decks.push(deck);
+        app.page = Page::Decks;
+        app.filter.query = "no-card-with-this-name".into();
+        app.dirty = true;
+        let mut render = |app: &mut NativeApp, events: Vec<egui::Event>| {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(screen),
+                    events,
+                    ..Default::default()
+                },
+                |ui| app.ui(ui, &mut frame),
+            );
+            output.textures_delta.clear();
+            output
+        };
+        let text_rect = |output: &egui::FullOutput, label: &str| {
+            output
+                .shapes
+                .iter()
+                .find_map(|shape| {
+                    if let egui::epaint::Shape::Text(text) = &shape.shape
+                        && text.galley.text() == label
+                    {
+                        Some(text.galley.rect.translate(text.pos.to_vec2()))
+                    } else {
+                        None
+                    }
+                })
+                .unwrap_or_else(|| panic!("missing {label}"))
+        };
+        let click = |pos, pressed| {
+            vec![
+                egui::Event::PointerMoved(pos),
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed,
+                    modifiers: egui::Modifiers::NONE,
+                },
+            ]
+        };
+        for _ in 0..4 {
+            render(&mut app, vec![]);
+        }
+        let output = render(&mut app, vec![]);
+        let pos = text_rect(&output, "Обсудить с Codex").center();
+        for pressed in [true, false] {
+            render(&mut app, click(pos, pressed));
+        }
+        assert_eq!(app.codex_deck.as_deref(), Some("discussion"));
+        assert!(app.page == Page::Codex);
+        for _ in 0..4 {
+            render(&mut app, vec![]);
+        }
+        let output = render(&mut app, vec![]);
+        let pos = text_rect(&output, "Например: больше защиты при игре вторым").center();
+        for pressed in [true, false] {
+            render(&mut app, click(pos, pressed));
+        }
+        render(&mut app, vec![egui::Event::Text("Больше защиты".into())]);
+        assert_eq!(app.feedback, "Больше защиты");
+        assert!(
+            app.codex_deck.is_some(),
+            "typing must keep the shared page open"
+        );
+        let output = render(&mut app, vec![]);
+        let pos = text_rect(&output, "Начать новую беседу").center();
+        for pressed in [true, false] {
+            render(&mut app, click(pos, pressed));
+        }
+        assert!(app.restart);
+        assert!(
+            app.codex_deck.is_some(),
+            "checkbox must keep the shared page open"
+        );
+        // The shared page targets the conversation deck, not another editor selection.
+        app.user
+            .decks
+            .push(Deck::new("another".into(), "Другая колода".into()));
+        app.active = Some("another".into());
+        let output = render(&mut app, vec![]);
+        let pos = text_rect(&output, "Отправить пожелания").center();
+        for pressed in [true, false] {
+            render(&mut app, click(pos, pressed));
+        }
+        let Outgoing::Build(BuildEvent::RefineDeck {
+            deck_id,
+            expected_revision,
+            feedback,
+            restart_session,
+            ..
+        }) = rx.try_recv().unwrap()
+        else {
+            panic!("expected refinement");
+        };
+        assert_eq!(deck_id, "discussion");
+        assert_eq!(expected_revision, revision);
+        assert_eq!(feedback, "Больше защиты");
+        assert!(restart_session);
+        assert!(
+            app.codex_deck.is_some(),
+            "send must keep the shared chat open"
+        );
+        app.progress.phase = "succeeded".into();
+        app.progress.message = "Колода обновлена".into();
+        app.progress.chat.upsert(crate::agent_chat::Entry::message(
+            "reply".into(),
+            "assistant",
+            "Codex",
+            "Добавил защиту.",
+        ));
+        render(&mut app, vec![]);
+        let output = render(&mut app, vec![]);
+        text_rect(&output, "Добавил защиту.");
+        assert!(
+            app.codex_deck.is_some(),
+            "reply must keep the shared chat open"
+        );
+        // Clicking the page background keeps the conversation available.
+        for pressed in [true, false] {
+            render(&mut app, click(egui::pos2(3.0, 3.0), pressed));
+        }
+        assert!(app.codex_deck.is_some());
+    }
+
+    #[test]
+    fn codex_creation_transitions_to_editing_and_navigation_scopes_history() {
+        let (_root, mut app, ctx) = fixture();
+        let (incoming_tx, incoming) = mpsc::channel();
+        let (outgoing, rx) = mpsc::channel();
+        app.bridge = Some(Bridge::for_test(incoming, outgoing));
+        app.connected = true;
+        app.open_codex(None);
+        app.build(BuildEvent::BuildDeck {
+            request_id: "create-shared".into(),
+            size: 30,
+            preferences: "Гномы".into(),
+            allowed_sets: Some(vec![80]),
+        });
+        assert!(matches!(
+            rx.try_recv().unwrap(),
+            Outgoing::Build(BuildEvent::BuildDeck { .. })
+        ));
+        assert!(app.codex_owns_progress());
+        let deck = Deck::new("created".into(), "Гномы".into());
+        app.user.decks.push(deck);
+        let mut complete = app.progress.clone();
+        complete.phase = "succeeded".into();
+        complete.deck_id = Some("created".into());
+        incoming_tx
+            .send(Event::Request(Box::new(agent::BrowserRequest {
+                id: "progress-reply".into(),
+                command: BrowserCommand::BuildProgress { progress: complete },
+            })))
+            .unwrap();
+        app.poll(&ctx);
+        assert!(app.page == Page::Codex);
+        assert_eq!(app.codex_deck.as_deref(), Some("created"));
+        assert!(app.codex_owns_progress());
+        app.feedback = "Защита".into();
+        app.restart = true;
+        app.open_codex(Some("another".into()));
+        assert!(
+            !app.codex_owns_progress(),
+            "never show another deck's activity"
+        );
+        assert!(app.feedback.is_empty() && !app.restart);
+        app.open_codex(Some("created".into()));
+        assert!(
+            app.codex_owns_progress(),
+            "return to the existing conversation"
+        );
+        app.open_codex(None);
+        assert!(app.codex_deck.is_none());
+        assert!(
+            !app.codex_owns_progress(),
+            "new creation must not edit the previous result"
+        );
+        // Reopening an unfinished creation keeps its request and transcript.
+        app.progress.deck_id = None;
+        app.progress.phase = "running".into();
+        app.open_codex(None);
+        assert!(app.codex_owns_progress());
+    }
+
+    #[test]
+    fn codex_discussion_restores_saved_actions_after_app_restart() {
+        let (root, mut app, ctx) = fixture();
+        let mut deck = Deck::new("saved-discussion".into(), "Гномы".into());
+        let mut chat = crate::agent_chat::Chat::default();
+        let event = serde_json::json!({"type":"item.completed", "item":{
+            "id":"search", "type":"mcp_tool_call", "server":"berserk_catalog",
+            "tool":"search_cards", "arguments":{"query":"гномы"}, "status":"completed"
+        }});
+        chat.upsert(crate::agent_chat::Entry::from_event(&event, "saved-run").unwrap());
+        chat.upsert(crate::agent_chat::Entry::message(
+            "saved-run:reply".into(),
+            "assistant",
+            "Codex",
+            "Подобрал защитников для гномов.",
+        ));
+        deck.agent_session = Some(DeckAgentSession {
+            id: "11111111-1111-4111-8111-111111111111".into(),
+            feedback: vec!["Гномы".into()],
+            chat: chat.clone(),
+        });
+        app.user.decks.push(deck);
+        storage::atomic_write(&app.store.path, &serde_json::to_vec(&app.user).unwrap()).unwrap();
+        drop(app);
+        let cc = eframe::CreationContext::_new_kittest(ctx.clone());
+        let mut app = NativeApp::new(
+            &cc,
+            root.path().into(),
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")),
+            None,
+        )
+        .unwrap();
+        assert!(app.progress.chat.is_empty());
+        app.open_codex(Some("saved-discussion".into()));
+        let mut frame = eframe::Frame::_new_kittest();
+        let mut labels = Vec::new();
+        for _ in 0..3 {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(850.0, 600.0),
+                    )),
+                    ..Default::default()
+                },
+                |ui| app.ui(ui, &mut frame),
+            );
+            output.textures_delta.clear();
+            labels = output
+                .shapes
+                .iter()
+                .filter_map(|shape| match &shape.shape {
+                    egui::epaint::Shape::Text(text) => Some(text.galley.text().to_string()),
+                    _ => None,
+                })
+                .collect();
+        }
+        assert!(
+            labels.iter().any(|label| label.contains("Ищет карты")),
+            "{labels:?}"
+        );
+        assert!(
+            labels
+                .iter()
+                .any(|label| label.contains("Подобрал защитников")),
+            "{labels:?}"
+        );
+        // Submitting a follow-up must not blank the restored transcript.
+        let (_tx, incoming) = mpsc::channel();
+        let (outgoing, _rx) = mpsc::channel();
+        app.bridge = Some(Bridge::for_test(incoming, outgoing));
+        app.connected = true;
+        app.build(BuildEvent::RefineDeck {
+            request_id: "follow-up".into(),
+            deck_id: "saved-discussion".into(),
+            expected_revision: agent::revision(&app.user.decks[0]),
+            feedback: "Больше защиты".into(),
+            restart_session: false,
+        });
+        assert_eq!(&app.progress.chat.entries[..2], chat.entries.as_slice());
+    }
+
+    #[test]
+    fn codex_chat_card_reference_opens_the_catalog_card() {
+        let (_root, mut app, ctx) = fixture();
+        let mut frame = eframe::Frame::_new_kittest();
+        app.page = Page::Codex;
+        app.progress.request_id = "card-link".into();
+        app.codex_run = Some("card-link".into());
+        app.progress.phase = "running".into();
+        app.progress.chat.upsert(crate::agent_chat::Entry::message(
+            "card-link:answer".into(),
+            "assistant",
+            "Codex",
+            "Возьмите [card:80074] в отряд.",
+        ));
+        let card_name = app.cat.get("80074").unwrap().name.clone();
+        let mut render = |app: &mut NativeApp, events| {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(850.0, 600.0),
+                    )),
+                    events,
+                    ..Default::default()
+                },
+                |ui| app.ui(ui, &mut frame),
+            );
+            output.textures_delta.clear();
+            output
+        };
+        for _ in 0..4 {
+            render(&mut app, vec![]);
+        }
+        let output = render(&mut app, vec![]);
+        assert!(!output.shapes.iter().any(|shape| matches!(&shape.shape,
+            egui::epaint::Shape::Text(text) if text.galley.text().contains("[card:80074]"))));
+        let pos = output
+            .shapes
+            .iter()
+            .find_map(|shape| {
+                if let egui::epaint::Shape::Text(text) = &shape.shape
+                    && text.galley.text() == card_name
+                {
+                    Some(text.galley.rect.translate(text.pos.to_vec2()).center())
+                } else {
+                    None
+                }
+            })
+            .expect("resolved card name in chat");
+        for pressed in [true, false] {
+            render(
+                &mut app,
+                vec![
+                    egui::Event::PointerMoved(pos),
+                    egui::Event::PointerButton {
+                        pos,
+                        button: egui::PointerButton::Primary,
+                        pressed,
+                        modifiers: Default::default(),
+                    },
+                ],
+            );
+        }
+        assert_eq!(app.detail.as_deref(), Some("80074"));
+    }
+
+    #[test]
+    fn tool_call_header_expands_readable_sections_and_keeps_raw_data_collapsed() {
+        let (_root, mut app, ctx) = fixture();
+        let mut frame = eframe::Frame::_new_kittest();
+        ctx.all_styles_mut(|style| style.animation_time = 0.0);
+        app.page = Page::Codex;
+        app.progress.request_id = "tool-details".into();
+        app.codex_run = Some("tool-details".into());
+        app.progress.phase = "running".into();
+        let event = serde_json::json!({"type":"item.completed", "item":{
+            "id":"search", "type":"mcp_tool_call", "server":"raw_server_marker",
+            "tool":"search_cards", "arguments":{"query":"лес", "limit":10},
+            "result":{"content":[{"type":"text","text":"Найдена карта: Страж леса"}]}
+        }});
+        app.progress
+            .chat
+            .upsert(crate::agent_chat::Entry::from_event(&event, "tool-details").unwrap());
+        let screen = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(850.0, 600.0));
+        let mut render = |app: &mut NativeApp, events| {
+            let mut output = ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(screen),
+                    events,
+                    ..Default::default()
+                },
+                |ui| app.ui(ui, &mut frame),
+            );
+            output.textures_delta.clear();
+            output
+        };
+        let find = |output: &egui::FullOutput, label: &str| {
+            output.shapes.iter().find_map(|shape| {
+                if let egui::epaint::Shape::Text(text) = &shape.shape
+                    && text.galley.text() == label
+                {
+                    Some(text.galley.rect.translate(text.pos.to_vec2()))
+                } else {
+                    None
+                }
+            })
+        };
+        for _ in 0..4 {
+            render(&mut app, vec![]);
+        }
+        let output = render(&mut app, vec![]);
+        assert!(find(&output, "Результат").is_none());
+        let pos = find(&output, "Ищет карты").expect("tool heading").center();
+        for pressed in [true, false] {
+            render(
+                &mut app,
+                vec![
+                    egui::Event::PointerMoved(pos),
+                    egui::Event::PointerButton {
+                        pos,
+                        button: egui::PointerButton::Primary,
+                        pressed,
+                        modifiers: Default::default(),
+                    },
+                ],
+            );
+        }
+        for _ in 0..4 {
+            render(&mut app, vec![]);
+        }
+        let output = render(&mut app, vec![]);
+        for label in [
+            "Параметры",
+            "Результат",
+            "Найдена карта: Страж леса",
+            "Технические данные",
+            "Отменить генерацию",
+        ] {
+            let rect = find(&output, label).unwrap_or_else(|| panic!("missing {label}"));
+            assert!(screen.contains_rect(rect), "clipped {label}: {rect:?}");
+        }
+        assert!(!output.shapes.iter().any(|shape| matches!(&shape.shape,
+            egui::epaint::Shape::Text(text) if text.galley.text().contains("raw_server_marker"))));
+    }
+    #[test]
+    fn codex_chat_keeps_actions_visible_and_cancel_preserves_transcript() {
+        let (_root, mut app, ctx) = fixture();
+        let mut frame = eframe::Frame::_new_kittest();
+        let screen = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(850.0, 600.0));
+        let (_tx, incoming) = mpsc::channel();
+        let (outgoing, rx) = mpsc::channel();
+        app.bridge = Some(Bridge::for_test(incoming, outgoing));
+        app.connected = true;
+        app.codex_auth = codex_auth::Auth::cached_for_test(codex_auth::Status::SignedIn);
+        app.page = Page::Codex;
+        app.progress.request_id = "chat-layout".into();
+        app.codex_run = Some("chat-layout".into());
+        app.progress.phase = "running".into();
+        for i in 0..50 {
+            let event = serde_json::json!({"type":"item.started","item":{
+                "id":i.to_string(),"type":"mcp_tool_call","server":"berserk_catalog",
+                "tool":"search_cards","arguments":{"query":"Очень длинный запрос ".repeat(100)},"status":"in_progress"
+            }});
+            app.progress
+                .chat
+                .upsert(crate::agent_chat::Entry::from_event(&event, "chat-layout").unwrap());
+        }
+        for phase in ["running", "succeeded", "failed", "cancelled"] {
+            app.progress.phase = phase.into();
+            if phase == "succeeded" {
+                let deck = Deck::new("chat-result".into(), "Результат".into());
+                app.progress.deck_id = Some(deck.id.clone());
+                app.codex_deck = Some(deck.id.clone());
+                app.user.decks.push(deck);
+            }
+            let mut output = None;
+            for _ in 0..4 {
+                let mut next = ctx.run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(screen),
+                        ..Default::default()
+                    },
+                    |ui| app.ui(ui, &mut frame),
+                );
+                next.textures_delta.clear();
+                output = Some(next);
+            }
+            let output = output.unwrap();
+            let mut labels = vec!["Чат с Codex"];
+            if phase == "running" {
+                labels.push("Отменить генерацию");
+            } else {
+                labels.extend([
+                    "Открыть колоду",
+                    "Отправить пожелания",
+                    "Новая колода с Codex",
+                ]);
+            }
+            for label in labels {
+                let (clip, rect) = output
+                    .shapes
+                    .iter()
+                    .find_map(|shape| {
+                        if let egui::epaint::Shape::Text(text) = &shape.shape
+                            && text.galley.text() == label
+                        {
+                            Some((
+                                shape.clip_rect,
+                                text.galley.rect.translate(text.pos.to_vec2()),
+                            ))
+                        } else {
+                            None
+                        }
+                    })
+                    .unwrap_or_else(|| panic!("missing {label} in {phase}"));
+                assert!(
+                    screen.contains_rect(rect) && clip.contains_rect(rect),
+                    "clipped {label} in {phase}: {rect:?}"
+                );
+            }
+        }
+        app.progress.phase = "running".into();
+        let previous = serde_json::to_value(&app.progress).unwrap();
+        app.build(BuildEvent::CancelBuild {
+            request_id: "chat-layout".into(),
+        });
+        assert!(matches!(
+            rx.try_recv().unwrap(),
+            Outgoing::Build(BuildEvent::CancelBuild { .. })
+        ));
+        assert_eq!(serde_json::to_value(&app.progress).unwrap(), previous);
+    }
+
     #[test]
     fn local_login_status_does_not_block_an_external_service() {
         let (_root, mut app, _ctx) = fixture();

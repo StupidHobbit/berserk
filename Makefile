@@ -1,4 +1,4 @@
-.PHONY: dev build test check mcp-build mcp-test ai desktop
+.PHONY: dev build test check mcp-build mcp-test ai desktop native native-run native-test
 
 dev:
 	NO_COLOR=true trunk serve --address 127.0.0.1 --port 8080
@@ -21,6 +21,10 @@ mcp-test:
 	cargo test --locked --no-default-features --features mcp
 	cargo build --locked --no-default-features --features mcp --bin berserk-mcp
 	python3 scripts/test_mcp.py
+	python3 scripts/test_catalog_mcp.py
+	python3 scripts/test_proberserk.py
+	python3 scripts/test_deck_editing.py
+	python3 scripts/test_codex.py
 
 # Local browser-driven Codex generation; no MCP host is required.
 ai:
@@ -33,6 +37,10 @@ desktop:
 # GPU-rendered native app on Linux, Windows and macOS.
 native:
 	cargo build --release --locked --no-default-features --features desktop --bin berserk --bin berserk-mcp
+
+# Keep the UI and its companion service in sync when launching from source.
+native-run: native
+	target/release/berserk
 
 native-test:
 	cargo test --locked --no-default-features --features desktop

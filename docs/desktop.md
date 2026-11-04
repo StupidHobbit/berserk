@@ -157,18 +157,35 @@ is available. Browsing and deck editing do not open a browser.
 
 ## Codex and MCP
 
-Opening the AI panel starts bundled `berserk-mcp --native-app` in a background
-worker. The service binds a random loopback port and sends its secret only
+Opening the AI panel starts the current app executable with `--native-app` in a
+background worker. Its embedded service and `--catalog-only` mode are compiled
+with the UI, so `cargo run --release --locked --bin berserk` cannot use a stale
+companion binary. The standalone `berserk-mcp` entry point shares the same code. The service binds a random loopback port and sends its secret only
 through the parent's stdout pipe. Token, Origin and Host checks are retained.
 The desktop client implements the existing snapshot/progress/save protocol;
 revision conflicts and exact-edition collection validation are unchanged.
 It acknowledges an AI save only after the atomic file write succeeds.
 
-**Мои колоды → Создать с Codex** opens a dedicated creation screen with a
-login/status panel, collection count, deck size, strategy text and allowed sets.
-The primary create action stays outside the scrolling form. Generation progress
-and cancellation remain visible, and discussion of existing decks uses the same
-status panel and cached login result.
+**Мои колоды → Создать с Codex** and **Обсудить с Codex** in the deck editor
+open the same full-page conversation. Both use the same transcript, pinned
+message composer, progress and cancellation controls. Creation adds deck-size
+and allowed-set settings; editing shows the selected deck and its saved conversation,
+and preserves its size, reserve and allowed sets. After creation succeeds the
+page continues as that deck's discussion, without a popup or navigation away.
+**Открыть колоду** returns to the editor; **Новая колода с Codex** starts a fresh
+creation. Chat activity is scoped to the current deck or creation request.
+Codex changes a working copy through MCP card-count and note tools. The dealing
+tool draws from that current working deck, with revision checks when inspecting
+the same hand again. Submitting through MCP prepares the result; the app checks
+current ownership and the original saved revision before its atomic save. The
+final assistant message cannot replace the deck. Cancelled/failed edits do not
+change the saved deck.
+Successful generations persist the bounded transcript (messages, emitted reasoning
+summaries, and tool calls/results) with the deck and in backups. Reopening a deck
+or restarting the app restores it; a follow-up appends to that history. Older
+backups retain their saved wishes, but actions never saved by older versions
+cannot be reconstructed. Failed/cancelled activity remains in the current app
+session until another conversation replaces it.
 
 Login status uses the documented [`codex login status`](https://developers.openai.com/codex/cli/reference#codex-login)
 command on a background worker, with an eight-second timeout and one in-flight

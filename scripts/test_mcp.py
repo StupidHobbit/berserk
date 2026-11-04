@@ -75,7 +75,7 @@ def main():
         assert "tools" in init["capabilities"]
         client.send({"jsonrpc":"2.0","method":"notifications/initialized"})
         names={t["name"] for t in client.request("tools/list")["tools"]}
-        assert names == {"connection_info","catalog_info","search_cards","get_card","get_collection","list_decks","get_deck","validate_deck","save_deck","get_deck_build_prompt","create_deck_with_codex","get_deck_build_status","cancel_deck_build","deal_deck","refine_deck_with_codex"}, names
+        assert names == {"connection_info","catalog_info","search_cards","get_card","get_collection","list_decks","get_deck","validate_deck","save_deck","get_deck_build_prompt","create_deck_with_codex","get_deck_build_status","cancel_deck_build","deal_deck","refine_deck_with_codex","begin_deck_edit","discard_deck_edit","get_current_deck","set_deck_card_counts","set_deck_notes","validate_current_deck","save_current_deck"} | {'search_proberserk_tournaments','get_proberserk_tournament','get_proberserk_deck','analyze_proberserk_decks','search_deck_memory','remember_deck_insight'}, names
         prompt = client.tool("get_deck_build_prompt", {"size":40,"preferences":"Лес"})
         assert "40" in prompt["prompt"] and "Лес" in prompt["prompt"]
         client.tool("get_deck_build_prompt", {"size":29}, error=True)

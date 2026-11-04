@@ -38,6 +38,11 @@ HTTPS-hosted deployments are not supported by this local bridge.
 
 ## Build from the app with local Codex
 
+The agent also has six [ProBerserk research and persistent memory tools](proberserk.md).
+Automatic runs must review remembered lessons, attempt tournament discovery,
+compare top decks and preserve strategic insights before submission. This is checked
+in the working workspace, with an explicit fallback for unavailable sources.
+
 1. Install the Codex CLI and run `codex login` once.
 2. Run `make dev` for the app, then `make ai` in another terminal. The latter
    starts the local bridge without requiring an MCP host. Open its printed pairing
@@ -46,28 +51,49 @@ HTTPS-hosted deployments are not supported by this local bridge.
 3. Open **Мои колоды → Создать колоду с Codex AI**, choose allowed sets and 30–50 cards, then enter
    your preferred elements, strategy, key cards or experience level.
 4. Click **Создать колоду**. Progress appears in the panel. **Отменить создание**
-   stops generation until saving begins. On success the editor opens the new deck.
+   stops generation until saving begins. The native app keeps the conversation open after saving; use **Открыть колоду** to return to the editor.
 
 The service runs `codex exec` with a structured JSON output schema in a private
 temporary directory and a read-only sandbox. It uses the existing Codex login;
 model requests use that account's limits. It sends the owned card pool, quantities, bundled rules, your preferences and
 access to the full card database through MCP, never collection purchase prices.
 Each CLI run automatically starts this same executable in `--catalog-only` mode
-as `berserk_catalog`. Its read-only `catalog_info`, `search_cards`, `get_card` and `deal_deck`
-tools cover all editions in the selected allowed sets, including cards outside the collection.
+as `berserk_catalog`, with a private `--deck-workspace` initialized from the selected
+deck (or an empty new deck). Its catalog tools cover all editions in the selected
+allowed sets, including cards outside the collection. The agent reads
+`get_current_deck`, changes exact-edition counts with `set_deck_card_counts`, and
+updates player-facing text with `set_deck_notes`. All mutations require the latest
+working revision and return the updated state. Zero removes a card; unmentioned
+cards and text fields are preserved. Replacements can remove and add in one atomic
+batch. Reserve, target size and allowed sets remain fixed.
 The process receives `--allowed-sets '[80,70]'` (for example) and scopes the
 database before exposing tools: disabled sets disappear from metadata, searches
 and exact-ID lookups. With no setting, the full catalog remains available.
 The agent searches and verifies upgrade recommendations using MCP; no temporary
 catalog file or preselected shortlist is used. This stdio-only mode opens no
-listener and exposes no collection/deck mutation tools. Ownership still comes
-from the prompt, and the app validates the final deck against the collection.
+listener and never mutates the collection or saved decks directly. Research tools
+write a separate persistent memory, shared across runs. Working-deck
+edits enforce exact-edition ownership (including reserve), bans, allowed sets,
+name copy limits and target maximum size. Incomplete intermediate compositions
+are allowed; `validate_current_deck` and `save_current_deck` require a complete deck.
+The final CLI schema contains only `status` and `explanation`. The app saves the
+submitted MCP working state, never a replacement deck from the final message.
+A missing submission or an edit after submission prevents saving. Submission
+prepares the local draft; the app then rechecks the saved deck revision and current
+collection before committing. Cancellation or failure discards unsaved edits.
 The MCP configuration is passed only to this child CLI run; your saved Codex
 settings are not modified. A required-server setting makes startup fail if the
 catalog cannot be connected instead of silently creating unverified advice.
 It does not run shell-interpolated commands. User CLI configuration is ignored to
-avoid inheriting unrelated MCP servers and hooks. The CLI's default model is used;
-set `BERSERK_CODEX_MODEL` to override, and `BERSERK_CODEX_BIN` for a nonstandard CLI
+avoid inheriting unrelated MCP servers and hooks. The CLI selects its noninteractive
+approval policy; managed requirements still apply. Some CLI versions select `never`
+even with an explicit configuration override, then report a fallback to the allowed
+managed policy as an error item. This recoverable startup message is displayed as
+an expandable administrator-settings notice, retaining the original diagnostic.
+Actual errors and failed turns remain errors. Since `exec` cannot request interactive
+approval, actions requiring it are rejected by the CLI.
+The CLI's default model is used; set `BERSERK_CODEX_MODEL` to override,
+and `BERSERK_CODEX_BIN` for a nonstandard CLI
 path. A current CLI supporting `--ignore-user-config`, structured output and `exec resume` is required.
 
 The prompt incorporates the user-provided text of
@@ -86,7 +112,7 @@ is underway, wait for its outcome and use editor Undo if needed. A timeout may m
 a save succeeded: inspect My decks before retrying. Only one generation can run
 per paired server. Creation makes a new deck; feedback updates the selected deck.
 
-Open a deck and expand **Обсудить колоду с Codex** to send feedback. The app
+Open a deck and choose **Обсудить с Codex** to send feedback in the shared conversation view. The app
 persists the CLI session ID with the deck and uses `codex exec resume <id>` for
 follow-ups. It sends the current deck and collection every time, since manual
 changes take priority over conversation history. Updates require the original
@@ -94,8 +120,8 @@ revision, checked again by the browser when saving, and retain the deck ID,
 allowed sets, tags and sideboard. Sideboard copies are reserved from the owned
 pool. The main-deck size is preserved within 30–50 cards; drafts outside that
 range are brought to the nearest endpoint. Cancellation or failed validation
-leaves the saved deck untouched. Successful feedback appears under **Предыдущие
-пожелания**; the current draft remains in the form after failure.
+leaves the saved deck untouched. Messages and compact tool actions appear in the
+chat; successful runs persist their transcript with the deck.
 
 Existing decks without a saved session start a new conversation from their current
 state. **Начать новое обсуждение этой колоды** starts fresh if the local CLI
@@ -122,7 +148,14 @@ The same prompt is exposed through `get_deck_build_prompt`.
 | `connection_info` | Session pairing URL and connection state | No |
 | `create_deck_with_codex` | Start a local CLI generation; returns request ID immediately | Yes |
 | `refine_deck_with_codex` | Continue a deck conversation with `deck_id`, `expected_revision`, `feedback`; optional `restart_session` | Yes |
-| `deal_deck` | Draw 15 from proposed `cards` or saved `deck_id`; optional `allowed_sets`, `seed`, `squad_indices` | For `deck_id` |
+| `begin_deck_edit` | Open a new working deck (`size`, `allowed_sets`) or an existing one (`deck_id`, `expected_revision`) | Yes; local CLI opens its draft automatically |
+| `get_current_deck` | Read working state, target size, revision and report | Working deck required |
+| `set_deck_card_counts` | Atomic absolute counts in `changes: [{id,count}]`; zero removes, omitted cards stay | Working deck required |
+| `set_deck_notes` | Patch name, description, how-to-play and improvements | Working deck required |
+| `validate_current_deck` | Check current state, complete size, ownership and notes | Working deck required |
+| `save_current_deck` | Submit the current revision; local CLI prepares it for the app, paired agent saves atomically | Yes for paired saves |
+| `discard_deck_edit` | Discard unsaved working edits before switching decks (paired agents) | No |
+| `deal_deck` | Draw 15 from the current working deck; no `cards`, `deck_id` or `allowed_sets` inputs | Working deck required |
 | `get_deck_build_status` | Progress/error and saved deck ID | No |
 | `cancel_deck_build` | Cancel by request ID before save begins | Yes |
 | `get_deck_build_prompt` | Shared UI prompt; optional `size`, `preferences`, `allowed_sets` | No |
@@ -139,6 +172,18 @@ Search defaults to base cards. When building from owned cards, use both
 `owned_only: true` and `include_editions: true` so foil/alternate copies are included.
 Search results contain readable rules and string card IDs; never infer IDs from
 names. `catalog_info` supplies the set and element IDs (elements are bitmasks).
+
+`deal_deck {}` produces a fresh hand and returns its `seed` and `revision`.
+To assess that same hand, call it with `seed`, `expected_revision` equal to the
+returned revision, and zero-based `squad_indices`. A stale revision is rejected
+after editing, so a hand from an earlier composition cannot validate the new one.
+Each fresh deal uses the current main deck and excludes reserve cards.
+
+For external MCP agents, start with `begin_deck_edit`, use the working-deck tools,
+and finish with `save_current_deck`. One workspace is active per server; explicitly
+`discard_deck_edit` before switching. Existing `validate_deck` and `save_deck`
+remain available for legacy integrations and manual incomplete drafts; local
+Codex runs do not expose them.
 
 ## Allowed sets
 
@@ -168,7 +213,7 @@ The setting survives copies, undo, backups, text/ID exports and TTS metadata.
 The legacy compact code format carries only card quantities, not deck settings or
 notes; use `.brsd` or a backup to transfer the complete deck.
 
-A proposal uses quantities rather than repeated IDs:
+Legacy full-replacement API (not the Codex editing flow) uses quantities rather than repeated IDs:
 
 ```json
 {
@@ -266,7 +311,10 @@ Description and structured notes in the deck object's GMNotes. The legacy compac
 code represents cards only and cannot carry names or notes.
 
 `test_codex.py` uses a protocol-level browser peer and a fake CLI in temporary
-storage, checking UI events through subprocess execution and save, invalid
-proposals, concurrent requests, cancellation, CLI failure and insufficient cards.
+storage, checking UI events through actual MCP edits and submission, rejected
+final-message bypasses, edits after submission, concurrent requests, cancellation,
+CLI failure and insufficient cards. `test_deck_editing.py` checks the paired MCP
+working-deck lifecycle, atomic changes, stale revisions, reserve ownership, copy
+limits across editions, deterministic current-deck hands, save conflicts and discard.
 `python3 scripts/test_codex.py --real` runs a real Codex generation and a resumed feedback turn using a
 synthetic collection, without touching browser storage; it uses account limits.

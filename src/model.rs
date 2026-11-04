@@ -360,6 +360,25 @@ pub struct DeckAgentSession {
     pub id: String,
     #[serde(default)]
     pub feedback: Vec<String>,
+    #[serde(default, skip_serializing_if = "crate::agent_chat::Chat::is_empty")]
+    pub chat: crate::agent_chat::Chat,
+}
+impl DeckAgentSession {
+    pub fn history(&self) -> crate::agent_chat::Chat {
+        if !self.chat.is_empty() {
+            return self.chat.clone();
+        }
+        let mut chat = crate::agent_chat::Chat::default();
+        for (index, text) in self.feedback.iter().enumerate() {
+            chat.upsert(crate::agent_chat::Entry::message(
+                format!("{}:history:{index}", self.id),
+                "user",
+                "Вы · предыдущие пожелания",
+                text,
+            ));
+        }
+        chat
+    }
 }
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Deck {
@@ -514,6 +533,13 @@ impl UserData {
         }
         for deck in &self.decks {
             deck.validate_sets(catalog)?;
+            if deck
+                .agent_session
+                .as_ref()
+                .is_some_and(|s| !s.chat.within_limits())
+            {
+                return Err("История обсуждения превышает допустимый размер".into());
+            }
         }
         let mut ids = BTreeSet::new();
         if self

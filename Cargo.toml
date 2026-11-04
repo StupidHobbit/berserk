@@ -26,7 +26,7 @@ panic = "abort"
 [features]
 default = ["desktop"]
 web = ["dep:leptos", "dep:web-sys", "dep:wasm-bindgen", "dep:wasm-bindgen-futures", "dep:js-sys", "dep:console_error_panic_hook"]
-mcp = ["dep:rmcp", "dep:tokio", "dep:axum", "dep:uuid", "dep:tower-http"]
+mcp = ["dep:rmcp", "dep:tokio", "dep:axum", "dep:uuid", "dep:tower-http", "dep:reqwest", "dep:scraper", "dep:chrono", "dep:tempfile"]
 desktop = ["mcp", "dep:eframe", "dep:image", "dep:rfd", "dep:tempfile", "dep:tungstenite"]
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -35,6 +35,9 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync",
 axum = { version = "0.8", features = ["ws"], optional = true }
 uuid = { version = "1", features = ["v4"], optional = true }
 tower-http = { version = "0.6", features = ["fs"], optional = true }
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "query", "gzip"], optional = true }
+scraper = { version = "0.24", optional = true }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"], optional = true }
 
 eframe = { version = "=0.36.2", default-features = false, features = ["default_fonts", "glow", "x11", "wayland", "accesskit"], optional = true }
 image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"], optional = true }
